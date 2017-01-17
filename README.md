@@ -1,7 +1,7 @@
 # web-dev-template
 
 1. git clone https://github.com/rahulthakkar/thakkar-rahul-webdev.git
-1. cd web-dev-template
+1. cd thakkar-rahul-webdev
 1. npm install
 1. mongod
 1. node server.js
