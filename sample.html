@@ -1,0 +1,68 @@
+
+<form method="post"
+      action="/path/to/form/service">
+    <label for="firstName">First Name</label>
+    <input name="firstName"
+           id="firstName"
+           type="text"
+           placeholder="Alice"
+           class="form-control"/>
+    <label for="lastName">Last Name</label>
+    <input name="lastName"
+           id="lastName"
+           type="text"
+           placeholder="Wonderland"
+           class="form-control"/>
+    <label for="email">Email</label>
+    <input name="email"
+           id="email"
+           type="email"
+           placeholder="alice@wonderland.com"
+           class="form-control"/>
+    <label for="dob">Date of Birth</label>
+    <input name="dob"
+           id="dob"
+           type="date"
+           class="form-control"/>
+    <br/>
+
+    <label>Preferred Contact Method</label>
+    <select name="preferredContactMethod" class="form-control">
+        <option value="PHONE">Phone</option>
+        <option value="PIAZZA">Piazza</option>
+        <option value="EMAIL">Email</option>
+    </select>
+
+    <label>Favorite Color</label>
+    <br/>
+    <label>
+        <input name="favoriteColor" type="radio" value="yellow">
+        Yellow
+    </label><br/>
+    <label>
+        <input name="favoriteColor" type="radio" value="blue">
+        Blue
+    </label><br/>
+    <label>
+        <input name="favoriteColor" type="radio" value="red">
+        Red
+    </label><br/>
+
+    <label>Favorite Movie Generes</label><br/>
+    <label>
+        <input name="favoriteGenre" type="checkbox" value="horror">
+        Horror
+    </label><br/>
+    <label>
+        <input name="favoriteGenre" type="checkbox" value="comedy">
+        Comedy
+    </label><br/>
+    <label>
+        <input name="favoriteGenre" type="checkbox" value="scifi">
+        Science Fiction
+    </label><br/>
+
+    <button type="submit" class="btn btn-block btn-primary">
+        Submit
+    </button>
+</form>
