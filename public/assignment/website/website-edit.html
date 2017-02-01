@@ -6,84 +6,88 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Website List</title>
+    <title>Edit Website</title>
 </head>
 <body>
 
 <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-text pull-left">
-        <a href="website-list.html">
-            <span class="glyphicon glyphicon-chevron-left"></span>
-        </a>
-    </div>
-    <div class="container-fluid">
 
+    <div class="row container-fluid">
+        <div class="col-sm-4 hidden-xs">
+            <div class="navbar-text pull-left">
+                <a href="website-list.html">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
 
-        <div class="hidden-xs col-sm-4 navbar-brand">Websites</div>
+            <div class="navbar-brand">Websites</div>
+            <div class="navbar-text pull-right">
+                <a href="website-new.html">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+        </div>
 
-        <div class="col-xs-12 col-sm-8 container-fluid">
+        <div class="col-sm-8">
             <div class="navbar-text pull-right">
                 <a href="website-list.html">
                     <span class="glyphicon glyphicon-ok"></span>
                 </a>
             </div>
-
-            <div class="navbar-brand">New Website</div>
+            <div class="col-xs-10 navbar-brand">Edit Website</div>
         </div>
     </div>
 </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="hidden-xs col-sm-4 navbar-brand">
-            <div class="row">
-                <div class="col-xs-11 navbar-brand">Address Book App</div>
-                <div class="col-xs-1 navbar-brand">
-                    <a href="website-new.html">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                </div>
-            </div>
+<div class="row container-fluid">
+    <div class="hidden-xs col-sm-4 wbdv-left-pane">
+        <ul class="list-group borderless">
+            <li class="list-group-item">
+                <a href="#">Address Book App</a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
 
-            <div class="row">
-                <div class="col-xs-11 navbar-brand">Blogger</div>
-                <div class="col-xs-1 navbar-brand">
-                    <a href="website-new.html">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                </div>
-            </div>
+            <li class="list-group-item">
+                <a href="#">Blogger</a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
 
-            <div class="row">
-                <div class="col-xs-10 col-sm-11 navbar-brand">Blogging App</div>
-                <div class="col-xs-1 col-sm-1 navbar-brand">
-                    <a href="website-new.html">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                </div>
-            </div>
+            <li class="list-group-item">
+                <a href="#">Blogging App</a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
 
-            <div class="row">
-                <div class="col-xs-10 col-sm-11 navbar-brand">Script Testing App</div>
-                <div class="col-xs-1 col-sm-1 navbar-brand">
-                    <a href="website-new.html">
-                        <span class="glyphicon glyphicon-cog"></span>
-                    </a>
-                </div>
-            </div>
-        </div>
+            <li class="list-group-item">
+                <a href="#">Script Testing App</a>
+                <a href="#">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
-        <div class="col-xs-12 col-sm-8 container-fluid">
+    <div class="col-xs-12 col-sm-8 pull-right">
+
+        <div class="form-group">
             <label for="name">Name</label>
             <input id="name"
                    class="form-control"
-                   placeholder="Name"/>
-
+                   placeholder="Name"
+                   value="Blogger"/>
+        </div>
+        <div class="form-group">
             <label for="desc">Description</label>
             <textarea id="desc"
                       class="form-control"
                       rows="6"
-                      placeholder="Description"></textarea>
+                      placeholder="Description">logger is a blog-publishing service that allows private or multi - user blogs with time-stamped entries. It was created by Pyra Labs which was bought by Google in 2003. Generally, the blogs are hosted by Google at subdomain of blogspot.com. Up until May 1, 2010 Blogger allowed users to publish blogs on other hosts, via FTP. All such blogs had (or still have) to be moved to Google's own servers, with domains other than blogspot.com allowed via Custom URLs.
+            </textarea>
         </div>
     </div>
 </div>
