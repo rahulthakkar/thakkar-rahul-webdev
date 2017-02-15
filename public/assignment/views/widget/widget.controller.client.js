@@ -22,7 +22,7 @@
 
 
         function getWidgetTemplateUrl(widgetType) {
-            return 'views/widget/widget-'+widgetType+'.view.client.html';
+            return 'views/widget/widget-'+widgetType.toLowerCase()+'.view.client.html';
         }
 
         function getTrustedHtml(html) {
@@ -72,7 +72,7 @@
             }
         }
         function getEditorTemplateUrl(type) {
-            return 'views/widget/editors/widget-'+type+'-editor.view.client.html';
+            return 'views/widget/editors/widget-'+type.toLowerCase()+'-editor.view.client.html';
         }
     }
 })();
