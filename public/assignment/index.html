@@ -1,32 +1,37 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="WebAppMaker">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Assignment Home Page</title>
+    <title>Title</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+
+    <!-- Loading controllers-->
+    <script src="views/user/login.controller.client.js"></script>
+    <script src="views/website/website.controller.client.js"></script>
+    <script src="views/page/page.controller.client.js"></script>
+    <script src="views/widget/widget.controller.client.js"></script>
+
+    <!-- Loading services-->
+    <script src="services/user.service.client.js"></script>
+    <script src="services/page.service.client.js"></script>
+    <script src="services/website.service.client.js"></script>
+    <script src="services/widget.service.client.js"></script>
+    <!--<base href="/assignment-wed">-->
 </head>
+
 <body>
-    <h1>Assignment Home Page</h1>
-
-    <br/><h2>User pages</h2>
-    <h3><a href="user/login.html">User Login</a></h3>
-    <h3><a href="user/profile.html">User Profile</a></h3>
-    <h3><a href="user/register.html">Register User</a></h3>
-
-    <br/><h2>Website pages</h2>
-    <h3><a href="website/website-list.html">Website List</a></h3>
-    <h3><a href="website/website-new.html">New Website</a></h3>
-    <h3><a href="website/website-edit.html">Edit Website</a></h3>
-
-    <br/><h2>Page pages</h2>
-    <h3><a href="page/page-list.html">Page List</a></h3>
-    <h3><a href="page/page-new.html">New Page</a></h3>
-    <h3><a href="page/page-edit.html">Edit Page</a></h3>
-
-    <br/><h2>Widget pages</h2>
-    <h3><a href="widget/widget-list.html">Widget List</a></h3>
-    <h3><a href="widget/widget-chooser.html">Widget Chooser</a></h3>
-    <h3><a href="widget/widget-heading.html">Heading Widget</a></h3>
-    <h3><a href="widget/widget-image.html">Iamge Widget</a></h3>
-    <h3><a href="widget/widget-youtube.html">Youtube Widget</a></h3>
+<div ng-view></div>
 </body>
+
 </html>

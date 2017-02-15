@@ -1,0 +1,68 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="row container-fluid">
+        <div class="col-sm-4 hidden-xs">
+            <div class="navbar-text pull-left">
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
+            <div class="navbar-brand">Pages</div>
+            <div class="navbar-text pull-right">
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="navbar-text pull-right">
+                <a ng-click="model.create(model.page)">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
+
+            <div class="navbar-brand col-xs-10">New Page</div>
+        </div>
+    </div>
+</nav>
+
+<div class="row container-fluid">
+    <div class="hidden-xs col-sm-4 wbdv-left-pane">
+        <ul class="list-group">
+            <li ng-repeat="page in model.pages" class="list-group-item">
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{page._id}}/widget">{{page.name}}</a>
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{page._id}}">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 pull-right">
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input ng-model="model.page.name"
+                   id="name"
+                   class="form-control"
+                   placeholder="Page Name"/>
+        </div>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input ng-model="model.page.description"
+                   id="title"
+                   class="form-control"
+                   placeholder="Page Title"></input>
+        </div>
+
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text pull-right">
+            <a href="#/user/{{model.userId}}">
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </div>
+    </div>
+</nav>

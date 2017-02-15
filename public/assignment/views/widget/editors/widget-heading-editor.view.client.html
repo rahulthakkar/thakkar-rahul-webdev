@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <label for="name">Name</label>
+    <input ng-model="model.widget.name"
+           id="name"
+           class="form-control"
+           placeholder="Widget Name"/>
+
+    <label for="text">Text</label>
+    <input ng-model="model.widget.text"
+           id="text"
+           class="form-control"
+           placeholder="Widget Title"/>
+
+    <label for="size">Size</label>
+    <input ng-model="model.widget.size"
+           id="size"
+           type="number"
+           min="1" max="6"
+           class="form-control"
+           placeholder="size"/>
+
+    <a ng-click="model.deleteWidget(model.widget)" class="btn btn-danger btn-block">Delete</a>
+</div>
