@@ -59,9 +59,13 @@
         init();
 
         function register(newUser) {
-            var user = UserService.createUser(newUser);
-            if(user) {
-                $location.url("/user/"+user._id);
+            if(newUser.password === newUser.password2) {
+                var user = UserService.createUser(newUser);
+                if (user) {
+                    $location.url("/user/" + user._id);
+                } else {
+                    vm.error = "Unable to register user";
+                }
             } else {
                 vm.error = "Unable to register user";
             }
