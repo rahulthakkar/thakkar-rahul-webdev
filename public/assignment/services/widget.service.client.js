@@ -30,7 +30,7 @@
             widget.pageId = pageId;
             widget._id = (new Date()).getTime();
             widgets.push(widget);
-            return true;
+            return angular.copy(widget);
         }
 
         function findWidgetsByPageId(pageId) {

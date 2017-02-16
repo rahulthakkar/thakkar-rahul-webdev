@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-text pull-left">
-            <a href="st.html">
+            <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget">
                 <span class="glyphicon glyphicon-chevron-left"></span>
             </a>
         </div>
@@ -12,69 +12,34 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="ading.html">Header</a>
+            <a ng-click="model.create('heading')">Header</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Label</a>
+            <a ng-click="model.create('html')">HTML</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">HTML</a>
+            <a ng-click="model.create('image')">Image</a>
         </div>
     </div>
 
     <div class="row">
         <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Tech Input</a>
+            <a ng-click="model.create('youtube')">YouTube</a>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Link</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Button</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="age.html">Image</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="utube.html">YouTube</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Data Table</a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-10 col-sm-11 navbar-brand">
-            <a href="st.html">Repeater</a>
-        </div>
-    </div>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container-fluid">
         <div class="navbar-text pull-right">
-            <a href="../user/profile.view.client.html">
+            <a href="#/user/{{model.userId}}">
                 <span class="glyphicon glyphicon-user"></span>
             </a>
         </div>

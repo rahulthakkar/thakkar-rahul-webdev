@@ -2,7 +2,8 @@
     angular
         .module("WebAppMaker")
         .controller("WidgetListController", widgetListController)
-        .controller("WidgetEditController", widgetEditController);
+        .controller("WidgetEditController", widgetEditController)
+        .controller("WidgetNewController", widgetNewController);
 
     function widgetListController($sce, $routeParams, WidgetService) {
         var vm = this;
@@ -73,6 +74,33 @@
         }
         function getEditorTemplateUrl(type) {
             return 'views/widget/editors/widget-'+type.toLowerCase()+'-editor.view.client.html';
+        }
+    }
+
+
+    function widgetNewController($routeParams, $location, WidgetService) {
+        var vm = this;
+        vm.userId = $routeParams.uid;
+        vm.websiteId = $routeParams.wid;
+        vm.pageId = $routeParams.pid;
+
+        // event handlers
+        vm.create = create;
+
+
+        function init() {
+        }
+        init();
+
+        function create(widgetType) {
+            var widget = new Object();
+            widget.widgetType = widgetType.toUpperCase();
+            widget = WidgetService.createWidget(vm.pageId, widget);
+            if(widget) {
+                $location.url("/user/"+vm.userId+"/website/"+vm.widgetId+"/page/"+vm.pageId+"/widget/"+widget._id);
+            } else {
+                vm.error = "Unable to delete the widget";
+            }
         }
     }
 })();
