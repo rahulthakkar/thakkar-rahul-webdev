@@ -18,20 +18,29 @@
     function websiteEditController($routeParams, $location ,WebsiteService) {
         var vm = this;
         vm.userId = $routeParams.uid;
-        vm.wid = $routeParams.wid;
+        vm.websiteId = $routeParams.wid;
 
         // event handlers
         vm.update = update;
+        vm.deleteWebsite = deleteWebsite;
 
         function init() {
             vm.websites = WebsiteService.findWebsitesByUser(vm.userId);
-            vm.website = WebsiteService.findWebsiteById(vm.wid);
+            vm.website = WebsiteService.findWebsiteById(vm.websiteId);
         }
         init();
 
+        function deleteWebsite() {
+            var hasDeleted = WebsiteService.deleteWebsite(vm.websiteId);
+            if(!hasDeleted) {
+                vm.error = "Unable to delete the page";
+            } else {
+                $location.url("/user/"+vm.userId+"/website/");
+            }
+        }
 
         function update(updatedWebsite) {
-            var website = WebsiteService.updateWebsite(vm.wid, updatedWebsite);
+            var website = WebsiteService.updateWebsite(vm.websiteId, updatedWebsite);
             if(website == null) {
                 vm.error = "Unable to update the website";
             } else {

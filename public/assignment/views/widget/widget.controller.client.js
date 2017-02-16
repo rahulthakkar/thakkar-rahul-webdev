@@ -60,7 +60,7 @@
             if(!hasDeleted) {
                 vm.error = "Unable to delete the widget";
             } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.widgetId+"/page/"+vm.pageId+"/widget");
+                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
             }
         }
 
@@ -69,7 +69,7 @@
             if(widget == null) {
                 vm.error = "Unable to update the widget";
             } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.widgetId+"/page/"+vm.pageId+"/widget");
+                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
             }
         }
         function getEditorTemplateUrl(type) {
@@ -97,7 +97,7 @@
             widget.widgetType = widgetType.toUpperCase();
             widget = WidgetService.createWidget(vm.pageId, widget);
             if(widget) {
-                $location.url("/user/"+vm.userId+"/website/"+vm.widgetId+"/page/"+vm.pageId+"/widget/"+widget._id);
+                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget/"+widget._id);
             } else {
                 vm.error = "Unable to delete the widget";
             }

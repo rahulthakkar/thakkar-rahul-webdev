@@ -31,7 +31,7 @@
         function findWebsitesByUser(userId) {
             var sites = [];
             for(var w in websites) {
-                if(websites[w].developerId === userId) {
+                if(websites[w].developerId == userId) {
                     sites.push(websites[w]);
                 }
             }
@@ -62,8 +62,10 @@
             for(var w in websites) {
                 if(websites[w]._id == websiteId) {
                     websites.splice(w, 1);
+                    return true;
                 }
             }
+            return false;
         }
 
     }

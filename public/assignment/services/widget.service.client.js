@@ -36,7 +36,7 @@
         function findWidgetsByPageId(pageId) {
             var wgets = [];
             for(var w in widgets) {
-                if(widgets[w].pageId === pageId) {
+                if(widgets[w].pageId == pageId) {
                     wgets.push(widgets[w]);
                 }
             }
@@ -68,7 +68,7 @@
         
         function deleteWidget(widgetId) {
             for(var w in widgets) {
-                if(widgets[w]._id === widgetId) {
+                if(widgets[w]._id == widgetId) {
                     widgets.splice(w, 1);
                     return true;
                 }
