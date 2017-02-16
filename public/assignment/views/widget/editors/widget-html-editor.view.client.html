@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <label for="name">Name</label>
+    <input ng-model="model.widget.name"
+           id="name"
+           class="form-control"
+           placeholder="Widget Name"/>
+
+    <label for="text">HTML</label>
+    <textarea ng-model="model.widget.text"
+           id="text"
+           class="form-control"
+           rows="6"
+           placeholder="Widget HTML"></textarea><br/>
+
+    <a ng-click="model.deleteWidget(model.widget)" class="btn btn-danger btn-block">Delete</a>
+</div>
