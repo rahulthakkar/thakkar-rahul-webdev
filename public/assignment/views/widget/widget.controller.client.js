@@ -15,9 +15,14 @@
         vm.getYouTubeEmbedUrl = getYouTubeEmbedUrl;
         vm.getTrustedHtml = getTrustedHtml;
         vm.getWidgetTemplateUrl = getWidgetTemplateUrl;
+        vm.updateIndex = updateIndex;
 
         function init() {
-            vm.widgets = WidgetService.findWidgetsByPageId(vm.pageId);
+            WidgetService
+                .findAllWidgetsForPage(vm.pageId)
+                .success(function (widgets) {
+                    vm.widgets = widgets;
+                });
         }
         init();
 
@@ -36,6 +41,13 @@
             var url = "https://www.youtube.com/embed/"+id;
             return $sce.trustAsResourceUrl(url);
         }
+
+        function updateIndex(initial, final) {
+            WidgetService
+                .updateIndex(vm.pageId, initial, final)
+                .success()
+                .error();
+        }
     }
 
     function widgetEditController($routeParams, $location ,WidgetService) {
@@ -51,29 +63,42 @@
         vm.deleteWidget = deleteWidget;
 
         function init() {
-            vm.widget = WidgetService.findWidgetById(vm.widgetId);
+            WidgetService
+                .findWidgetById(vm.widgetId)
+                .success(function (widget) {
+                    vm.widget = widget;
+                });
         }
         init();
 
         function deleteWidget() {
-            var hasDeleted = WidgetService.deleteWidget(vm.widgetId);
-            if(!hasDeleted) {
-                vm.error = "Unable to delete the widget";
-            } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
-            }
+            WidgetService
+                .deleteWidget(vm.widgetId)
+                .success(function () {
+                    $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
+                })
+                .error(function () {
+                    vm.error = "Unable to delete the widget";
+                });
         }
 
         function update(updatedWidget) {
-            var widget = WidgetService.updateWidget(vm.widgetId, updatedWidget);
-            if(widget == null) {
-                vm.error = "Unable to update the widget";
-            } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
-            }
+            WidgetService
+                .updateWidget(vm.widgetId, updatedWidget)
+                .success(function (widget) {
+                    if(widget == null) {
+                        vm.error = "Unable to update the widget";
+                    } else {
+                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update the widget";
+                });
         }
         function getEditorTemplateUrl(type) {
-            return 'views/widget/editors/widget-'+type.toLowerCase()+'-editor.view.client.html';
+            var widgetType = type.toLowerCase();
+            return 'views/widget/editors/widget-'+widgetType+'-editor.view.client.html';
         }
     }
 
@@ -95,12 +120,15 @@
         function create(widgetType) {
             var widget = new Object();
             widget.widgetType = widgetType.toUpperCase();
-            widget = WidgetService.createWidget(vm.pageId, widget);
-            if(widget) {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget/"+widget._id);
-            } else {
-                vm.error = "Unable to delete the widget";
-            }
+            WidgetService
+                .createWidget(vm.pageId, widget)
+                .success(function (widget) {
+                    if(widget) {
+                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget/"+widget._id);
+                    } else {
+                        vm.error = "Unable to delete the widget";
+                    }
+                });
         }
     }
 })();

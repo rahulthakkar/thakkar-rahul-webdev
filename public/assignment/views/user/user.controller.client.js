@@ -16,12 +16,14 @@
         init();
 
         function login(user) {
-            var user = UserService.findUserByCredentials(user.username, user.password);
-            if(user) {
-                $location.url("/user/"+user._id);
-            } else {
-                vm.error = "User not found";
-            }
+            var promise = UserService.findUserByCredentials(user.username, user.password);
+            promise.success(function(user){
+                if(user) {
+                    $location.url("/user/"+user._id);
+                } else {
+                    vm.error = "User not found";
+                }
+            });
         }
     }
 
@@ -33,19 +35,27 @@
         vm.update = update;
 
         function init() {
-            var user = UserService.findUserById(userId);
-            vm.user = user;
+            var promise = UserService.findUserById(userId);
+            promise.success(function(user){
+                vm.user = user;
+            });
         }
         init();
 
         function update(newUser) {
-            var user = UserService.updateUser(userId, newUser);
-            if(user == null) {
-                vm.error = "Unable to update user";
-            } else {
-                vm.message = "User successfully updated"
-            }
-        };
+            var promise = UserService.updateUser(userId, newUser);
+            promise
+                .success(function (user) {
+                    if (user == null) {
+                      vm.error = "Unable to update user";
+                    } else {
+                        vm.message = "User successfully updated"
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update user";
+                });
+        }
     }
 
     function registerController($location, UserService) {
@@ -60,15 +70,18 @@
 
         function register(newUser) {
             if(newUser.password === newUser.password2) {
-                var user = UserService.createUser(newUser);
-                if (user) {
-                    $location.url("/user/" + user._id);
-                } else {
-                    vm.error = "Unable to register user";
-                }
+                UserService
+                    .createUser(newUser)
+                    .success(function (user) {
+                        $location.url("/user/" + user._id);
+                    })
+                    .error(function (err) {
+                        vm.error = "Unable to register user";
+                    });
+
             } else {
-                vm.error = "Unable to register user";
+                vm.error = "Passwords are not same";
             }
-        };
+        }
     }
 })();

@@ -15,7 +15,11 @@
 
 
         function init() {
-            vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
+            PageService
+                .findAllPagesForWebsite(vm.websiteId)
+                .success(function (pages) {
+                    vm.pages = pages;
+                });
         }
         init();
 
@@ -32,27 +36,44 @@
         vm.deletePage = deletePage;
 
         function init() {
-            vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
-            vm.page = PageService.findPageById(vm.pageId);
+            PageService
+                .findAllPagesForWebsite(vm.websiteId)
+                .success(function (pages) {
+                    vm.pages = pages;
+                });
+
+            PageService
+                .findPageById(vm.pageId)
+                .success(function (page) {
+                    vm.page = page;
+                });
         }
         init();
 
         function deletePage() {
-            var hasDeleted = PageService.deletePage(vm.pageId);
-            if(!hasDeleted) {
-                vm.error = "Unable to delete the page";
-            } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
-            }
+            PageService
+                .deletePage(vm.pageId)
+                .success(function () {
+                    $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                })
+                .error(function () {
+                    vm.error = "Unable to delete the page";
+                });
         }
 
         function update(updatedPage) {
-            var page = PageService.updatePage(vm.pageId, updatedPage);
-            if(page == null) {
-                vm.error = "Unable to update the page";
-            } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
-            }
+            PageService
+                .updatePage(vm.pageId, updatedPage)
+                .success(function (page) {
+                    if(page == null) {
+                        vm.error = "Unable to update the page";
+                    } else {
+                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update the page";
+                });
         }
 
 
@@ -68,17 +89,24 @@
 
 
         function init() {
-            vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
+            PageService
+                .findAllPagesForWebsite(vm.websiteId)
+                .success(function (pages) {
+                    vm.pages = pages;
+                });
         }
         init();
 
         function create(newPage) {
-            var hasCreated = PageService.createPage(vm.websiteId, newPage);
-            if(!hasCreated) {
-                vm.error = "Unable to create new page";
-            } else {
-                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
-            }
+            PageService
+                .createPage(vm.websiteId, newPage)
+                .success(function (page) {
+                    if (page == null) {
+                        vm.error = "Unable to create new page";
+                    } else {
+                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                    }
+                });
         }
     }
 })();

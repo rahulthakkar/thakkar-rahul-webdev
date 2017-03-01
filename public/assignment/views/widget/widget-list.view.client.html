@@ -18,15 +18,17 @@
 
 
 <div class="container-fluid">
-    <div ng-repeat="widget in model.widgets">
-        <div class="jga-toolbar">
-            <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{widget._id}}">
-                <span class="glyphicon glyphicon-cog"></span>
-            </a>
-            <span class="glyphicon glyphicon-align-justify"></span>
+    <wbdv-sortable update-index="model.updateIndex(initial, final)">
+        <div ng-repeat="widget in model.widgets">
+            <div class="jga-toolbar">
+                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{widget._id}}">
+                    <span class="glyphicon glyphicon-cog"></span>
+                </a>
+                <span class="glyphicon glyphicon-align-justify"></span>
+            </div>
+            <ng-include src="model.getWidgetTemplateUrl(widget.widgetType)"></ng-include>
         </div>
-        <ng-include src="model.getWidgetTemplateUrl(widget.widgetType)"></ng-include>
-    </div>
+    </wbdv-sortable>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
