@@ -44,9 +44,7 @@
 
         function updateIndex(initial, final) {
             WidgetService
-                .updateIndex(vm.pageId, initial, final)
-                .success()
-                .error();
+                .updateIndex(vm.pageId, initial, final);
         }
     }
 
@@ -67,6 +65,7 @@
                 .findWidgetById(vm.widgetId)
                 .success(function (widget) {
                     vm.widget = widget;
+                    console.log(widget);
                 });
         }
         init();
@@ -82,7 +81,15 @@
                 });
         }
 
+        function isEmpty(widget) {
+            return widget.size==null && widget.text==null && widget.width==null && widget.url==null;
+        }
+
         function update(updatedWidget) {
+            if(isEmpty(updatedWidget)){
+                deleteWidget();
+            }
+
             WidgetService
                 .updateWidget(vm.widgetId, updatedWidget)
                 .success(function (widget) {
@@ -96,6 +103,7 @@
                     vm.error = "Unable to update the widget";
                 });
         }
+
         function getEditorTemplateUrl(type) {
             var widgetType = type.toLowerCase();
             return 'views/widget/editors/widget-'+widgetType+'-editor.view.client.html';

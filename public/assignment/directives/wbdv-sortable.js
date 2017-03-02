@@ -2,6 +2,7 @@
     angular
         .module('WebAppMaker')
         .directive('wbdvSortable', sortableDir);
+        //.direction('uploadImage', ['$arg', uploadImage]);
 
     function sortableDir() {
         function linkFunc(scope, element, attributes) {
@@ -24,6 +25,21 @@
             link: linkFunc
         };
     }
+
+    /*function uploadImage($arg) {
+        function linkFunc(scope, element, attributes) {
+            element.bind('change', function () {
+                $arg(attributes.uploadImage)
+                    .assign(scope, element[0].files)
+                scope.$apply();
+            })
+        }
+
+        return {
+            restrict: 'A',
+            link: linkFunc
+        }
+    }*/
 })();
 
 

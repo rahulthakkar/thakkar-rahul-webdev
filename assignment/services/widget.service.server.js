@@ -1,10 +1,15 @@
 module.exports = function (app) {
+    var multer = require('multer'); // npm install multer --save
+    var upload = multer({ dest: __dirname+'/../../public/uploads' });
+
     app.post("/api/page/:pageId/widget", createWidget);
     app.get("/api/page/:pageId/widget", findAllWidgetsForPage);
     app.get("/api/widget/:widgetId", findWidgetById);
     app.put("/api/widget/:widgetId", updateWidget);
     app.delete("/api/widget/:widgetId", deleteWidget);
     app.put("/api/page/:pageId/widget", updateIndex);
+    app.post("/api/upload", upload.single('myFile'), uploadFile);
+
 
 
     var widgets = [
@@ -90,8 +95,73 @@ module.exports = function (app) {
         if(initialIndex && finalIndex && pageId) {
             initialIndex = parseInt(initialIndex);
             finalIndex = parseInt(finalIndex);
+            if(finalIndex != initialIndex) {
+                var initialWidIndex = -1;
+                var finalWidIndex = -1;
+                var pageIndex = 0;
+                for(w in widgets) {
+                    if (pageId == widgets[w].pageId) {
+                        if(pageIndex == initialIndex){
+                            initialWidIndex = w;
+                        } else if(pageIndex == finalIndex){
+                            finalWidIndex = w;
+                        }
+                        pageIndex++;
+                    }
+                }
+                var item = widgets[initialWidIndex];
+                var lastIndex = initialWidIndex;
+                var incr = 1;
+                if (finalWidIndex < initialWidIndex) {
+                    incr = -1;
+                }
+                var i = parseInt(initialWidIndex) + incr;
+                while(i!=finalWidIndex){
+                    if (widgets[i].pageId == pageId){
+                        widgets[lastIndex] = widgets[i];
+                        lastIndex = i;
+                    }
+                    i+=incr;
+                }
+                widgets[lastIndex] = widgets[finalWidIndex];
+                widgets[finalWidIndex] = item;
+            }
+            res.sendStatus(200);
+            return;
+        }
+        res.sendStatus(404);
+    }
+
+    function uploadFile(req, res) {
+
+        var widgetId = req.body.widgetId;
+        var width = req.body.width;
+        var myFile = req.file;
+        var userId = req.body.userId;
+        var websiteId = req.body.websiteId;
+        var pageId = req.body.pageId;
+
+        if (myFile) {
+            var originalname = myFile.originalname; // file name on user's computer
+            var filename = myFile.filename;     // new file name in upload folder
+            //var path          = myFile.path;         // full path of uploaded file
+            //var destination   = myFile.destination;  // folder where file is saved to
+            //var size          = myFile.size;
+            //var mimetype      = myFile.mimetype;
+
+            var widget = widgets.find(function (w) {
+                return w._id == widgetId;
+            });
+
+            widget.url = '/uploads/' + filename;
+            widget.width = width;
+            widget.originalname = originalname;
 
         }
+        var callbackUrl   = "/assignment/#/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/";
+
+        res.redirect(callbackUrl);
+
     }
 
 };

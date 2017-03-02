@@ -10,7 +10,8 @@
             "findAllWidgetsForPage": findAllWidgetsForPage,
             "findWidgetById": findWidgetById,
             "updateWidget": updateWidget,
-            "deleteWidget": deleteWidget
+            "deleteWidget": deleteWidget,
+            "updateIndex": updateIndex
         };
         return api;
 
@@ -38,5 +39,6 @@
         function updateIndex(pageId, intialIndex, finalIndex) {
             return $http.put("/api/page/"+pageId+"/widget?initial="+intialIndex+"&final="+finalIndex);
         }
+
     }
 })();
