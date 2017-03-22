@@ -178,7 +178,7 @@
 
         function selectPhoto(photo){
             var url = "https://farm" + photo.farm + ".staticflickr.com/" + photo.server;
-            url += "/" + photo.id + "_" + photo.secret + "_h.jpg";
+            url += "/" + photo.id + "_" + photo.secret + "_b.jpg";
             WidgetService
                 .findWidgetById(vm.widgetId)
                 .then(function (widget) {
