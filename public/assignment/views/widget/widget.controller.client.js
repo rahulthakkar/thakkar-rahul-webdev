@@ -24,7 +24,6 @@
                 .success(function (widgets) {
                     vm.widgets = widgets;
                 });
-            console.log(vm.widgets);
         }
         init();
 
@@ -41,9 +40,11 @@
         }
 
         function getYouTubeEmbedUrl(widgetUrl) {
+            console.log(widgetUrl);
             var urlParts = widgetUrl.split('/');
             var id = urlParts[urlParts.length - 1];
             var url = "https://www.youtube.com/embed/"+id;
+            console.log(url);
             return $sce.trustAsResourceUrl(url);
         }
 
@@ -132,7 +133,6 @@
         init();
 
         function create(widgetType) {
-            console.log(widgetType);
             var widget = new Object();
             widget.type = widgetType.toUpperCase();
             WidgetService
@@ -179,7 +179,6 @@
         function selectPhoto(photo){
             var url = "https://farm" + photo.farm + ".staticflickr.com/" + photo.server;
             url += "/" + photo.id + "_" + photo.secret + "_h.jpg";
-            console.log(url);
             WidgetService
                 .findWidgetById(vm.widgetId)
                 .then(function (widget) {
