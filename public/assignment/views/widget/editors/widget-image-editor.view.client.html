@@ -23,6 +23,13 @@
                value="100%"
                min="0" max="100"/>
 
+        <label for="url">URL</label>
+        <input ng-model="model.widget.url"
+               id="url"
+               name="url"
+               class="form-control"
+               placeholder="Image URL"/>
+
         <input  name="userId"    value="{{model.userId}}"   style="display: none"/>
         <input  name="websiteId" value="{{model.websiteId}}"   style="display: none"/>
         <input  name="pageId"    value="{{model.pageId}}"   style="display: none"/>
@@ -31,9 +38,11 @@
 
         <label for="fileInput">File input</label>
         <input type="file" id="fileInput" name="myFile" class="form-control" onchange="file_path_display.innerHTML=myFile.value">
-        <div id="file_path_display" ng-show="model.widget.originalname">
-            {{model.widget.originalname}}
+        <div id="file_path_display" ng-show="model.widget.url">
+            {{model.widget.url}}
         </div>
+        <a class="btn btn-primary btn-block"
+           href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widgetId}}/flickr">Search Image</a>
         <button type="submit" class="btn btn-primary  btn-block">Upload Image</button>
 
         <a ng-click="model.deleteWidget(model.widget)" class="btn btn-danger btn-block">Delete</a>

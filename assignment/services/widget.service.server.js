@@ -1,4 +1,4 @@
-module.exports = function (app) {
+module.exports = function (app, model) {
     var multer = require('multer'); // npm install multer --save
     var upload = multer({ dest: __dirname+'/../../public/uploads' });
 
@@ -12,7 +12,7 @@ module.exports = function (app) {
 
 
 
-    var widgets = [
+    /*var widgets = [
         { "_id": "123", "widgetType": "HEADING", "pageId": "321", "size": 2, "text": "GIZMODO"},
         { "_id": "234", "widgetType": "HEADING", "pageId": "321", "size": 4, "text": "Lorem ipsum"},
         { "_id": "345", "widgetType": "IMAGE", "pageId": "321", "width": "100%",
@@ -22,69 +22,76 @@ module.exports = function (app) {
         { "_id": "678", "widgetType": "YOUTUBE", "pageId": "321", "width": "100%",
             "url": "https://youtu.be/AM2Ivdi9c4E" },
         { "_id": "789", "widgetType": "HTML", "pageId": "321", "text": "<p>Lorem ipsum</p>"}
-    ];
+    ];*/
 
     function createWidget(req, res) {
         var pageId = req.params.pageId;
-        var widget = req.body;
-        widget.pageId = pageId;
-        widget._id = (new Date()).getTime();
-        widgets.push(widget);
-        res.json(widget);
+        var newWidget = req.body;
+
+        model.widgetModel.createWidget(pageId, newWidget)
+            .then(function(widget){
+                    model.pageModel.findPageById(pageId)
+                        .then(function (page) {
+                            page.widgets.push(widget._id);
+                            model.pageModel.updatePage(pageId, page)
+                                .then(function (page) {
+                                    res.status(200).send(widget);
+                                }, function (err) {
+                                    res.sendStatus(404).send(err);
+                                })
+                        }, function (err) {
+                            res.sendStatus(404).send(err);
+                        })
+                },
+                function(err){
+                    res.sendStatus(404).send(err);
+                });
     }
 
     function updateWidget(req, res) {
         var widgetId = req.params.widgetId;
-        var widget = req.body;
-        for(var w in widgets) {
-            if(widgets[w]._id == widgetId) {
-                widgets[w].text = widget.text;
-                widgets[w].name = widget.name;
-                widgets[w].size = widget.size;
-                widgets[w].width = widget.width;
-                widgets[w].url = widget.url;
-                res.json(widgets[w]);
-                return;
-            }
-        }
-        res.sendStatus(404);
+        var newWidget = req.body;
+        model.widgetModel.updateWidget(widgetId, newWidget)
+            .then(function(widget){
+                    res.status(200).send(widget);
+                },
+                function(err){
+                    res.status(404).send(err);
+                });
     }
 
     function findWidgetById(req, res) {
         var widgetId = req.params.widgetId;
-        var widget = widgets.find(function (w) {
-            return w._id == widgetId;
-        });
-
-        if(widget) {
-            res.json(widget);
-        } else {
-            res.sendStatus(404);
-        }
+        model.widgetModel.findWidgetById(widgetId)
+            .then(function(widget){
+                    res.status(200).send(widget);
+                },
+                function(err){
+                    res.status(404).send(err);
+                });
     }
 
     function deleteWidget(req, res) {
         var widgetId = req.params.widgetId;
-        for(var w in widgets) {
-            if(widgets[w]._id == widgetId) {
-                widgets.splice(w, 1);
-                res.sendStatus(200);
-                return;
-            }
-        }
-        res.sendStatus(404);
+        model.widgetModel.deleteWidget(widgetId)
+            .then(function(result){
+                    res.status(200).send(result);
+                },
+                function(err){
+                    res.status(404).send(err);
+                });
     }
 
     function findAllWidgetsForPage(req, res) {
         var pageId = req.params.pageId;
 
-        var wgets = [];
-        for(var w in widgets) {
-            if(widgets[w].pageId == pageId) {
-                wgets.push(widgets[w]);
-            }
-        }
-        res.json(wgets);
+        model.widgetModel.findAllWidgetsForPage(pageId)
+            .then(function(widgets){
+                    res.status(200).send(widgets);
+                },
+                function(err){
+                    res.status(404).send(err);
+                });
     }
 
     function updateIndex(req, res) {
@@ -140,23 +147,18 @@ module.exports = function (app) {
         var userId = req.body.userId;
         var websiteId = req.body.websiteId;
         var pageId = req.body.pageId;
+        var origin = req.headers.origin;
 
         if (myFile) {
-            var originalname = myFile.originalname; // file name on user's computer
             var filename = myFile.filename;     // new file name in upload folder
-            //var path          = myFile.path;         // full path of uploaded file
-            //var destination   = myFile.destination;  // folder where file is saved to
-            //var size          = myFile.size;
-            //var mimetype      = myFile.mimetype;
-
-            var widget = widgets.find(function (w) {
-                return w._id == widgetId;
-            });
-
-            widget.url = '/uploads/' + filename;
-            widget.width = width;
-            widget.originalname = originalname;
-
+            model.widgetModel.findWidgetById(widgetId)
+                .then(function(widget){
+                        widget.url = '/uploads/' + filename;
+                        widget.width = width;
+                        model.widgetModel.updateWidget(widgetId, widget).then(
+                            function(widget) {
+                            });
+                    });
         }
         var callbackUrl   = "/assignment/#/user/"+userId+"/website/"+websiteId+"/page/"+pageId+"/widget/";
 

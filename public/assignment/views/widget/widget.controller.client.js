@@ -3,7 +3,8 @@
         .module("WebAppMaker")
         .controller("WidgetListController", widgetListController)
         .controller("WidgetEditController", widgetEditController)
-        .controller("WidgetNewController", widgetNewController);
+        .controller("WidgetNewController", widgetNewController)
+        .controller("WidgetFlickrSearchController", widgetFlickrSearchController);
 
     function widgetListController($sce, $routeParams, WidgetService) {
         var vm = this;
@@ -23,12 +24,16 @@
                 .success(function (widgets) {
                     vm.widgets = widgets;
                 });
+            console.log(vm.widgets);
         }
         init();
 
 
-        function getWidgetTemplateUrl(widgetType) {
-            return 'views/widget/widget-'+widgetType.toLowerCase()+'.view.client.html';
+        function getWidgetTemplateUrl(type) {
+            //console.log("widgetListController "+type);
+            type = type.toLowerCase();
+            //console.log("widgetListController" +type);
+            return 'views/widget/widget-'+type+'.view.client.html';
         }
 
         function getTrustedHtml(html) {
@@ -65,7 +70,6 @@
                 .findWidgetById(vm.widgetId)
                 .success(function (widget) {
                     vm.widget = widget;
-                    console.log(widget);
                 });
         }
         init();
@@ -105,8 +109,10 @@
         }
 
         function getEditorTemplateUrl(type) {
-            var widgetType = type.toLowerCase();
-            return 'views/widget/editors/widget-'+widgetType+'-editor.view.client.html';
+            //console.log("widgetEditController "+type);
+            type = type.toLowerCase();
+            //console.log("widgetEditController "+type);
+            return 'views/widget/editors/widget-'+type+'-editor.view.client.html';
         }
     }
 
@@ -126,17 +132,66 @@
         init();
 
         function create(widgetType) {
+            console.log(widgetType);
             var widget = new Object();
-            widget.widgetType = widgetType.toUpperCase();
+            widget.type = widgetType.toUpperCase();
             WidgetService
                 .createWidget(vm.pageId, widget)
                 .success(function (widget) {
                     if(widget) {
                         $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget/"+widget._id);
                     } else {
-                        vm.error = "Unable to delete the widget";
+                        vm.error = "Unable to create the widget";
                     }
                 });
+        }
+    }
+
+    function widgetFlickrSearchController($routeParams, $location, WidgetService, FlickrService) {
+        var vm = this;
+        vm.searchPhotos = searchPhotos
+        vm.selectPhoto = selectPhoto;
+
+        vm.userId = $routeParams.uid;
+        vm.websiteId = $routeParams.wid;
+        vm.pageId = $routeParams.pid;
+        vm.widgetId = $routeParams.wgid;
+
+        function init() {
+            //console.log("init flickr")
+        }
+        init();
+
+
+        function searchPhotos(searchTerm) {
+            //console.log("searchTerm "+searchTerm);
+
+            FlickrService
+                .searchPhotos(searchTerm)
+                .then(function(response) {
+                    data = response.data.replace("jsonFlickrApi(","");
+                    data = data.substring(0,data.length - 1);
+                    data = JSON.parse(data);
+                    vm.photos = data.photos;
+                });
+        }
+
+        function selectPhoto(photo){
+            var url = "https://farm" + photo.farm + ".staticflickr.com/" + photo.server;
+            url += "/" + photo.id + "_" + photo.secret + "_h.jpg";
+            console.log(url);
+            WidgetService
+                .findWidgetById(vm.widgetId)
+                .then(function (widget) {
+                    widget.url = url;
+                    return WidgetService.updateWidget(vm.widgetId, widget);
+                },function (err) {
+                    vm.error = err;
+                }).then(function (result) {
+                $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget/"+ vm.widgetId);
+            }, function (err) {
+                vm.error = err;
+            });
         }
     }
 })();

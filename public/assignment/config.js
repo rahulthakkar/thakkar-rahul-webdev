@@ -7,15 +7,10 @@
 
         // $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
         // $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
-        $httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
-        $httpProvider.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
+        //$httpProvider.defaults.headers.post['Content-Type'] = 'application/json;charset=utf-8';
+        //$httpProvider.defaults.headers.put['Content-Type'] = 'application/json;charset=utf-8';
 
         $routeProvider
-            .when("/", {
-                templateUrl: "views/user/login.view.client.html",
-                controller: "LoginController",
-                controllerAs: "model"
-            })
             .when("/login",{
                 templateUrl: "views/user/login.view.client.html",
                 controller: "LoginController",
@@ -76,5 +71,11 @@
                 controller: "WidgetEditController",
                 controllerAs: "model"
             })
+            .when("/user/:uid/website/:wid/page/:pid/widget/:wgid/flickr",{
+                templateUrl: 'views/widget/editors/widget-flickr-search.view.client.html',
+                controller: "WidgetFlickrSearchController",
+                controllerAs: "model"
+            })
+            .otherwise({redirectTo : '/login'});
     }
 })();
