@@ -98,6 +98,18 @@ module.exports = function (app, model) {
         var initialIndex = req.query.initial;
         var finalIndex = req.query.final;
         var pageId = req.params.pageId;
+        model.widgetModel.updateIndices(pageId, initialIndex, finalIndex)
+            .then(function(result){
+                res.status(200).send(result);
+            }, function(err) {
+               res.status(404).send(err);
+            });
+    }
+
+    /*function updateIndex(req, res) {
+        var initialIndex = req.query.initial;
+        var finalIndex = req.query.final;
+        var pageId = req.params.pageId;
 
         if(initialIndex && finalIndex && pageId) {
             initialIndex = parseInt(initialIndex);
@@ -137,7 +149,7 @@ module.exports = function (app, model) {
             return;
         }
         res.sendStatus(404);
-    }
+    }*/
 
     function uploadFile(req, res) {
 

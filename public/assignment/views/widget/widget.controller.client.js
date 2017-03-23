@@ -40,11 +40,11 @@
         }
 
         function getYouTubeEmbedUrl(widgetUrl) {
-            console.log(widgetUrl);
+            //console.log(widgetUrl);
             var urlParts = widgetUrl.split('/');
             var id = urlParts[urlParts.length - 1];
             var url = "https://www.youtube.com/embed/"+id;
-            console.log(url);
+            //console.log(url);
             return $sce.trustAsResourceUrl(url);
         }
 
@@ -101,6 +101,7 @@
                     if(widget == null) {
                         vm.error = "Unable to update the widget";
                     } else {
+
                         $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page/"+vm.pageId+"/widget");
                     }
                 })

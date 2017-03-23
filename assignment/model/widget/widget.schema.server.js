@@ -11,6 +11,7 @@ var widgetSchema = mongoose.Schema({
     height : String,
     rows : Number,
     size : Number,
+    index: Number,
     class : String,
     icon : String,
     deletable : Boolean,
