@@ -10,7 +10,8 @@ module.exports = function(app) {
         "findUserByUsername": findUserByUsername,
         "findUserByCredentials": findUserByCredentials,
         "updateUser": updateUser,
-        "deleteUser": deleteUser
+        "deleteUser": deleteUser,
+        "findUserByFacebookId": findUserByFacebookId
     };
     return api;
 
@@ -91,5 +92,9 @@ module.exports = function(app) {
                 }
             });
         return deferred.promise;
+    }
+
+    function findUserByFacebookId(facebookId) {
+        return userModel.findOne({'facebook.id': facebookId});
     }
 };
