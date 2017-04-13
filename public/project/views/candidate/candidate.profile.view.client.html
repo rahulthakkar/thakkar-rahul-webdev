@@ -1,0 +1,65 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-text pull-right">
+            <a ng-click="model.update(model.user)">
+                <span class="glyphicon glyphicon-ok"></span>
+            </a>
+        </div>
+
+        <div class="navbar-header navbar-brand">Profile</div>
+    </div>
+</nav>
+
+<div class="alert alert-danger" ng-show="model.error">
+    {{model.error}}
+</div>
+
+<div class="alert alert-success" ng-show="model.message">
+    {{model.message}}
+</div>
+
+<div class="container-fluid">
+
+    <label for="username">Username</label>
+    <input ng-model="model.user.username"
+           id="username"
+           class="form-control"
+           value="rahul1"
+           placeholder="rahul1"/>
+
+    <label for="email">Email</label>
+    <input ng-model="model.user.email"
+           id="email"
+           type="email"
+           class="form-control"
+           value="rahul1@ccs.neu.edu"
+           placeholder="rahul1@ccs.neu.edu"/>
+
+    <label for="first">First Name</label>
+    <input ng-model="model.user.firstName"
+           id="first"
+           class="form-control"
+           value="Rahul"
+           placeholder="Rahul"/>
+
+    <label for="last">Last Name</label>
+    <input ng-model="model.user.lastName"
+           id="last"
+           class="form-control"
+           value="Thakkar"
+           placeholder="Thakkar"/>
+
+    <a href="#/user/{{model.user._id}}/website" class="btn btn-primary btn-block">Websites</a>
+    <a ng-click="model.update(model.user)" class="btn btn-success btn-block">Update</a>
+    <a ng-click="model.logout()" class="btn btn-danger btn-block">Logout</a>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text pull-right">
+            <a href="#/user/{{model.user._id}}">
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </div>
+    </div>
+</nav>

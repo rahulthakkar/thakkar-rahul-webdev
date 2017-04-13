@@ -1,0 +1,27 @@
+<div class="container-fluid">
+    <h1>Login</h1>
+
+    <div ng-show="model.error" class="alert alert-danger" role="alert">
+        {{model.error}}
+    </div>
+
+    <input ng-model="user.username"
+           id="username"
+           class="form-control"
+           placeholder="username"/>
+
+    <input ng-model="user.password"
+           id="password"
+           class="form-control"
+           type="password"
+           placeholder="password"/>
+
+    <a ng-click="model.login(user)" class="btn btn-primary btn-block">Login</a>
+
+    <a href="/auth/facebook" class="btn btn-primary btn-block">
+        <span class="fa fa-facebook"></span>
+        Facebook
+    </a>
+
+    <a href="#register" class="btn btn-success btn-block">Register</a>
+</div>

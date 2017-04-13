@@ -1,0 +1,70 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+
+    <div class="row container-fluid">
+        <div class="col-sm-4 hidden-xs">
+            <div class="navbar-text pull-left">
+                <a href="#/user/{{model.userId}}/website/">
+                    <span class="glyphicon glyphicon-chevron-left"></span>
+                </a>
+            </div>
+
+            <div class="navbar-brand">Websites</div>
+            <div class="navbar-text pull-right">
+                <a href="#/user/{{model.userId}}/website/new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <div class="navbar-text pull-right">
+                <a ng-click="model.create(model.website)">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </a>
+            </div>
+            <div class="col-xs-10 navbar-brand">New Website</div>
+        </div>
+    </div>
+</nav>
+
+<div class="row container-fluid">
+    <div class="hidden-xs col-sm-4 wbdv-left-pane">
+        <ul class="list-group borderless">
+            <li ng-repeat="website in model.websites" class="list-group-item">
+                <a href="#/user/{{model.userId}}/website/{{website._id}}/page">{{website.name}}</a>
+                <a href="#/user/{{model.userId}}/website/{{website._id}}">
+                    <span class="glyphicon glyphicon-cog pull-right"></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 pull-right">
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input ng-model="model.website.name"
+                   id="name"
+                   class="form-control"
+                   placeholder="Name"/>
+        </div>
+        <div class="form-group">
+            <label for="desc">Description</label>
+            <textarea ng-model="model.website.description"
+                      id="desc"
+                      class="form-control"
+                      rows="6"
+                      placeholder="Description"></textarea>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid">
+        <div class="navbar-text pull-right">
+            <a href="#/user/{{model.userId}}">
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </div>
+    </div>
+</nav>

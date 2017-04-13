@@ -1,10 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="JobNowMaker">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
-    <title>Project Home Page</title>
+    <title>JobNow</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="css/styles.css" rel="stylesheet"/>
+    <link href="css/textAngular.css" rel="stylesheet"/>
+    <script
+            src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"
+            integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-route.js"></script>
+    <script src="app.js"></script>
+    <script src="config.js"></script>
+
+    <!-- directives -->
+    <!--<script src="directives/wbdv-sortable.js"></script>-->
+    <script src='js/textAngular-rangy.min.js'></script>
+    <script src='js/textAngular-sanitize.min.js'></script>
+    <script src='js/textAngular.min.js'></script>
+
+
+    <!-- Loading controllers-->
+    <script src="views/candidate/candidate.controller.client.js"></script>
+    <script src="views/company/company.controller.client.js"></script>
+    <script src="views/job/job.controller.client.js"></script>
+    <script src="views/application/application.controller.client.js"></script>
+
+    <!-- Loading services-->
+    <script src="services/application.service.client.js"></script>
+    <script src="services/candidate.service.client.js"></script>
+    <script src="services/job.service.client.js"></script>
+    <script src="services/application.service.client.js"></script>
+    <script src="services/indeed.service.client.js"></script>
+    <!--<base href="/assignment-wed">-->
 </head>
+
 <body>
-    <h1>Project Home Page</h1>
+<div ng-view></div>
 </body>
+
 </html>
