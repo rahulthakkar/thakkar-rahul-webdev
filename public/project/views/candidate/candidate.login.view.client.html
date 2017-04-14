@@ -1,27 +1,50 @@
-<div class="container-fluid">
-    <h1>Login</h1>
+<div class="container">
+    <div class="row main">
+        <div class="panel-heading">
+            <div class="panel-title text-center">
+                <h1>Job Seeker Login</h1>
+                <hr />
+            </div>
+        </div>
+        <div class="main-login main-center">
 
-    <div ng-show="model.error" class="alert alert-danger" role="alert">
-        {{model.error}}
+
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input ng-model="candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div ng-show="model.error" class="alert alert-danger" role="alert">
+                    {{model.error}}
+                </div>
+
+                <div class="form-group ">
+                    <a ng-click="model.login(candidate)" class="btn btn-primary btn-block">Login</a>
+                </div>
+                <a href="/auth/facebook" class="btn btn-primary btn-block">
+                    <span class="fa fa-facebook"></span>
+                        Facebook
+                </a>
+            <a href="/candidate/register" class="btn btn-success btn-block">Registration</a>
+
+        </div>
     </div>
-
-    <input ng-model="user.username"
-           id="username"
-           class="form-control"
-           placeholder="username"/>
-
-    <input ng-model="user.password"
-           id="password"
-           class="form-control"
-           type="password"
-           placeholder="password"/>
-
-    <a ng-click="model.login(user)" class="btn btn-primary btn-block">Login</a>
-
-    <a href="/auth/facebook" class="btn btn-primary btn-block">
-        <span class="fa fa-facebook"></span>
-        Facebook
-    </a>
-
-    <a href="#register" class="btn btn-success btn-block">Register</a>
 </div>
+
+<a class="twitter-timeline" data-width="350" data-height="1000" data-theme="light" data-link-color="#2B7BB9" href="https://twitter.com/Drawbridge">Tweets by Cristiano</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>

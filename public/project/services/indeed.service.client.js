@@ -1,6 +1,6 @@
 (function() {
     angular
-        .module("WebAppMaker")
+        .module("JobNowMaker")
         .factory('FlickrService', FlickrService);
 
     function FlickrService($http) {

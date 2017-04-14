@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module("WebAppMaker")
+        .module("JobNowMaker")
         .service("WidgetService", widgetService);
 
     function widgetService($http) {

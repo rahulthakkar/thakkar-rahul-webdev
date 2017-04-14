@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module("WebAppMaker")
+        .module("JobNowMaker")
         .factory("PageService", PageService);
 
     function PageService($http) {

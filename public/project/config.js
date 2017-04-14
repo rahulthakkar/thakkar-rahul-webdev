@@ -6,22 +6,56 @@
     function configuration($routeProvider, $locationProvider, $httpProvider) {
 
         $routeProvider
-            .when("/login",{
-                templateUrl: "views/user/login.view.client.html",
-                controller: "LoginController",
+            .when("/candidate/login",{
+                templateUrl: "views/candidate/candidate.login.view.client.html",
+                controller: "CandidateLoginController",
                 controllerAs: "model"
             })
-            .when("/register", {
-                templateUrl: "views/user/register.view.client.html",
-                controller: 'RegisterController',
+            .when("/company/login",{
+                templateUrl: "views/company/company.login.view.client.html",
+                controller: "CompanyLoginController",
+                controllerAs: "model"
+            })
+            .when("/candidate/register", {
+                templateUrl: "views/candidate/candidate.register.view.client.html",
+                controller: 'CandidateRegisterController',
                 controllerAs: 'model'
             })
-            .when("/user", {
-                templateUrl: 'views/user/templates/profile.view.client.html',
-                controller: 'profileController',
-                controllerAs: 'model',
-                resolve: { loggedin: checkLoggedin }
+            .when("/company/register", {
+                templateUrl: "views/company/company.register.view.client.html",
+                controller: 'CompanyRegisterController',
+                controllerAs: 'model'
             })
+            .when("/candidate/profile/:uid", {
+                templateUrl: 'views/candidate/candidate.profile.view.client.html',
+                controller: 'CandidateProfileController',
+                controllerAs: 'model',
+                //resolve: { loggedin: checkCandidateLoggedin }
+            })
+            .when("/company/view/:uid", {
+                templateUrl: 'views/company/company.view.view.client.html',
+                controller: 'CompanyViewController',
+                controllerAs: 'model'
+            })
+            .when("/company/profile/:uid", {
+                templateUrl: 'views/company/company.profile.view.client.html',
+                controller: 'CompanyProfileController',
+                controllerAs: 'model',
+                //resolve: { loggedin: checkCompanyLoggedin }
+            })
+            .when("/company", {
+                templateUrl: 'views/company/company.list.view.client.html',
+                controller: 'CompanyListController',
+                controllerAs: 'model',
+                //resolve: { loggedin: checkAdminLoggedin }
+            })
+            .when("/candidate", {
+                templateUrl: 'views/candidate/candidate.list.view.client.html',
+                controller: 'CandidateListController',
+                controllerAs: 'model',
+                //resolve: { loggedin: checkAdminLoggedin }
+            })
+
             .when("/user/:uid", {
                 templateUrl: "views/user/profile.view.client.html",
                 controller: 'ProfileController',
@@ -78,7 +112,7 @@
                 controller: "WidgetFlickrSearchController",
                 controllerAs: "model"
             })
-            .otherwise({redirectTo : '/login'});
+            .otherwise({redirectTo : '/candidate/login'});
     }
 
     var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {

@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module("WebAppMaker")
+        .module("JobNowMaker")
         .controller("LoginController", loginController)
         .controller("ProfileController", profileController)
         .controller("RegisterController", registerController);

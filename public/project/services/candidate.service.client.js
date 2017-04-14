@@ -1,17 +1,17 @@
 (function () {
     angular
-        .module("WebAppMaker")
-        .factory("UserService", userService);
+        .module("JobNowMaker")
+        .factory("CandidateService", candidateService);
 
-    function userService($http) {
+    function candidateService($http) {
 
         var api = {
-            "createUser": createUser,
-            "findUserById": findUserById,
-            "findUserByUsername": findUserByUsername,
-            "findUserByCredentials": findUserByCredentials,
-            "updateUser": updateUser,
-            "deleteUser": deleteUser,
+            "createCandidate": createCandidate,
+            "findCandidateById": findCandidateById,
+            "findCandidateByUsername": findCandidateByUsername,
+            "findCandidateByCredentials": findCandidateByCredentials,
+            "updateCandidate": updateCandidate,
+            "deleteCandidate": deleteCandidate,
             "login": login,
             "logout": logout,
             "register": register,
@@ -19,44 +19,48 @@
         };
         return api;
 
-        function createUser(newUser) {
-            return $http.post("/api/user/", newUser);
+        function createCandidate(newCandidate) {
+            return $http.post("/api/candidate/", newCandidate);
         }
 
-        function findUserByUsername(username) {
-            return $http.get("/api/user?username="+username);
+        function findCandidateByUsername(email) {
+            return $http.get("/api/candidate?email="+email);
         }
 
-        function findUserByCredentials(username, password) {
-            return $http.get("/api/user?username="+username+"&password="+password);
+        function findCandidateByCredentials(email, password) {
+            return $http.get("/api/candidate?email="+email+"&password="+password);
         }
 
-        function findUserById(userId) {
-            return $http.get("/api/user/"+userId);
+        function findCandidateById(candidateId) {
+            return $http.get("/api/candidate/"+candidateId);
         }
 
-        function updateUser(userId, newUser) {
-            return $http.put("/api/user/"+userId, newUser);
+        function findAllCandidates() {
+            return $http.get("/api/all/candidate");
         }
 
-        function deleteUser(userId) {
-            return $http.delete("/api/user/"+userId);
+        function updateCandidate(candidateId, newCandidate) {
+            return $http.put("/api/candidate/"+candidateId, newCandidate);
         }
 
-        function login(user) {
-            return $http.post("/api/login", user);
+        function deleteCandidate(candidateId) {
+            return $http.delete("/api/candidate/"+candidateId);
+        }
+
+        function login(candidate) {
+            return $http.post("/api/candidate/login", candidate);
         }
 
         function logout() {
-            return $http.post("/api/logout");
+            return $http.post("/api/candidate/logout");
         }
 
-        function register(user) {
-            return $http.post("/api/register", user);
+        function register(candidate) {
+            return $http.post("/api/candidate/register", candidate);
         }
 
         function checkLoggedIn() {
-            return $http.get('/api/loggedin')
+            return $http.get('/api/candidate/loggedin')
                 .then(function (response) {
                     return response.data;
                 });

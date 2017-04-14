@@ -1,103 +1,137 @@
 (function(){
     angular
-        .module("WebAppMaker")
-        .controller("WebsiteListController", websiteListController)
-        .controller("WebsiteEditController", websiteEditController)
-        .controller("WebsiteNewController", websiteNewController);
+        .module("JobNowMaker")
+        .controller("CompanyLoginController", companyLoginController)
+        .controller("CompanyProfileController", companyProfileController)
+        .controller("CompanyRegisterController", companyRegisterController)
+        .controller("CompanyListController", companyListController)
+        .controller("CompanyViewController", companyViewController);
 
-    function websiteListController($routeParams, WebsiteService) {
+    function companyLoginController($location, CompanyService, $rootScope) {
         var vm = this;
-        vm.userId = $routeParams.uid;
+
+        // event handlers
+        vm.login = login;
 
         function init() {
-            WebsiteService
-                .findAllWebsitesForUser(vm.userId)
-                .success(function (websites) {
-                    vm.websites = websites;
-                });
         }
         init();
+
+        function login(company) {
+            CompanyService.login(company)
+                .then(
+                    function(response) {
+                        var company = response.data;
+                        $rootScope.currentUser = company;
+                        $location.url("/company/profile/"+company._id);
+                    },
+                    function (response) {
+                        vm.error = 'Wrong credentials';
+                    });
+        }
     }
 
-    function websiteEditController($routeParams, $location ,WebsiteService) {
+    function companyProfileController($routeParams, CompanyService, $rootScope, $location) {
         var vm = this;
-        vm.userId = $routeParams.uid;
-        vm.websiteId = $routeParams.wid;
+        var userId = $routeParams['uid'];
 
         // event handlers
         vm.update = update;
-        vm.deleteWebsite = deleteWebsite;
+        vm.logout = logout;
+
 
         function init() {
-            WebsiteService
-                .findAllWebsitesForUser(vm.userId)
-                .success(function (websites) {
-                    vm.websites = websites;
-                });
-
-            WebsiteService
-                .findWebsiteById(vm.websiteId)
-                .success(function (website) {
-                    vm.website = website;
-                });
+            var promise = CompanyService.findCompanyById(userId);
+            promise.success(function (user) {
+                vm.user = user;
+            });
         }
+
         init();
 
-        function deleteWebsite() {
-            WebsiteService
-                .deleteWebsite(vm.websiteId)
-                .success(function () {
-                    $location.url("/user/"+vm.userId+"/website/");
-                })
-                .error(function () {
-                    vm.error = "Unable to delete the page";
-                });
-        }
-
-        function update(updatedWebsite) {
-            WebsiteService
-                .updateWebsite(vm.websiteId, updatedWebsite)
-                .success(function (website) {
-                    if (website == null) {
-                        vm.error = "Unable to update website";
+        function update(newCompany) {
+            var promise = CompanyService.updateCompany(userId, newCompany);
+            promise
+                .success(function (company) {
+                    if (company == null) {
+                        vm.error = "Unable to update company info";
                     } else {
-                        $location.url("/user/"+vm.userId+"/website");
+                        vm.message = "Company info successfully updated"
                     }
                 })
                 .error(function () {
-                    vm.error = "Unable to update website";
+                    vm.error = "Unable to update company info";
                 });
+        }
+
+        function logout() {
+            CompanyService
+                .logout()
+                .then(
+                    function (response) {
+                        $rootScope.currentUser = null;
+                        $location.url("/company/login");
+                    },
+                    function (res) {
+                        vm.error = 'Company not logged in';
+                    });
         }
     }
 
-
-    function websiteNewController($routeParams, $location, WebsiteService) {
+    function companyRegisterController($location, CompanyService, $rootScope) {
         var vm = this;
-        vm.userId = $routeParams.uid;
 
         // event handlers
-        vm.create = create;
+        vm.register = register;
 
         function init() {
-            WebsiteService
-                .findAllWebsitesForUser(vm.userId)
-                .success(function (websites) {
-                    vm.websites = websites;
-                });
         }
         init();
 
+        function register(newCompany) {
+            if(newCompany.password === newCompany.password2) {
+                CompanyService
+                    .register(newCompany)
+                    .then(
+                        function(response) {
+                            var company = response.data;
+                            $rootScope.currentUser = company;
+                            $location.url("/company/profile/"+company._id);
+                        },
+                        function (err) {
+                            vm.error = "Unable to register user";
+                        });
+            } else {
+                vm.error = "Passwords are not same";
+            }
+        }
+    }
 
-        function create(newWebsite) {
-            WebsiteService
-                .createWebsite(vm.userId, newWebsite)
-                .success(function (website) {
-                    if (website == null) {
-                        vm.error = "Unable to create new website";
-                    } else {
-                        $location.url("/user/" + vm.userId + "/website");
-                    }
+    function companyListController($routeParams, CompanyService) {
+        var vm = this;
+
+        function init() {
+            CompanyService
+                .findAllCompanys()
+                .success(function (companys) {
+                    vm.companys = companys;
                 });
         }
+
+        init();
+    }
+
+    function companyViewController($routeParams, CompanyService, $rootScope, $location) {
+        var vm = this;
+        var userId = $routeParams['uid'];
+
+        function init() {
+            var promise = CompanyService.findCompanyById(userId);
+            promise.success(function (company) {
+                vm.company = company;
+            });
+        }
+
+        init();
     }
 })();

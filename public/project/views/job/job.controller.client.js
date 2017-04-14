@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module("WebAppMaker")
+        .module("JobNowMaker")
         .controller("PageListController", pageListController)
         .controller("PageEditController", pageEditController)
         .controller("PageNewController", pageNewController);

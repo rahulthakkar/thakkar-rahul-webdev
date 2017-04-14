@@ -1,35 +1,37 @@
 (function () {
     angular
-        .module("WebAppMaker")
-        .controller("LoginController", loginController)
-        .controller("ProfileController", profileController)
-        .controller("RegisterController", registerController);
+        .module("JobNowMaker")
+        .controller("CandidateLoginController", candidateLoginController)
+        .controller("CandidateProfileController", candidateProfileController)
+        .controller("CandidateRegisterController", candidateRegisterController)
+        .controller("CandidateListController", candidateListController);
 
-    function loginController($location, UserService, $rootScope) {
+    function candidateLoginController($location, CandidateService, $rootScope) {
         var vm = this;
 
         // event handlers
         vm.login = login;
 
         function init() {
+            $window.document.title = "Job Seeker Login | JobNow";
         }
         init();
 
-        function login(user) {
-            UserService.login(user)
+        function login(candidate) {
+            CandidateService.login(candidate)
                 .then(
                     function(response) {
-                        var user = response.data;
-                        $rootScope.currentUser = user;
-                        $location.url("/user/"+user._id);
+                        var candidate = response.data;
+                        $rootScope.currentUser = candidate;
+                        $location.url("/candidate/profile/"+candidate._id);
                     },
                     function (response) {
-                        vm.error = 'user not found';
+                        vm.error = 'Wrong credentials';
                     });
         }
     }
 
-    function profileController($routeParams, UserService, $rootScope, $location) {
+    function candidateProfileController($routeParams, CandidateService, $rootScope, $location) {
         var vm = this;
         var userId = $routeParams['uid'];
 
@@ -39,7 +41,7 @@
 
 
         function init() {
-            var promise = UserService.findUserById(userId);
+            var promise = CandidateService.findCandidateById(userId);
             promise.success(function (user) {
                 vm.user = user;
             });
@@ -47,11 +49,11 @@
 
         init();
 
-        function update(newUser) {
-            var promise = UserService.updateUser(userId, newUser);
+        function update(newCandidate) {
+            var promise = CandidateService.updateCandidate(userId, newCandidate);
             promise
-                .success(function (user) {
-                    if (user == null) {
+                .success(function (candidate) {
+                    if (candidate == null) {
                         vm.error = "Unable to update user";
                     } else {
                         vm.message = "User successfully updated"
@@ -63,12 +65,12 @@
         }
 
         function logout() {
-            UserService
+            CandidateService
                 .logout()
                 .then(
                     function (response) {
                         $rootScope.currentUser = null;
-                        $location.url("/");
+                        $location.url("/candidate/login");
                     },
                     function (res) {
                         vm.error = 'User not logged in';
@@ -76,7 +78,7 @@
         }
     }
 
-    function registerController($location, UserService, $rootScope) {
+    function candidateRegisterController($location, CandidateService, $rootScope) {
         var vm = this;
 
         // event handlers
@@ -86,15 +88,15 @@
         }
         init();
 
-        function register(newUser) {
-            if(newUser.password === newUser.password2) {
-                UserService
-                    .register(newUser)
+        function register(newCandidate) {
+            if(newCandidate.password === newCandidate.password2) {
+                CandidateService
+                    .register(newCandidate)
                     .then(
                         function(response) {
-                            var user = response.data;
-                            $rootScope.currentUser = user;
-                            $location.url("/user/"+user._id);
+                            var candidate = response.data;
+                            $rootScope.currentUser = candidate;
+                            $location.url("/candidate/profile/"+candidate._id);
                         },
                         function (err) {
                             vm.error = "Unable to register user";
@@ -103,5 +105,19 @@
                 vm.error = "Passwords are not same";
             }
         }
+    }
+
+    function candidateListController($routeParams, CandidateService) {
+        var vm = this;
+
+        function init() {
+            CandidateService
+                .findAllCandidates()
+                .success(function (candidates) {
+                    vm.candidates = candidates;
+                });
+        }
+
+        init();
     }
 })();
