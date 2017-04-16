@@ -1,4 +1,3 @@
-
 var mongoose = require("mongoose");
 var companySchema = mongoose.Schema({
     email : {type:String, require:true},

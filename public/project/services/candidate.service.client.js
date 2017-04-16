@@ -48,6 +48,7 @@
         }
 
         function login(candidate) {
+            console.log("Login called feom client service");
             return $http.post("/api/candidate/login", candidate);
         }
 

@@ -7,7 +7,7 @@ module.exports = function(app) {
     var api = {
         "createCandidate": createCandidate,
         "findCandidateById": findCandidateById,
-        "findCandidateByUsername": findCandidateByUsername,
+        "findCandidateByEmail": findCandidateByEmail,
         "findCandidateByCredentials": findCandidateByCredentials,
         "updateCandidate": updateCandidate,
         "deleteCandidate": deleteCandidate,
@@ -41,22 +41,25 @@ module.exports = function(app) {
         return deferred.promise;
     }
 
-    function findCandidateByUsername(username){
+    function findCandidateByEmail(email){
         var deferred = q.defer();
-        candidateModel.findOne({"username" : username},
+        candidateModel.findOne({"email" : email},
             function(err, candidate){
-                if(err){
-                    deferred.reject(err);
-                }else{
+                if(candidate){
+                    //console.log("No error in model"+candidate);
                     deferred.resolve(candidate);
+
+                }else{
+                    console.log("Error in model"+err);
+                    deferred.reject(err);
                 }
             });
         return deferred.promise;
     }
 
-    function findCandidateByCredentials(username, password){
+    function findCandidateByCredentials(email, password){
         var deferred = q.defer();
-        candidateModel.findOne({"username" : username, "password" : password},
+        candidateModel.findOne({"email" : email, "password" : password},
             function(err, candidate){
                 if(err){
                     deferred.reject(err);

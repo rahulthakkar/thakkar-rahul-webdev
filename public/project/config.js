@@ -26,42 +26,54 @@
                 controller: 'CompanyRegisterController',
                 controllerAs: 'model'
             })
-            .when("/candidate/profile/:uid", {
+            .when("/candidate/view/:uid", {
+                templateUrl: 'views/candidate/candidate.view.view.client.html',
+                controller: 'CandidateViewController',
+                controllerAs: 'model'
+            })
+            .when("/candidate/profile/", {
                 templateUrl: 'views/candidate/candidate.profile.view.client.html',
                 controller: 'CandidateProfileController',
                 controllerAs: 'model',
-                //resolve: { loggedin: checkCandidateLoggedin }
+                resolve: { currentUser: checkCandidateLoggedin }
             })
             .when("/company/view/:uid", {
                 templateUrl: 'views/company/company.view.view.client.html',
                 controller: 'CompanyViewController',
                 controllerAs: 'model'
             })
-            .when("/company/profile/:uid", {
+            .when("/company/profile/", {
                 templateUrl: 'views/company/company.profile.view.client.html',
                 controller: 'CompanyProfileController',
                 controllerAs: 'model',
-                //resolve: { loggedin: checkCompanyLoggedin }
+                resolve: { currentUser: checkCompanyLoggedin }
             })
-            .when("/company", {
+            .when("/admin/company", {
                 templateUrl: 'views/company/company.list.view.client.html',
                 controller: 'CompanyListController',
                 controllerAs: 'model',
-                //resolve: { loggedin: checkAdminLoggedin }
+                resolve: { currentUser: checkAdminLoggedin }
             })
-            .when("/candidate", {
+            .when("/admin/candidate", {
                 templateUrl: 'views/candidate/candidate.list.view.client.html',
                 controller: 'CandidateListController',
                 controllerAs: 'model',
                 //resolve: { loggedin: checkAdminLoggedin }
             })
-
-            .when("/user/:uid", {
-                templateUrl: "views/user/profile.view.client.html",
-                controller: 'ProfileController',
+            .when("/admin/company", {
+                templateUrl: 'views/company/company.list.view.client.html',
+                controller: 'CompanyListController',
                 controllerAs: 'model',
-                resolve: { loggedin: checkLoggedin }
+                resolve: { currentUser: checkAdminLoggedin }
             })
+            .when("/admin/candidate", {
+                templateUrl: 'views/candidate/candidate.list.view.client.html',
+                controller: 'CandidateListController',
+                controllerAs: 'model',
+                resolve: { loggedin: checkAdminLoggedin }
+            })
+
+
             .when("/user/:uid/website",{
                 templateUrl: 'views/company/company-list.view.client.html',
                 controller: "WebsiteListController",
@@ -115,16 +127,48 @@
             .otherwise({redirectTo : '/candidate/login'});
     }
 
-    var checkLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+    var checkCandidateLoggedin = function($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();
-        $http.get('/api/loggedin').success(function(user) {
+        console.log("Check loggedin client");
+        $http.get('/api/candidate/loggedin').success(function(user) {
+            $rootScope.errorMessage = null;
+            console.log("Check loggedin client not 0" + JSON.stringify(user));
+            if (user !== '0') {
+                $rootScope.currentUser = user;
+                deferred.resolve();
+            } else {
+                deferred.reject();
+                $location.url('/candidate/login');
+            }
+        });
+        return deferred.promise;
+    };
+
+    var checkCompanyLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+        var deferred = $q.defer();
+        $http.get('/api/company/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
                 deferred.resolve();
             } else {
                 deferred.reject();
-                $location.url('/');
+                $location.url('/company/login');
+            }
+        });
+        return deferred.promise;
+    };
+
+    var checkAdminLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+        var deferred = $q.defer();
+        $http.get('/api/admin/loggedin').success(function(user) {
+            $rootScope.errorMessage = null;
+            if (user !== '0') {
+                $rootScope.currentUser = user;
+                deferred.resolve();
+            } else {
+                deferred.reject();
+                $location.url('/candidate/login');
             }
         });
         return deferred.promise;

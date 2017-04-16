@@ -11,14 +11,13 @@ module.exports = function(app) {
             process.env.MLAB_APP_NAME;
     }
 
-    var mongoose = require("mongoose");
     mongoose.createConnection(connectionString);
 
     var model = {
-        applicationModel : require("./application/application.model.server")(),
+        //applicationModel : require("./application/application.model.server")(),
         candidateModel : require("./candidate/candidate.model.server")(),
-        companyModel : require("./company/company.model.server")(),
-        jobModel : require("./job/job.model.server")()
+        //companyModel : require("./company/company.model.server")(),
+        //jobModel : require("./job/job.model.server")()
     };
 
     return model;

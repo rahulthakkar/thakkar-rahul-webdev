@@ -11,6 +11,7 @@ var candidateSchema = mongoose.Schema({
     // Follows these companies
     companies : [{type : mongoose.Schema.Types.ObjectId, ref : 'company'}],
     skills : [{type : String}],
+    role: [{}],
     ethnicity: String,
     education: String,
     resumeURI : String,
