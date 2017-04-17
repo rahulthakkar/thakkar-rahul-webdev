@@ -145,6 +145,7 @@
     };
 
     var checkCompanyLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+        console.log("Check loggedin company client");
         var deferred = $q.defer();
         $http.get('/api/company/loggedin').success(function(user) {
             $rootScope.errorMessage = null;

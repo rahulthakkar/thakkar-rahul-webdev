@@ -1,5 +1,7 @@
 module.exports = function (app, model) {
     var passport = require('passport');
+    //var passport = new passport();
+    //var passport = require('passport');
     app.use(passport.initialize());
     app.use(passport.session());
     var LocalStrategy = require('passport-local').Strategy;
@@ -12,17 +14,16 @@ module.exports = function (app, model) {
     };
 
 
-
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
-    passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
+    passport.use('candidate', new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
     passport.use(new FacebookStrategy(facebookConfig, facebookStrategy));
 
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
     app.post('/api/candidate/logout', logout);
-    app.post('/api/candidate/login', passport.authenticate('local'), login);
+    app.post('/api/candidate/login', passport.authenticate('candidate'), login);
     app.post('/api/candidate/register', register);
     app.get('/api/candidate/loggedin', loggedin);
     app.get("/api/candidate", authorize, findCandidate);
@@ -72,13 +73,13 @@ module.exports = function (app, model) {
     }
 
     function updateTransformObject(candidate){
-        //console.log("Before"+ JSON.stringify(candidate, null, 2))
+        console.log("Before"+ JSON.stringify(candidate, null, 2))
         delete candidate.facebook;
         delete candidate._id;
         delete candidate.role;
         delete candidate.dateCreated;
         delete candidate._v;
-        //console.log("After"+ JSON.stringify(candidate, null, 2))
+        console.log("After"+ JSON.stringify(candidate, null, 2))
         return candidate;
     }
 
@@ -155,12 +156,16 @@ module.exports = function (app, model) {
     }
 
     function serializeUser(user, done) {
+        console.log("candidate serializeUser called" + JSON.stringify(user));
         done(null, user);
     }
 
     function deserializeUser(user, done) {
-        //console.log("deserializeUser called" + JSON.stringify(user));
-        model.candidateModel.findCandidateById(user._id)
+        var isCandidate = user.role? true: false;
+        console.log("candidate deserializeUser called" + JSON.stringify(user));
+        console.log("candidate deserializeUser called" + isCandidate);
+        var collection = isCandidate? model.candidateModel: model.companyModel;
+        collection.findById(user._id)
             .then(
                 function (user) {
                     done(null, user);
@@ -172,16 +177,17 @@ module.exports = function (app, model) {
     }
 
     function localStrategy(email, password, done) {
-        //console.log("localstartegy" + email +" " + password);
+        console.log("candidate localstartegy" + email +" " + password);
         model.candidateModel
             .findCandidateByEmail(email)
             .then(
                 function(candidate) {
                     //console.log(candidate);
                     //console.log("password1" + password);
-
+                    console.log("password1" + bcrypt.hashSync(password));
+                    console.log("password " + candidate.password);
                     if(candidate && bcrypt.compareSync(password, candidate.password)) {
-                        return done(null, candidate);
+                        return done(null, sendTransformObject(candidate));
                     }
                     //console.log("some error");
                     return done(null, false);
@@ -214,13 +220,13 @@ module.exports = function (app, model) {
                     res.sendStatus(404).send(err);
                 },
                 function (err) {
-                    //console.log("Craeting a new one"+ candidate);
+                    console.log("Craeting a new one"+ candidate);
                     candidate.password = bcrypt.hashSync(candidate.password);
                     model.candidateModel
                         .createCandidate(candidate)
                         .then(
                             function (candidate) {
-                                //console.log("Craeted successfully a candidate"+ candidate);
+                                console.log("Craeted successfully a candidate"+ candidate);
                                 if (candidate) {
                                     req.login(candidate, function (err) {
                                         if (err) {
@@ -235,8 +241,9 @@ module.exports = function (app, model) {
     }
 
     function loggedin(req, res) {
-        //console.log("Checking loggedin sever");
-        res.send(req.isAuthenticated() ? sendTransformObject(req.user) : '0');
+        console.log("Checking loggedin sever");
+        console.log("Checking loggedin sever"+req.user.role);
+        res.send(req.isAuthenticated() && req.user.role? sendTransformObject(req.user) : '0');
     }
 
     function adminLoggedin(req, res) {
@@ -252,7 +259,7 @@ module.exports = function (app, model) {
 
 
                 if (candidate) {
-                    return done(null, candidate);
+                    return done(null, sendTransformObject(candidate));
                 } else {
                     var email = profile.emails ? profile.emails[0].value: "";
                     var firstName = profile.name? profile.name.givenName: "";

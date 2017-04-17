@@ -1,17 +1,16 @@
 module.exports = function (app, model) {
+    //var passport = require('passport');
     var passport = require('passport');
-    app.use(passport.initialize());
-    app.use(passport.session());
+    //var passport = new passport();
+    //app.use(passport.initialize());
+    //app.use(passport.session());
     var LocalStrategy = require('passport-local').Strategy;
 
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
-    passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
+    passport.use('company', new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
 
-    passport.serializeUser(serializeUser);
-    passport.deserializeUser(deserializeUser);
-
-    app.post('/api/company/login', passport.authenticate('local'), login);
+    app.post('/api/company/login', passport.authenticate('company'), login);
     app.post('/api/company/logout', logout);
     app.post('/api/company/register', register);
     app.get('/api/company/loggedin', loggedin);
@@ -124,34 +123,20 @@ module.exports = function (app, model) {
         }
     }
 
-    function serializeUser(user, done) {
-        done(null, user);
-    }
-
-    function deserializeUser(user, done) {
-        model.companyModel.findCompanyById(user._id)
-            .then(
-                function (user) {
-                    done(null, user);
-                },
-                function (err) {
-                    done(err, null);
-                }
-            );
-    }
-
     function localStrategy(email, password, done) {
+        console.log("Company localStrategy");
         model.companyModel
             .findCompanyByEmail(email)
             .then(
                 function(company) {
-                    //console.log(company);
-                    //console.log("password1" + password);
-                    //company = company[0];
+                    console.log(company);
+                    console.log("password1" + bcrypt.hashSync(password));
+                    console.log("password " + company.password);
+                    console.log("password check"+ bcrypt.compareSync(password, company.password));
                     if(company && bcrypt.compareSync(password, company.password)) {
-                        return done(null, company);
+                        return done(null, sendTransformObject(company));
                     }
-                    //console.log("some error");
+                    console.log("some error");
                     return done(null, false);
                 },
                 function(err) {
@@ -162,6 +147,7 @@ module.exports = function (app, model) {
 
     function login(req, res) {
         var company = req.user;
+        console.log("login called" + JSON.stringify(company));
         res.json(sendTransformObject(company));
     }
 
@@ -172,20 +158,23 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var company = req.body;
+        console.log("Craeting a company"+ JSON.stringify(company));
+        console.log("Email"+ company.email);
         updateTransformObject(company);
-        company.password = bcrypt.hashSync(company.password);
         model.companyModel.findCompanyByEmail(company.email)
             .then(function (company) {
-                    //console.log("Found already"+ company);
+                    console.log("Found already"+ company);
                     res.sendStatus(404).send(err);
                 },
                 function(err){
                     company.password = bcrypt.hashSync(company.password);
+                    console.log("password " + company.password);
                     model.companyModel
                         .createCompany(company)
                         .then(
                             function (company) {
                                 if (company) {
+                                    console.log("Logining company" + JSON.stringify(company));
                                     req.login(company, function (err) {
                                         if (err) {
                                             res.status(400).send(err);
@@ -199,7 +188,10 @@ module.exports = function (app, model) {
     }
 
     function loggedin(req, res) {
-        res.send(req.isAuthenticated() ? sendTransformObject(req.user) : '0');
+        //console.log("Company loggedin "+ util.inspect(req, {showHidden: false, depth: null}))
+        console.log("Company loggedin "+ req.isAuthenticated());
+        console.log("Company loggedin "+ !req.user.role);
+        res.send(req.isAuthenticated() && !req.user.role? sendTransformObject(req.user) : '0');
     }
 
     function findAllCompany(req, res) {

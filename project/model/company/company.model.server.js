@@ -6,6 +6,7 @@ module.exports = function(app) {
 
     var api = {
         "createCompany": createCompany,
+        "findById": findCompanyById,
         "findCompanyById": findCompanyById,
         "findCompanyByEmail": findCompanyByEmail,
         "findCompanyByCredentials": findCompanyByCredentials,
@@ -42,11 +43,12 @@ module.exports = function(app) {
     }
 
     function findCompanyByEmail(email){
+        console.log("findCompanyByEmail"+ email);
         var deferred = q.defer();
         companyModel.findOne({"email" : email},
             function(err, company){
                 if(company){
-                    //console.log("No error in model"+company);
+                    console.log("No error in model"+company);
                     deferred.resolve(company);
 
                 }else{

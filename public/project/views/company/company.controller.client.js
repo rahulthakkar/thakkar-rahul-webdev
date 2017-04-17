@@ -17,6 +17,13 @@
         }
         init();
 
+        vm.test = test;
+        function test() {
+            var company = {email: "rahul1@fb.com", password: "Rahul123"};
+
+            login(company);
+        }
+
         function login(company) {
             CompanyService.login(company)
                 .then(
@@ -33,7 +40,7 @@
 
     function companyProfileController($routeParams, CompanyService, $rootScope, $location) {
         var vm = this;
-        var userId = $routeParams['uid'];
+        //var userId = $routeParams['uid'];
 
         // event handlers
         vm.update = update;
@@ -85,7 +92,18 @@
         }
         init();
 
+        vm.test = test;
+        function test() {
+            console.log("test called");
+            var company = {email: "rahul1@fb.com", password: "Rahul123", password2: "Rahul123", name: "Facebook", phone:"857-928-5539"
+                , size:"1001-10000", linkedinURL: "https://www.linkedin.com/company-beta/10667", facebookURL:"https://www.facebook.com/facebookcareers/"
+                , twitterURL:"https://twitter.com/facebook", siteURL:"https://www.facebook.com/careers/"};
+
+            register(company);
+        }
+
         function register(newCompany) {
+            console.log("register called with "+ JSON.stringify(newCompany));
             if(newCompany.password === newCompany.password2) {
                 CompanyService
                     .register(newCompany)

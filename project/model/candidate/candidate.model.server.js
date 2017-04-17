@@ -6,6 +6,7 @@ module.exports = function(app) {
 
     var api = {
         "createCandidate": createCandidate,
+        "findById": findCandidateById,
         "findCandidateById": findCandidateById,
         "findCandidateByEmail": findCandidateByEmail,
         "findCandidateByCredentials": findCandidateByCredentials,
@@ -18,11 +19,14 @@ module.exports = function(app) {
 
     function createCandidate(newCandidate){
         var deferred = q.defer();
+        console.log("Craeting a new candidate"+ JSON.stringify(newCandidate));
         candidateModel.create(newCandidate,
             function(err, candidate){
                 if(err){
+                    console.log("error"+err);
                     deferred.reject(err);
                 }else{
+                    console.log("Not error"+candidate);
                     deferred.resolve(candidate);
                 }
             });

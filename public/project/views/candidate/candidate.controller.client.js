@@ -99,14 +99,14 @@
         init();
 
 
-        /*vm.test = test;
+        vm.test = test;
         function test() {
             console.log("test called");
             var candidate = {email: "rahul1@gmail.com", password: "rahul123", password2: "rahul123", firstName: "Rahul", lastName: "Thakkar", phone:"857-928-5539"
                 ,skills: ["Java", "R", "Hadoop", "MapReduce"], ethnicity: "Asian", education: "Matsers"};
 
             register(candidate);
-        }*/
+        }
 
         function register(newCandidate) {
             //console.log("register called with "+ JSON.stringify(newCandidate));
