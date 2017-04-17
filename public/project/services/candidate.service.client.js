@@ -35,10 +35,6 @@
             return $http.get("/api/candidate/"+candidateId);
         }
 
-        function findAllCandidates() {
-            return $http.get("/api/all/candidate");
-        }
-
         function updateCandidate(candidateId, newCandidate) {
             return $http.put("/api/candidate/"+candidateId, newCandidate);
         }
@@ -48,7 +44,6 @@
         }
 
         function login(candidate) {
-            console.log("Login called feom client service");
             return $http.post("/api/candidate/login", candidate);
         }
 
@@ -60,7 +55,7 @@
             return $http.post("/api/candidate/register", candidate);
         }
 
-        function findAllCandidates(candidate) {
+        function findAllCandidates() {
             return $http.get("/api/admin/candidate");
         }
 

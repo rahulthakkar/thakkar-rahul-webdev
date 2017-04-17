@@ -23,7 +23,7 @@
                     function(response) {
                         var company = response.data;
                         $rootScope.currentUser = company;
-                        $location.url("/company/profile/"+company._id);
+                        $location.url("/company/profile/");
                     },
                     function (response) {
                         vm.error = 'Wrong credentials';
@@ -41,26 +41,23 @@
 
 
         function init() {
-            var promise = CompanyService.findCompanyById(userId);
-            promise.success(function (user) {
-                vm.user = user;
-            });
+            vm.user = $rootScope.currentUser;
         }
 
         init();
 
         function update(newCompany) {
-            var promise = CompanyService.updateCompany(userId, newCompany);
+            var promise = CompanyService.updateCompany($rootScope.currentUser._id, newCompany);
             promise
                 .success(function (company) {
                     if (company == null) {
-                        vm.error = "Unable to update company info";
+                        vm.error = "Unable to update the company info";
                     } else {
                         vm.message = "Company info successfully updated"
                     }
                 })
                 .error(function () {
-                    vm.error = "Unable to update company info";
+                    vm.error = "Unable to update the company info";
                 });
         }
 
@@ -73,7 +70,7 @@
                         $location.url("/company/login");
                     },
                     function (res) {
-                        vm.error = 'Company not logged in';
+                        vm.error = 'No company logged in';
                     });
         }
     }
@@ -96,10 +93,10 @@
                         function(response) {
                             var company = response.data;
                             $rootScope.currentUser = company;
-                            $location.url("/company/profile/"+company._id);
+                            $location.url("/company/profile/");
                         },
                         function (err) {
-                            vm.error = "Unable to register user";
+                            vm.error = "Unable to register the company";
                         });
             } else {
                 vm.error = "Passwords are not same";

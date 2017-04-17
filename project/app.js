@@ -3,5 +3,5 @@ module.exports = function (app) {
     //require("./services/job.service.server")(app, model);
     require("./services/candidate.service.server")(app, model);
     //require("./services/application.service.server")(app, model);
-    //require("./services/company.service.server")(app, model);
+    require("./services/company.service.server")(app, model);
 }

@@ -5,9 +5,6 @@ module.exports = function (app, model) {
     var LocalStrategy = require('passport-local').Strategy;
     var FacebookStrategy = require('passport-facebook').Strategy;
     var facebookConfig = {
-        /*clientID: "1314009178653872",
-         clientSecret: "9980976600eb559e546bd744cc88005d",
-         callbackURL: "/auth/candidate/facebook/callback",*/
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK_URL,
@@ -24,16 +21,16 @@ module.exports = function (app, model) {
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
-    app.get('/api/candidate/loggedin', loggedin);
     app.post('/api/candidate/logout', logout);
     app.post('/api/candidate/login', passport.authenticate('local'), login);
-    app.get("/api/candidate", authorized, findCandidate);
-    app.get("/api/admin/candidate", authorized, findAllCandidates);
-    app.get("/api/admin/loggedin", authorized, adminLoggedin);
-    app.get("/api/candidate/:candidateId", authorized, findCandidateById);
-    app.put("/api/candidate/:candidateId", authorized, updateCandidate);
-    app.delete("/api/candidate/:candidateId", authorized, deleteCandidate);
     app.post('/api/candidate/register', register);
+    app.get('/api/candidate/loggedin', loggedin);
+    app.get("/api/candidate", authorize, findCandidate);
+    app.get("/api/admin/candidate", authorize, findAllCandidates);
+    app.get("/api/admin/loggedin", authorize, adminLoggedin);
+    app.get("/api/candidate/:candidateId", authorize, findCandidateById);
+    app.put("/api/candidate/:candidateId", authorize, updateCandidate);
+    app.delete("/api/candidate/:candidateId", authorize, deleteCandidate);
 
     app.get('/auth/candidate/facebook', passport.authenticate('facebook', {scope: 'email'}));
     app.get('/auth/candidate/facebook/callback',
@@ -48,7 +45,7 @@ module.exports = function (app, model) {
         });
 
 
-    function authorized (req, res, next) {
+    function authorize (req, res, next) {
         if (!req.isAuthenticated()) {
             res.send(401);
         } else {
@@ -96,22 +93,21 @@ module.exports = function (app, model) {
                     function (err) {
                         res.status(404).send(err);
                     });
+        } else {
+            res.status(403);
         }
     }
 
     function findCandidateById(req, res) {
-        if(isAdmin(req.user)) {
-            var candidateId = req.params.candidateId;
-            model.candidateModel.findCandidateById(candidateId)
-                .then(function (candidate) {
-                        res.status(200).send(sendTransformObject(candidate));
-                    },
-                    function (err) {
-                        res.status(404).send(err);
-                    });
-        } else {
-            res.status(403);
-        }
+        var candidateId = req.params.candidateId;
+        model.candidateModel.findCandidateById(candidateId)
+            .then(function (candidate) {
+                    res.status(200).send(sendTransformObject(candidate));
+                },
+                function (err) {
+                    res.status(404).send(err);
+                });
+
     }
 
     function findCandidate(req, res) {
@@ -129,14 +125,18 @@ module.exports = function (app, model) {
     }
 
     function findCandidateByEmail(req, res) {
-        var email = req.query.email;
-        model.candidateModel.findCandidateByEmail(email)
-            .then(function (candidate) {
-                    res.status(200).send(sendTransformObject(candidate));
-                },
-                function (err) {
-                    res.sendStatus(404).send(err);
-                });
+        if(isAdmin(req.user)) {
+            var email = req.query.email;
+            model.candidateModel.findCandidateByEmail(email)
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.sendStatus(404).send(err);
+                    });
+        } else{
+            res.status(403);
+        }
     }
 
     function deleteCandidate(req, res) {
@@ -178,7 +178,7 @@ module.exports = function (app, model) {
             .then(
                 function(candidate) {
                     //console.log(candidate);
-                    console.log("password1" + password);
+                    //console.log("password1" + password);
 
                     if(candidate && bcrypt.compareSync(password, candidate.password)) {
                         return done(null, candidate);
@@ -194,7 +194,7 @@ module.exports = function (app, model) {
 
     function login(req, res) {
         var candidate = req.user;
-        console.log("login called server" + candidate);
+        //console.log("login called server" + candidate);
         res.json(sendTransformObject(candidate));
     }
 
@@ -230,13 +230,12 @@ module.exports = function (app, model) {
                                         }
                                     });
                                 }
-                            }
-                        );
+                            });
                 });
     }
 
     function loggedin(req, res) {
-        console.log("Checking loggedin sever");
+        //console.log("Checking loggedin sever");
         res.send(req.isAuthenticated() ? sendTransformObject(req.user) : '0');
     }
 
@@ -296,7 +295,7 @@ module.exports = function (app, model) {
                 .findAllCandidates()
                 .then(
                     function (candidates) {
-                        res.json(sendTransformObject(candidates));
+                        res.json(candidates);
                     },
                     function () {
                         res.status(400).send(err);

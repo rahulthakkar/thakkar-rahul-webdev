@@ -6,123 +6,133 @@ module.exports = function (app, model) {
 
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
-    passport.use(new LocalStrategy(localStrategy));
+    passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
 
-    passport.serializeUser(serializeCompany);
-    passport.deserializeUser(deserializeCompany);
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
 
-    app.post("/api/company", createCompany);
-    app.get("/api/company", findCompany);
-    app.get("/api/all/company", findAllCompany);
-    app.get("/api/company/:companyId", findCompanyById);
-    app.put("/api/company/:companyId", updateCompany);
-    app.delete("/api/company/:companyId", deleteCompany);
     app.post('/api/company/login', passport.authenticate('local'), login);
     app.post('/api/company/logout', logout);
     app.post('/api/company/register', register);
     app.get('/api/company/loggedin', loggedin);
+    app.get("/api/company", authorize, findCompany);
+    app.get("/api/admin/company", authorize, findAllCompany);
+    app.get("/api/company/:companyId", authorize, findCompanyById);
+    app.put("/api/company/:companyId", authorize, updateCompany);
+    app.delete("/api/company/:companyId", authorize, deleteCompany);
 
-
-    function createCompany(req, res) {
-        var newCompany = req.body;
-        newCompany.password = bcrypt.hashSync(newCompany.password);
-
-        //console.log(newCompany);
-        model.companyModel.createCompany(newCompany)
-            .then(function (company) {
-                    res.status(200).send(company);
-                },
-                function (err) {
-                    res.sendStatus(500).send(err);
-                });
+    function authorize (req, res, next) {
+        if (!req.isAuthenticated()) {
+            res.send(401);
+        } else {
+            next();
+        }
     }
+
+    function isAdmin (user) {
+        if(user.role === "Admin") {
+            return true
+        }
+        return false;
+    }
+
+    function sendTransformObject(company){
+        delete company.password;
+        delete company.dateCreated;
+        delete company._v;
+        return company;
+    }
+
+    function updateTransformObject(company){
+        delete company._id;
+        delete company.role;
+        delete company.dateCreated;
+        delete company._v;
+        return company;
+    }
+
 
     function updateCompany(req, res) {
         var companyId = req.params.companyId;
         var newCompany = req.body;
-        model.companyModel.updateCompany(companyId, newCompany)
-            .then(function (company) {
-                    res.status(200).send(company);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if (companyId && companyId == req.user._id) {
+            model.companyModel.updateCompany(companyId, updateTransformObject(newCompany))
+                .then(function (company) {
+                        res.status(200).send(sendTransformObject(company));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else {
+            res.status(403);
+        }
     }
 
     function findCompanyById(req, res) {
         var companyId = req.params.companyId;
         model.companyModel.findCompanyById(companyId)
             .then(function (company) {
-                    res.status(200).send(company);
+                    res.status(200).send(sendTransformObject(company));
                 },
                 function (err) {
                     res.status(404).send(err);
                 });
+
     }
 
     function findCompany(req, res) {
-        var username = req.query.username;
-        var password = req.query.password;
-        if (username && password) {
-            findCompanyByCredentials(req, res);
-        } else if (username) {
-            findCompanyByUsername(req, res);
+        if(isAdmin(req.user)) {
+            var email = req.query.email;
+            var password = req.query.password;
+            if (email && password) {
+                findCompanyByCredentials(req, res);
+            } else if (email) {
+                findCompanyByEmail(req, res);
+            }
+        } else {
+            res.status(403);
         }
     }
 
-    function findAllCompany(req, res) {
-        model.candidateModel.findAllCompany()
-            .then(function (companies) {
-                    res.status(200).send(companies);
-                },
-                function (err) {
-                    res.sendStatus(404).send(err);
-                });
-    }
-
-    function findCompanyByUsername(req, res) {
-        var username = req.query.username;
-        model.companyModel.findCompanyByUsername(username)
-            .then(function (company) {
-                    res.status(200).send(company);
-                },
-                function (err) {
-                    res.sendStatus(404).send(err);
-                });
-    }
-
-    function findCompanyByCredentials(req, res) {
-        var username = req.query.username;
-        var password = req.query.password;
-        model.companyModel.findCompanyByCredentials(username, password)
-            .then(function (company) {
-                    res.status(200).send(company);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+    function findCompanyByEmail(req, res) {
+        if(isAdmin(req.user)) {
+            var email = req.query.email;
+            model.companyModel.findCompanyByEmail(email)
+                .then(function (company) {
+                        res.status(200).send(sendTransformObject(company));
+                    },
+                    function (err) {
+                        res.sendStatus(404).send(err);
+                    });
+        } else{
+            res.status(403);
+        }
     }
 
     function deleteCompany(req, res) {
-        var companyId = req.params.companyId;
-        model.companyModel.deleteCompany(companyId)
-            .then(function (result) {
-                    res.status(200).send(result);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(isAdmin(req.user)) {
+            var companyId = req.params.companyId;
+            model.companyModel.deleteCompany(companyId)
+                .then(function (result) {
+                        res.status(200).send(result);
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else{
+            res.status(403);
+        }
     }
 
-    function serializeCompany(company, done) {
-        done(null, company);
+    function serializeUser(user, done) {
+        done(null, user);
     }
 
-    function deserializeCompany(company, done) {
-        model.companyModel.findCompanyById(company._id)
+    function deserializeUser(user, done) {
+        model.companyModel.findCompanyById(user._id)
             .then(
-                function (company) {
-                    done(null, company);
+                function (user) {
+                    done(null, user);
                 },
                 function (err) {
                     done(err, null);
@@ -130,9 +140,9 @@ module.exports = function (app, model) {
             );
     }
 
-    function localStrategy(username, password, done) {
+    function localStrategy(email, password, done) {
         model.companyModel
-            .findCompanyByUsername(username)
+            .findCompanyByEmail(email)
             .then(
                 function(company) {
                     //console.log(company);
@@ -151,8 +161,8 @@ module.exports = function (app, model) {
     }
 
     function login(req, res) {
-        var company = req.company;
-        res.json(company);
+        var company = req.user;
+        res.json(sendTransformObject(company));
     }
 
     function logout(req, res) {
@@ -162,26 +172,48 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var company = req.body;
+        updateTransformObject(company);
         company.password = bcrypt.hashSync(company.password);
-        model.companyModel
-            .createCompany(company)
-            .then(
-                function (company) {
-                    if (company) {
-                        req.login(company, function (err) {
-                            if (err) {
-                                res.status(400).send(err);
-                            } else {
-                                res.json(company);
-                            }
-                        });
-                    }
-                }
-            );
+        model.companyModel.findCompanyByEmail(company.email)
+            .then(function (company) {
+                    //console.log("Found already"+ company);
+                    res.sendStatus(404).send(err);
+                },
+                function(err){
+                    company.password = bcrypt.hashSync(company.password);
+                    model.companyModel
+                        .createCompany(company)
+                        .then(
+                            function (company) {
+                                if (company) {
+                                    req.login(company, function (err) {
+                                        if (err) {
+                                            res.status(400).send(err);
+                                        } else {
+                                            res.json(sendTransformObject(company));
+                                        }
+                                    });
+                                }
+                            });
+                });
     }
 
     function loggedin(req, res) {
-        res.send(req.isAuthenticated() ? req.company : '0');
+        res.send(req.isAuthenticated() ? sendTransformObject(req.user) : '0');
+    }
+
+    function findAllCompany(req, res) {
+        if(isAdmin(req.user)) {
+            model.companyModel.findAllCompany()
+                .then(function (companies) {
+                        res.status(200).send(companies);
+                    },
+                    function (err) {
+                        res.sendStatus(404).send(err);
+                    });
+        } else {
+            res.status(403);
+        }
     }
 }
 

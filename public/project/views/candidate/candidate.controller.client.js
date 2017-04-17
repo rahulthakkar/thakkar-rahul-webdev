@@ -25,14 +25,14 @@
         }
 
         function login(candidate) {
-            console.log("login called"+ JSON.stringify(candidate));
+            //console.log("login called"+ JSON.stringify(candidate));
 
             CandidateService.login(candidate)
                 .then(
                     function(response) {
                         var candidate = response.data;
                         $rootScope.currentUser = candidate;
-                        console.log(candidate);
+                        //console.log(candidate);
                         $location.url("/candidate/profile/");
                     },
                     function (response) {
@@ -51,12 +51,9 @@
 
 
         function init() {
-            console.log("Profile inti")
-            console.log(JSON.stringify($rootScope.currentUser));
-            //var promise = CandidateService.findCandidateById($rootScope.currentUser._id);
-            ///promise.success(function (user) {
+            //console.log("Profile inti")
+            //console.log(JSON.stringify($rootScope.currentUser));
             vm.user = $rootScope.currentUser;
-            //});
         }
 
         init();
@@ -102,14 +99,14 @@
         init();
 
 
-        vm.test = test;
+        /*vm.test = test;
         function test() {
             console.log("test called");
             var candidate = {email: "rahul1@gmail.com", password: "rahul123", password2: "rahul123", firstName: "Rahul", lastName: "Thakkar", phone:"857-928-5539"
                 ,skills: ["Java", "R", "Hadoop", "MapReduce"], ethnicity: "Asian", education: "Matsers"};
 
             register(candidate);
-        }
+        }*/
 
         function register(newCandidate) {
             //console.log("register called with "+ JSON.stringify(newCandidate));

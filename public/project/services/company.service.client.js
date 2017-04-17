@@ -12,11 +12,10 @@
             "findCompanyByCredentials": findCompanyByCredentials,
             "updateCompany": updateCompany,
             "deleteCompany": deleteCompany,
-            "findAllCompanys": findAllCompanys,
             "login": login,
             "logout": logout,
             "register": register,
-            "checkLoggedIn": checkLoggedIn
+            "findAllCompanys": findAllCompanys
         };
         return api;
 
@@ -34,10 +33,6 @@
 
         function findCompanyById(companyId) {
             return $http.get("/api/company/"+companyId);
-        }
-
-        function findAllCompanys() {
-            return $http.get("/api/all/company");
         }
 
         function updateCompany(companyId, newCompany) {
@@ -60,11 +55,8 @@
             return $http.post("/api/company/register", company);
         }
 
-        function checkLoggedIn() {
-            return $http.get('/api/company/loggedin')
-                .then(function (response) {
-                    return response.data;
-                });
+        function findAllCompanys() {
+            return $http.get("/api/admin/company");
         }
     }
 })();

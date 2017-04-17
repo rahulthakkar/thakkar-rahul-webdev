@@ -10,8 +10,6 @@ var companySchema = mongoose.Schema({
     linkedinURL : String,
     facebookURL : String,
     twitterURL : String,
-    instaURL : String,
-    facebookURL : String,
     siteURL : String,
     photoURI : String,
     followerCount : {type: String, default : 0},
