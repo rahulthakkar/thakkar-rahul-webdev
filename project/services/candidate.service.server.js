@@ -5,11 +5,17 @@ module.exports = function (app, model) {
     var LocalStrategy = require('passport-local').Strategy;
     var FacebookStrategy = require('passport-facebook').Strategy;
     var facebookConfig = {
-        clientID: "1314009178653872",
-        clientSecret: "9980976600eb559e546bd744cc88005d",
-        callbackURL: "/auth/candidate/facebook/callback",
+        /*clientID: "1314009178653872",
+         clientSecret: "9980976600eb559e546bd744cc88005d",
+         callbackURL: "/auth/candidate/facebook/callback",*/
+        clientID: process.env.FACEBOOK_CLIENT_ID,
+        clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL,
         profileFields: ['id', 'email', 'name']
     };
+
+
+
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
     passport.use(new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
@@ -21,20 +27,15 @@ module.exports = function (app, model) {
     app.get('/api/candidate/loggedin', loggedin);
     app.post('/api/candidate/logout', logout);
     app.post('/api/candidate/login', passport.authenticate('local'), login);
-    app.post("/api/candidate", createCandidate);
-    app.get("/api/candidate", findCandidate);
+    app.get("/api/candidate", authorized, findCandidate);
     app.get("/api/admin/candidate", authorized, findAllCandidates);
-    app.get("/api/candidate/:candidateId", findCandidateById);
-    app.put("/api/candidate/:candidateId", updateCandidate);
-    app.delete("/api/candidate/:candidateId", deleteCandidate);
-
-
+    app.get("/api/admin/loggedin", authorized, adminLoggedin);
+    app.get("/api/candidate/:candidateId", authorized, findCandidateById);
+    app.put("/api/candidate/:candidateId", authorized, updateCandidate);
+    app.delete("/api/candidate/:candidateId", authorized, deleteCandidate);
     app.post('/api/candidate/register', register);
 
-
-
     app.get('/auth/candidate/facebook', passport.authenticate('facebook', {scope: 'email'}));
-
     app.get('/auth/candidate/facebook/callback',
         passport.authenticate('facebook', {
             failureRedirect: '/project/#/candidate/login'
@@ -55,57 +56,75 @@ module.exports = function (app, model) {
         }
     }
 
-    function isAdmin (req, res, next) {
-        if(user.roles.indexOf("admin") > 0) {
+    function isAdmin (user) {
+        if(user.role === "Admin") {
             return true
         }
         return false;
     }
 
-    function createCandidate(req, res) {
-        var newCandidate = req.body;
-        newCandidate.password = bcrypt.hashSync(newCandidate.password);
+    function sendTransformObject(candidate){
+        //console.log("Before"+ JSON.stringify(candidate, null, 2));
+        delete candidate.password;
+        delete candidate.facebook;
+        delete candidate.role;
+        delete candidate.dateCreated;
+        delete candidate._v;
+        //console.log("After"+ JSON.stringify(candidate, null, 2))
+        return candidate;
+    }
 
-        //console.log(newCandidate);
-        model.candidateModel.createCandidate(newCandidate)
-            .then(function (candidate) {
-                    res.status(200).send(candidate);
-                },
-                function (err) {
-                    res.sendStatus(500).send(err);
-                });
+    function updateTransformObject(candidate){
+        //console.log("Before"+ JSON.stringify(candidate, null, 2))
+        delete candidate.facebook;
+        delete candidate._id;
+        delete candidate.role;
+        delete candidate.dateCreated;
+        delete candidate._v;
+        //console.log("After"+ JSON.stringify(candidate, null, 2))
+        return candidate;
     }
 
     function updateCandidate(req, res) {
         var candidateId = req.params.candidateId;
         var newCandidate = req.body;
-        model.candidateModel.updateCandidate(candidateId, newCandidate)
-            .then(function (candidate) {
-                    res.status(200).send(candidate);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(candidateId && candidateId==req.user._id) {
+            model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        }
     }
 
     function findCandidateById(req, res) {
-        var candidateId = req.params.candidateId;
-        model.candidateModel.findCandidateById(candidateId)
-            .then(function (candidate) {
-                    res.status(200).send(candidate);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(isAdmin(req.user)) {
+            var candidateId = req.params.candidateId;
+            model.candidateModel.findCandidateById(candidateId)
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else {
+            res.status(403);
+        }
     }
 
     function findCandidate(req, res) {
-        var email = req.query.email;
-        var password = req.query.password;
-        if (email && password) {
-            findCandidateByCredentials(req, res);
-        } else if (email) {
-            findCandidateByEmail(req, res);
+        if(isAdmin(req.user)) {
+            var email = req.query.email;
+            var password = req.query.password;
+            if (email && password) {
+                findCandidateByCredentials(req, res);
+            } else if (email) {
+                findCandidateByEmail(req, res);
+            }
+        } else {
+            res.status(403);
         }
     }
 
@@ -113,44 +132,26 @@ module.exports = function (app, model) {
         var email = req.query.email;
         model.candidateModel.findCandidateByEmail(email)
             .then(function (candidate) {
-                    res.status(200).send(candidate);
+                    res.status(200).send(sendTransformObject(candidate));
                 },
                 function (err) {
                     res.sendStatus(404).send(err);
-                });
-    }
-
-    function findAllCandidate(req, res) {
-        model.candidateModel.findAllCandidate()
-            .then(function (candidates) {
-                    res.status(200).send(candidates);
-                },
-                function (err) {
-                    res.sendStatus(404).send(err);
-                });
-    }
-
-    function findCandidateByCredentials(req, res) {
-        var email = req.query.email;
-        var password = req.query.password;
-        model.candidateModel.findCandidateByCredentials(email, password)
-            .then(function (candidate) {
-                    res.status(200).send(candidate);
-                },
-                function (err) {
-                    res.status(404).send(err);
                 });
     }
 
     function deleteCandidate(req, res) {
-        var candidateId = req.params.candidateId;
-        model.candidateModel.deleteCandidate(candidateId)
-            .then(function (result) {
-                    res.status(200).send(result);
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(isAdmin(req.user)) {
+            var candidateId = req.params.candidateId;
+            model.candidateModel.deleteCandidate(candidateId)
+                .then(function (result) {
+                        res.status(200).send(result);
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else {
+            res.status(403);
+        }
     }
 
     function serializeUser(user, done) {
@@ -194,7 +195,7 @@ module.exports = function (app, model) {
     function login(req, res) {
         var candidate = req.user;
         console.log("login called server" + candidate);
-        res.json(candidate);
+        res.json(sendTransformObject(candidate));
     }
 
     function logout(req, res) {
@@ -206,7 +207,7 @@ module.exports = function (app, model) {
         var candidate = req.body;
         //console.log("Craeting a candidate"+ JSON.stringify(candidate));
         //console.log("Email"+ candidate.email);
-
+        updateTransformObject(candidate);
         model.candidateModel.findCandidateByEmail(candidate.email)
             .then(function (candidate) {
                     //console.log("Found already"+ candidate);
@@ -225,7 +226,7 @@ module.exports = function (app, model) {
                                         if (err) {
                                             res.status(404).send(err);
                                         } else {
-                                            res.json(candidate);
+                                            res.json(sendTransformObject(candidate));
                                         }
                                     });
                                 }
@@ -236,7 +237,11 @@ module.exports = function (app, model) {
 
     function loggedin(req, res) {
         console.log("Checking loggedin sever");
-        res.send(req.isAuthenticated() ? req.user : '0');
+        res.send(req.isAuthenticated() ? sendTransformObject(req.user) : '0');
+    }
+
+    function adminLoggedin(req, res) {
+        res.send(isAdmin(req.user) ? sendTransformObject(req.user) : '0');
     }
 
     function facebookStrategy(token, refreshToken, profile, done) {
@@ -250,9 +255,9 @@ module.exports = function (app, model) {
                 if (candidate) {
                     return done(null, candidate);
                 } else {
-                    var email = profile.emails ? profile.emails[0].value:"";
-                    var firstName = profile.name.givenName;
-                    var lastName = profile.name.familyName;
+                    var email = profile.emails ? profile.emails[0].value: "";
+                    var firstName = profile.name? profile.name.givenName: "";
+                    var lastName = profile.name? profile.name.familyName: "";
                     //console.log("email" + email);
                     //console.log("firstName" + firstName);
                     //console.log("lastName" + lastName);
@@ -287,11 +292,11 @@ module.exports = function (app, model) {
 
     function findAllCandidates(req, res) {
         if(isAdmin(req.user)) {
-            model.candidateModel.
+            model.candidateModel
                 .findAllCandidates()
                 .then(
                     function (candidates) {
-                        res.json(candidates);
+                        res.json(sendTransformObject(candidates));
                     },
                     function () {
                         res.status(400).send(err);

@@ -15,7 +15,7 @@
             "login": login,
             "logout": logout,
             "register": register,
-            "checkLoggedIn": checkLoggedIn
+            "findAllCandidates": findAllCandidates
         };
         return api;
 
@@ -60,12 +60,10 @@
             return $http.post("/api/candidate/register", candidate);
         }
 
-        function checkLoggedIn() {
-            return $http.get('/api/candidate/loggedin')
-                .then(function (response) {
-                    return response.data;
-                });
+        function findAllCandidates(candidate) {
+            return $http.get("/api/admin/candidate");
         }
+
     }
 })();
 

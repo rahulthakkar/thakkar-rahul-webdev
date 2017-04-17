@@ -11,7 +11,8 @@ module.exports = function(app) {
         "findCandidateByCredentials": findCandidateByCredentials,
         "updateCandidate": updateCandidate,
         "deleteCandidate": deleteCandidate,
-        "findCandidateByFacebookId": findCandidateByFacebookId
+        "findCandidateByFacebookId": findCandidateByFacebookId,
+        "findAllCandidates": findAllCandidates
     };
     return api;
 
@@ -99,5 +100,9 @@ module.exports = function(app) {
 
     function findCandidateByFacebookId(facebookId) {
         return candidateModel.findOne({'facebook.id': facebookId});
+    }
+
+    function findAllCandidates() {
+        return candidateModel.find();
     }
 };

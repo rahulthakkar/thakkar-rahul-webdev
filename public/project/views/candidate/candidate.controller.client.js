@@ -53,10 +53,10 @@
         function init() {
             console.log("Profile inti")
             console.log(JSON.stringify($rootScope.currentUser));
-            var promise = CandidateService.findCandidateById($rootScope.currentUser._id);
-            promise.success(function (user) {
-                vm.user = user;
-            });
+            //var promise = CandidateService.findCandidateById($rootScope.currentUser._id);
+            ///promise.success(function (user) {
+            vm.user = $rootScope.currentUser;
+            //});
         }
 
         init();

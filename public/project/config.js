@@ -70,7 +70,7 @@
                 templateUrl: 'views/candidate/candidate.list.view.client.html',
                 controller: 'CandidateListController',
                 controllerAs: 'model',
-                resolve: { loggedin: checkAdminLoggedin }
+                resolve: { currentUser: checkAdminLoggedin }
             })
 
 
@@ -129,10 +129,10 @@
 
     var checkCandidateLoggedin = function($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();
-        console.log("Check loggedin client");
+        //console.log("Check loggedin client");
         $http.get('/api/candidate/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
-            console.log("Check loggedin client not 0" + JSON.stringify(user));
+            //console.log("Check loggedin client not 0" + JSON.stringify(user));
             if (user !== '0') {
                 $rootScope.currentUser = user;
                 deferred.resolve();
@@ -168,7 +168,7 @@
                 deferred.resolve();
             } else {
                 deferred.reject();
-                $location.url('/candidate/login');
+                $location.url('/candidate/profile');
             }
         });
         return deferred.promise;
