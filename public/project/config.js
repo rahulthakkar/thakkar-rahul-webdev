@@ -58,24 +58,12 @@
                 templateUrl: 'views/candidate/candidate.list.view.client.html',
                 controller: 'CandidateListController',
                 controllerAs: 'model',
-                //resolve: { loggedin: checkAdminLoggedin }
-            })
-            .when("/admin/company", {
-                templateUrl: 'views/company/company.list.view.client.html',
-                controller: 'CompanyListController',
-                controllerAs: 'model',
-                resolve: { currentUser: checkAdminLoggedin }
-            })
-            .when("/admin/candidate", {
-                templateUrl: 'views/candidate/candidate.list.view.client.html',
-                controller: 'CandidateListController',
-                controllerAs: 'model',
                 resolve: { currentUser: checkAdminLoggedin }
             })
 
 
             .when("/user/:uid/website",{
-                templateUrl: 'views/company/company-list.view.client.html',
+                templateUrl: 'views/company/company.list.view.client.html',
                 controller: "WebsiteListController",
                 controllerAs: "model"
             })
