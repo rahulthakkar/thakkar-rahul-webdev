@@ -239,7 +239,6 @@ module.exports = function (app, model) {
 
     function loggedin(req, res) {
         console.log("Checking loggedin sever");
-        console.log("Checking loggedin sever"+req.user.role);
         res.send(req.isAuthenticated() && req.user.role? sendTransformObject(req.user) : '0');
     }
 
