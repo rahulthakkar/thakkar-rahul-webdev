@@ -1,51 +1,50 @@
 <div class="container">
     <div class="row main">
-        <div class="panel-heading">
-            <div class="panel-title text-center">
-                <h1>Job Seeker Login</h1>
-                <hr />
+        <div class="page-header">
+            <div class="text-center">
+                <h1 class="large-text serif">JobSeeker Log In</h1>
             </div>
         </div>
-        <div class="main-login main-center">
 
-
-                <div class="form-group">
-                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                            <input ng-model="candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
-                        </div>
+        <div>
+            <div class="form-group">
+                <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        <input ng-model="candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
                     </div>
                 </div>
+            </div>
 
-                <div class="form-group">
-                    <label for="password" class="cols-sm-2 control-label">Password</label>
-                    <div class="cols-sm-10">
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                            <input ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
-                        </div>
+            <div class="form-group">
+                <label for="password" class="cols-sm-2 control-label">Password</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
                     </div>
                 </div>
+            </div>
 
 
-                <div ng-show="model.error" class="alert alert-danger" role="alert">
-                    {{model.error}}
-                </div>
+            <div ng-show="model.error" class="alert alert-danger" role="alert">
+                {{model.error}}
+            </div>
 
-                <div class="form-group ">
-                    <a ng-click="model.login(candidate)" class="btn btn-primary btn-block">Login</a>
-                    <a ng-click="model.test()" class="btn btn-primary btn-block">Test</a>
-                </div>
-                <a href="/auth/candidate/facebook" class="btn btn-primary btn-block">
-                    <span class="fa fa-facebook"></span>
-                        Facebook
+            <div>
+                <a ng-click="model.login(candidate)" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">Login</a>
+                <a href="/auth/candidate/facebook" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">
+                    <span class="fa fa-facebook-official"></span>
+                      Log In with Facebook
                 </a>
-            <a href="/candidate/register" class="btn btn-success btn-block">Registration</a>
+            </div>
+
+            <div class="pull-right">
+                <small><div>Need an account? <a href="#/candidate/register">Sign up >></a></div></small>
+            </div>
 
         </div>
     </div>
 </div>
 
-<a class="twitter-timeline" data-width="350" data-height="1000" data-theme="light" data-link-color="#2B7BB9" href="https://twitter.com/Drawbridge">Tweets by Cristiano</a> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>

@@ -1,51 +1,64 @@
-
-<div class="container-fluid">
-    <h1>Register</h1>
-
-    <div class="alert alert-danger" ng-show="model.error">
-        {{model.error}}
-    </div>
-
-    <input ng-model="model.user.username"
-           id="username"
-           class="form-control"
-           placeholder="username"/>
-
-    <input ng-model="model.user.password"
-           id="password"
-           class="form-control"
-           type="password"
-           placeholder="password"/>
-
-    <input ng-model="model.user.password2"
-           id="verify-password2"
-           class="form-control"
-           type="password"
-           placeholder="verify password"/>
-
-
-    <a ng-click="model.register(model.user)" class="btn btn-primary btn-block">Register</a>
-    <a ng-click="model.test()" class="btn btn-primary btn-block">test</a>
-    <a href="#/login" class="btn btn-danger btn-block">Cancel</a>
-</div>
-
-
-<div class="form-group">
-    <label for="name" class="cols-sm-2 control-label">Your Name</label>
-    <div class="cols-sm-10">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
-            <input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name"/>
+<div class="container">
+    <div class="row main">
+        <div class="page-header">
+            <div class="text-center">
+                <h1 class="large-text serif"><b>Post a Job</b></h1>
+                <small>Join 100s of companies recruiting on JobNow!</small>
+            </div>
         </div>
-    </div>
-</div>
 
-<div class="form-group">
-    <label for="confirm" class="cols-sm-2 control-label">Confirm Password</label>
-    <div class="cols-sm-10">
-        <div class="input-group">
-            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-            <input type="candidate.password2" class="form-control" name="confirm" id="confirm"  placeholder="Confirm your Password"/>
+        <div>
+            <div class="form-group">
+                <label for="name" class="cols-sm-2 control-label">Company Name</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-bank fa" aria-hidden="true"></i></span>
+                        <input ng-model="company.name" type="text" class="form-control" name="name" id="name"  placeholder="Enter your Company name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                <div class="cols-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        <input ng-model="company.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="cols-sm-2 control-label">Password</label>
+                <div class="cols-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="company.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password2" class="cols-sm-2 control-label">Confirm Password</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="company.password2" type="password" class="form-control" name="password" id="password2"  placeholder="Confirm your Password"/>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="model.error" class="alert alert-danger" role="alert">
+                {{model.error}}
+            </div>
+
+            <div>
+                <a ng-click="model.register(company)" class="btn btn-primary btn-block wbdv-button-reg-margin">Register</a>
+            </div>
+
+            <div class="pull-right">
+                <small><div>Already have an account? <a href="#/company/login">Log In >></a></div></small>
+            </div>
         </div>
     </div>
 </div>

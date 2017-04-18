@@ -6,6 +6,14 @@ body {
     padding-top: 60px;
     padding-bottom: 60px;
     overflow-y: scroll;
+    background-color: #FEFEFE
+}
+
+.wbdv-darker-highlight{
+    background-color: #F5F5F5;
+}
+.wbdv-button-reg-margin {
+        margin-top: 5px;
 }
 
 .navbar-default {
@@ -59,6 +67,18 @@ a:hover {
     padding-right: 15px;
     overflow-y: auto;
 }
+
+.large-text {
+    font-size: xx-large;
+}
+.small-text {
+    font-size: x-small;
+}
+
+.serif {
+    font-family: "Times New Roman", Times, serif;
+}
+
 
 .navbar-default .navbar-nav>li>a {
     color: white;
@@ -130,6 +150,10 @@ a:hover {
         margin: 0;
         margin-top: 6px;
     }
+}
+
+wbdv-show-html{
+    white-space: pre-wrap;
 }
 
 .wbdv-left-pane>.list-group .list-group-item {

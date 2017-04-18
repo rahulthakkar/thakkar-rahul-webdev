@@ -11,16 +11,28 @@
 
 <div>
     <div class="input-group">
-        <input ng-model="searchTerm" type="text" class="form-control" placeholder="Search Jobs">
+        <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs">
         <span class="input-group-btn">
-            <a ng-click="model.searchJobs(searchTerm)" class="btn btn-default" type="button">
+            <a ng-click="model.searchJobs(model.searchTerm)" class="btn btn-default" type="button">
                 <span class="glyphicon glyphicon-search"></span>
             </a>
         </span>
     </div>
+
+    <center ng-show="!model.jobs">
+        <center><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></center>
+    </div>>
+
     <div>
         <div ng-repeat="job in model.jobs">
-            {{job}}
+            <div ng-show="job.jobtitle">
+                <h4 ng-show="job.jobtitle"><a href="{{job.url}}" target="_blank"> {{job.jobtitle}}</a></h4>
+                <div>
+                    <h5 ng-show="job.company">{{job.company}}</h5>
+                    <h6 ng-show="job.formattedLocationFull">{{job.formattedLocationFull}}</h6>
+                </div>
+                <div class="wbdv-show-html" ng-show="job.snippet">{{job.snippet}}</div>
+            </div>
         </div>
     </div>
 </div>

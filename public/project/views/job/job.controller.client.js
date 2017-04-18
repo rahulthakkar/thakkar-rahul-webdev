@@ -129,16 +129,19 @@
     function JobIndeedSearchController($routeParams, $location) {
         var vm = this;
         vm.searchJobs = searchJobs
+        vm.searchTerm = "Web Developer"
 
         var publisherKey = "3576802165611426";
         var indeed_client = new Indeed(publisherKey);
 
         function init() {
+            searchJobs(vm.searchTerm);
         }
         init();
 
         function searchJobs(searchTerm) {
-            return indeed_client.search({
+            vm.searchTerm = searchTerm;
+            indeed_client.search({
                 q: searchTerm,
                 //l: 'austin',
                 limit:25,
