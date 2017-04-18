@@ -60,6 +60,11 @@
                 controllerAs: 'model',
                 resolve: { currentUser: checkAdminLoggedin }
             })
+            .when("/main", {
+                templateUrl: 'views/job/job.indeed.search.view.client.html',
+                controller: 'JobIndeedSearchController',
+                controllerAs: 'model'
+            })
 
 
             .when("/company/job",{

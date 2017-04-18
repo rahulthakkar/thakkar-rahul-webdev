@@ -21,12 +21,20 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
+
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+    next();
+});
 // configure a public directory to host static content
 app.use(express.static(__dirname + '/public'));
 
 require ("./test/app.js")(app);
 //require("./assignment/app.js")(app);
 require("./project/app.js")(app);
+
 
 var port = process.env.PORT || 3000;
 

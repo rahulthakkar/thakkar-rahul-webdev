@@ -3,8 +3,8 @@
         .module("JobNowMaker")
         .controller("JobListController", JobListController)
         .controller("JobEditController", JobEditController)
-        .controller("JobNewController", JobNewController);
-
+        .controller("JobNewController", JobNewController)
+        .controller("JobIndeedSearchController", JobIndeedSearchController);
 
     function JobListController($routeParams, JobService, $rootScope) {
         var vm = this;
@@ -124,5 +124,42 @@
                     }
                 });
         }
+    }
+
+    function JobIndeedSearchController($routeParams, $location) {
+        var vm = this;
+        vm.searchJobs = searchJobs
+
+        var publisherKey = "3576802165611426";
+        var indeed_client = new Indeed(publisherKey);
+
+        function init() {
+        }
+        init();
+
+        function searchJobs(searchTerm) {
+            return indeed_client.search({
+                q: searchTerm,
+                //l: 'austin',
+                limit:25,
+                highlight:1,
+                userip: '1.2.3.4',
+                useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
+            }, function (response) {
+                vm.jobs = response.results;
+            });
+        }
+
+        /*function searchJobs(searchTerm) {
+            console.log("searchTerm "+searchTerm);
+
+            IndeedService
+                .searchJobs(searchTerm)
+                .then(function(response) {
+                    //data = data.substring(0,data.length - 1);
+                    data = JSON.parse(data);
+                    vm.jobs = data.results;
+                });
+        }*/
     }
 })();

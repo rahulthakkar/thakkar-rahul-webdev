@@ -154,6 +154,14 @@ a:hover {
     height: 0;
 }
 
+.media-top-right{
+    float:none;
+    margin:0 auto;
+}
+.media-top{
+    float:none;
+    margin:0 auto;
+}
 .youtube-widget iframe {
     position: absolute;
     top: 0;
