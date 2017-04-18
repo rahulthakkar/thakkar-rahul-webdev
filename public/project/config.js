@@ -62,11 +62,29 @@
             })
 
 
-            .when("/user/:uid/website",{
-                templateUrl: 'views/company/company.list.view.client.html',
-                controller: "WebsiteListController",
-                controllerAs: "model"
+            .when("/company/job",{
+                templateUrl: 'views/job/job.list.view.client.html',
+                controller: "JobListController",
+                controllerAs: "model",
+                resolve: { currentUser: checkCompanyLoggedin }
+
             })
+            .when("/company/job/new",{
+                templateUrl: 'views/job/job.new.view.client.html',
+                controller: "JobNewController",
+                controllerAs: "model",
+                resolve: { currentUser: checkCompanyLoggedin }
+
+            })
+            .when("/company/job/:jid",{
+                templateUrl: 'views/job/job.edit.view.client.html',
+                controller: "JobEditController",
+                controllerAs: "model",
+                resolve: { currentUser: checkCompanyLoggedin }
+
+            })
+
+
             .when("/user/:uid/website/new",{
                 templateUrl: 'views/company/company-new.view.client.html',
                 controller: "WebsiteNewController",

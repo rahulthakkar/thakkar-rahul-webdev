@@ -12,7 +12,8 @@ module.exports = function(app) {
         "findCompanyByCredentials": findCompanyByCredentials,
         "updateCompany": updateCompany,
         "deleteCompany": deleteCompany,
-        "findAllCompany": findAllCompany
+        "findAllCompany": findAllCompany,
+        "removeJob": removeJob
     };
     return api;
 
@@ -80,6 +81,22 @@ module.exports = function(app) {
                 if(err){
                     deferred.reject(err);
                 }else{
+                    deferred.resolve(company);
+                }
+            });
+        return deferred.promise;
+    }
+
+    function removeJob(companyId, jobId){
+        var deferred = q.defer();
+        companyModel.update({"_id" : companyId},
+            {$pullAll : {"jobs": [jobId]}},
+            function(err, company){
+                if(err){
+                    console.log("error occured");
+                    deferred.reject(err);
+                }else{
+                    console.log("removed the job ");
                     deferred.resolve(company);
                 }
             });

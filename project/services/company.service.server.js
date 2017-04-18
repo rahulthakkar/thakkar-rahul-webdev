@@ -190,7 +190,7 @@ module.exports = function (app, model) {
     function loggedin(req, res) {
         //console.log("Company loggedin "+ util.inspect(req, {showHidden: false, depth: null}))
         console.log("Company loggedin "+ req.isAuthenticated());
-        console.log("Company loggedin "+ !req.user.role);
+
         res.send(req.isAuthenticated() && !req.user.role? sendTransformObject(req.user) : '0');
     }
 

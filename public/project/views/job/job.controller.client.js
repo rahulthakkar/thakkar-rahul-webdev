@@ -1,110 +1,126 @@
 (function () {
     angular
         .module("JobNowMaker")
-        .controller("PageListController", pageListController)
-        .controller("PageEditController", pageEditController)
-        .controller("PageNewController", pageNewController);
+        .controller("JobListController", JobListController)
+        .controller("JobEditController", JobEditController)
+        .controller("JobNewController", JobNewController);
 
 
-    function pageListController($routeParams, PageService) {
+    function JobListController($routeParams, JobService, $rootScope) {
         var vm = this;
-        vm.userId = $routeParams.uid;
-        vm.websiteId = $routeParams.wid;
+        vm.companyId = $rootScope.currentUser._id;
 
         // event handlers
 
 
         function init() {
-            PageService
-                .findAllPagesForWebsite(vm.websiteId)
-                .success(function (pages) {
-                    vm.pages = pages;
+            JobService
+                .findAllJobsForCompany(vm.companyId)
+                .success(function (jobs) {
+                    vm.jobs = jobs;
                 });
         }
         init();
 
     }
 
-    function pageEditController($routeParams, $location, PageService) {
+    function JobEditController($routeParams, $location, JobService, $rootScope) {
         var vm = this;
-        vm.userId = $routeParams.uid;
-        vm.websiteId = $routeParams.wid;
-        vm.pageId = $routeParams.pid;
+        vm.companyId = $rootScope.currentUser._id;
+        vm.jobId = $routeParams.jid;
 
         // event handlers
         vm.update = update;
-        vm.deletePage = deletePage;
+        vm.deleteJob = deleteJob;
 
         function init() {
-            PageService
-                .findAllPagesForWebsite(vm.websiteId)
-                .success(function (pages) {
-                    vm.pages = pages;
+            JobService
+                .findAllJobsForCompany(vm.companyId)
+                .success(function (jobs) {
+                    vm.jobs = jobs;
                 });
 
-            PageService
-                .findPageById(vm.pageId)
-                .success(function (page) {
-                    vm.page = page;
+            JobService
+                .findJobById(vm.jobId)
+                .success(function (job) {
+                    vm.job = job;
                 });
         }
         init();
 
-        function deletePage() {
-            PageService
-                .deletePage(vm.pageId)
+        vm.testDelete = function(){
+            deleteJob();
+        };
+        vm.testUpdate = function () {
+            var job = {title: "New", description: "java developer", location: "Boston, MA", jobType: "full-time", isActive:"true"
+                , salary:"190K-200K"};
+            update(job);
+        };
+
+        function deleteJob() {
+            console.log("Deleting job "+vm.jobId);
+            JobService
+                .deleteJob(vm.jobId)
                 .success(function () {
-                    $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                    $location.url("/company/job/");
                 })
                 .error(function () {
-                    vm.error = "Unable to delete the page";
+                    vm.error = "Unable to delete the job";
                 });
         }
 
-        function update(updatedPage) {
-            PageService
-                .updatePage(vm.pageId, updatedPage)
-                .success(function (page) {
-                    if(page == null) {
-                        vm.error = "Unable to update the page";
+        function update(updatedJob) {
+            JobService
+                .updateJob(vm.jobId, updatedJob)
+                .success(function (job) {
+                    if(job == null) {
+                        vm.error = "Unable to update the job";
                     } else {
-                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                        $location.url("/company/job/");
                     }
                 })
                 .error(function () {
-                    vm.error = "Unable to update the page";
+                    vm.error = "Unable to update the job";
                 });
         }
 
 
     }
 
-    function pageNewController($routeParams, $location, PageService) {
+    function JobNewController($routeParams, $location, JobService, $rootScope) {
         var vm = this;
-        vm.userId = $routeParams.uid;
-        vm.websiteId = $routeParams.wid;
+        vm.companyId = $rootScope.currentUser._id;
 
         // event handlers
         vm.create = create;
 
 
         function init() {
-            PageService
-                .findAllPagesForWebsite(vm.websiteId)
-                .success(function (pages) {
-                    vm.pages = pages;
+            JobService
+                .findAllJobsForCompany(vm.companyId)
+                .success(function (jobs) {
+                    vm.jobs = jobs;
                 });
         }
         init();
 
-        function create(newPage) {
-            PageService
-                .createPage(vm.websiteId, newPage)
-                .success(function (page) {
-                    if (page == null) {
-                        vm.error = "Unable to create new page";
+        vm.test = test;
+        function test() {
+            console.log("test called");
+            var job = {title: "Developer", description: "java developer", location: "Boston, MA", jobType: "full-time", isActive:"true"
+                , salary:"90K-100K"};
+
+            create(job);
+        }
+
+        function create(newJob) {
+            JobService
+                .createJob(vm.companyId, newJob)
+                .success(function (job) {
+                    if (job == null) {
+                        vm.error = "Unable to create new job";
                     } else {
-                        $location.url("/user/"+vm.userId+"/website/"+vm.websiteId+"/page");
+                        $location.url("/company/job/");
                     }
                 });
         }

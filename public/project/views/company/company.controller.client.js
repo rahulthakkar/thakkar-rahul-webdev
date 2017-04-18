@@ -48,7 +48,7 @@
 
 
         function init() {
-            vm.user = $rootScope.currentUser;
+            vm.company = $rootScope.currentUser;
         }
 
         init();
@@ -60,6 +60,7 @@
                     if (company == null) {
                         vm.error = "Unable to update the company info";
                     } else {
+                        vm.company = $rootScope.currentUser;
                         vm.message = "Company info successfully updated"
                     }
                 })

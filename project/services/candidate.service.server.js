@@ -156,14 +156,11 @@ module.exports = function (app, model) {
     }
 
     function serializeUser(user, done) {
-        console.log("candidate serializeUser called" + JSON.stringify(user));
         done(null, user);
     }
 
     function deserializeUser(user, done) {
         var isCandidate = user.role? true: false;
-        console.log("candidate deserializeUser called" + JSON.stringify(user));
-        console.log("candidate deserializeUser called" + isCandidate);
         var collection = isCandidate? model.candidateModel: model.companyModel;
         collection.findById(user._id)
             .then(
