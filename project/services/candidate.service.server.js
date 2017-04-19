@@ -62,13 +62,13 @@ module.exports = function (app, model) {
     }
 
     function sendTransformObject(candidate){
-        //console.log("Before"+ JSON.stringify(candidate, null, 2));
+        console.log("Before"+ JSON.stringify(candidate, null, 2));
         delete candidate.password;
         delete candidate.facebook;
         delete candidate.role;
         delete candidate.dateCreated;
         delete candidate._v;
-        //console.log("After"+ JSON.stringify(candidate, null, 2))
+        console.log("After"+ JSON.stringify(candidate, null, 2))
         return candidate;
     }
 

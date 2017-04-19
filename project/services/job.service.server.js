@@ -55,8 +55,8 @@ module.exports = function (app, model) {
     function updateJob(req, res) {
         var jobId = req.params.jobId;
         var newJob = req.body;
-        console.log("updating "+ jobId);
-        console.log("updating "+ newJob);
+        //console.log("updating "+ jobId);
+        //console.log("updating "+ newJob);
         model.jobModel.updateJob(jobId, newJob)
             .then(function (job) {
                     res.status(200).send(job);

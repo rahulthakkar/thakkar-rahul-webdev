@@ -2,7 +2,7 @@
     <div class="row main">
         <div class="page-header">
             <div class="text-center">
-                <h1 class="large-text serif">JobSeeker Log In</h1>
+                <h1 class="large-text serif"><b>JobSeeker Log In</b></h1>
             </div>
         </div>
 
@@ -12,7 +12,7 @@
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                        <input ng-model="candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        <input ng-model="model.user.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
                     </div>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        <input ng-model="model.user.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
                     </div>
                 </div>
             </div>
@@ -33,9 +33,9 @@
             </div>
 
             <div>
-                <a ng-click="model.login(candidate)" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">Login</a>
+                <a ng-click="model.login(model.user)" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">Login</a>
                 <a href="/auth/candidate/facebook" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">
-                    <span class="fa fa-facebook-official"></span>
+                    <span class="fa fa-facebook-official fa-lg"></span>
                       Log In with Facebook
                 </a>
             </div>

@@ -88,6 +88,9 @@
                 resolve: { currentUser: checkCompanyLoggedin }
 
             })
+            .when("/navigation",{
+                templateUrl: 'views/common/navigation.view.client.html',
+            })
 
 
             .when("/user/:uid/website/new",{

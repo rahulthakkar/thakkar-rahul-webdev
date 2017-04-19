@@ -48,7 +48,8 @@
 
 
         function init() {
-            vm.company = $rootScope.currentUser;
+            vm.user = $rootScope.currentUser;
+            console.log("Now"+JSON.stringify(vm.user));
         }
 
         init();
@@ -93,7 +94,7 @@
         }
         init();
 
-        vm.test = test;
+        /*vm.test = test;
         function test() {
             console.log("test called");
             var company = {email: "rahul1@fb.com", password: "Rahul123", password2: "Rahul123", name: "Facebook", phone:"857-928-5539"
@@ -101,7 +102,7 @@
                 , twitterURL:"https://twitter.com/facebook", siteURL:"https://www.facebook.com/careers/"};
 
             register(company);
-        }
+        }*/
 
         function register(newCompany) {
             console.log("register called with "+ JSON.stringify(newCompany));

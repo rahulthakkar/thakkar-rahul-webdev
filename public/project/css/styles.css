@@ -3,17 +3,25 @@ input {
 }
 
 body {
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 70px;
+    padding-bottom: 70px;
     overflow-y: scroll;
     background-color: #FEFEFE
+}
+
+.wbdv-right-navbar{
+    padding-right: 100px;
+}
+
+.wbdv-left-navbar{
+    margin-left: 20px;
 }
 
 .wbdv-darker-highlight{
     background-color: #F5F5F5;
 }
 .wbdv-button-reg-margin {
-        margin-top: 5px;
+        margin-top: 8px;
 }
 
 .navbar-default {
@@ -198,4 +206,12 @@ h1.title {
     font-size: 50px;
     font-family: 'Passion One', cursive;
     font-weight: 400;
+}
+
+.ta-editor {
+    min-height: 100px;
+    height: 150px;
+    overflow: auto;
+    font-family: inherit;
+    font-size: 100%;
 }

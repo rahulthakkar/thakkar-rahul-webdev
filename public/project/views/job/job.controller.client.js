@@ -35,12 +35,6 @@
 
         function init() {
             JobService
-                .findAllJobsForCompany(vm.companyId)
-                .success(function (jobs) {
-                    vm.jobs = jobs;
-                });
-
-            JobService
                 .findJobById(vm.jobId)
                 .success(function (job) {
                     vm.job = job;
@@ -48,14 +42,14 @@
         }
         init();
 
-        vm.testDelete = function(){
+        /*vm.testDelete = function(){
             deleteJob();
         };
         vm.testUpdate = function () {
             var job = {title: "New", description: "java developer", location: "Boston, MA", jobType: "full-time", isActive:"true"
                 , salary:"190K-200K"};
             update(job);
-        };
+        };*/
 
         function deleteJob() {
             console.log("Deleting job "+vm.jobId);
@@ -104,16 +98,19 @@
         }
         init();
 
-        vm.test = test;
+        /*vm.test = test;
         function test() {
             console.log("test called");
             var job = {title: "Developer", description: "java developer", location: "Boston, MA", jobType: "full-time", isActive:"true"
                 , salary:"90K-100K"};
 
             create(job);
-        }
+        }*/
 
         function create(newJob) {
+            //console.log("Create Job"+ newJob);
+            //console.log("with company"+ vm.companyId);
+
             JobService
                 .createJob(vm.companyId, newJob)
                 .success(function (job) {
@@ -131,21 +128,21 @@
         vm.searchJobs = searchJobs
         vm.searchTerm = "Web Developer"
 
-        var publisherKey = "3576802165611426";
+        var publisherKey = process.env.INDEED_PUBLISHER_KEY;
         var indeed_client = new Indeed(publisherKey);
 
         function init() {
-            searchJobs(vm.searchTerm);
+            searchJobs(vm.searchTerm, "US");
         }
         init();
 
-        function searchJobs(searchTerm) {
+        function searchJobs(searchTerm, location) {
             vm.searchTerm = searchTerm;
             indeed_client.search({
                 q: searchTerm,
-                //l: 'austin',
+                l: location,
                 limit:25,
-                highlight:1,
+                highlight:0,
                 userip: '1.2.3.4',
                 useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
             }, function (response) {

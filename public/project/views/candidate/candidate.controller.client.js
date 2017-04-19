@@ -59,18 +59,22 @@
         init();
 
         function update(newCandidate) {
-            var promise = CandidateService.updateCandidate($rootScope.currentUser._id, newCandidate);
-            promise
-                .success(function (candidate) {
-                    if (candidate == null) {
+            if(newCandidate.password && (newCandidate.password === newCandidate.password2)) {
+                var promise = CandidateService.updateCandidate($rootScope.currentUser._id, newCandidate);
+                promise
+                    .success(function (candidate) {
+                        if (candidate == null) {
+                            vm.error = "Unable to update user";
+                        } else {
+                            vm.message = "User successfully updated"
+                        }
+                    })
+                    .error(function () {
                         vm.error = "Unable to update user";
-                    } else {
-                        vm.message = "User successfully updated"
-                    }
-                })
-                .error(function () {
-                    vm.error = "Unable to update user";
-                });
+                    });
+            } else {
+                vm.error = "Passwords are not same";
+            }
         }
 
         function logout() {

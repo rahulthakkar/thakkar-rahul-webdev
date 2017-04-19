@@ -3,6 +3,7 @@ var companySchema = mongoose.Schema({
     email : {type:String, require:true},
     password : String,
     name : {type:String, require:true},
+    description: String,
     phone : String,
     // posted jobs
     jobs : [{type : mongoose.Schema.Types.ObjectId, ref : 'job'}],

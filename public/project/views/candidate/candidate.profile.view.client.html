@@ -1,65 +1,101 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-text pull-right">
-            <a ng-click="model.update(model.user)">
-                <span class="glyphicon glyphicon-ok"></span>
-            </a>
+<div class="container">
+    <div class="row main">
+        <div class="page-header">
+            <div class="text-center">
+                <h1 class="large-text serif"><b>Job Seeker Profile</b></h1>
+            </div>
         </div>
 
-        <div class="navbar-header navbar-brand">Profile</div>
-    </div>
-</nav>
+        <div>
+            <div class="form-group">
+                <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                <div class="cols-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        <input disabled ng-model="model.user.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                    </div>
+                </div>
+            </div>
 
-<div class="alert alert-danger" ng-show="model.error">
-    {{model.error}}
-</div>
+            <div class="form-group">
+                <label for="firstName" class="cols-sm-2 control-label">First Name</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.firstName" type="text" class="form-control" name="firstName" id="firstName"  placeholder="Enter your First name"/>
+                    </div>
+                </div>
+            </div>
 
-<div class="alert alert-success" ng-show="model.message">
-    {{model.message}}
-</div>
+            <div class="form-group">
+                <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.lastName" type="text" class="form-control" name="lastName" id="lastName"  placeholder="Enter your Last name"/>
+                    </div>
+                </div>
+            </div>
 
-<div class="container-fluid">
+            <div class="form-group">
+                <label for="phone" class="cols-sm-2 control-label">Telephone</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-phone-square fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.phone" type="tel" class="form-control" name="phone" id="phone"  placeholder="Enter your Phone no."/>
+                    </div>
+                </div>
+            </div>
 
-    <label for="username">Username</label>
-    <input ng-model="model.user.username"
-           id="username"
-           class="form-control"
-           value="rahul1"
-           placeholder="rahul1"/>
+            <div class="form-group">
+                <label for="skills" class="cols-sm-2 control-label">Skills</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.skills" class="form-control" name="skills" id="skills"  placeholder="Separate each skill with a comma"/>
+                    </div>
+                </div>
+            </div>
 
-    <label for="email">Email</label>
-    <input ng-model="model.user.email"
-           id="email"
-           type="email"
-           class="form-control"
-           value="rahul1@ccs.neu.edu"
-           placeholder="rahul1@ccs.neu.edu"/>
+            <div class="form-group">
+                <label for="ethnicity" class="cols-sm-2 control-label">Ethnicity</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user-o fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.ethnicity" class="form-control" name="ethnicity" id="ethnicity"  placeholder="Enter your Ethnicity: Asian, African American, White, Hispanic"/>
+                    </div>
+                </div>
+            </div>
 
-    <label for="first">First Name</label>
-    <input ng-model="model.user.firstName"
-           id="first"
-           class="form-control"
-           value="Rahul"
-           placeholder="Rahul"/>
+            <div class="form-group">
+                <label for="education" class="cols-sm-2 control-label">Education</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                        <input ng-model="model.user.education" class="form-control" name="education" id="education"  placeholder="Enter your highest Education Degree"/>
+                    </div>
+                </div>
+            </div>
 
-    <label for="last">Last Name</label>
-    <input ng-model="model.user.lastName"
-           id="last"
-           class="form-control"
-           value="Thakkar"
-           placeholder="Thakkar"/>
+            <!---->
 
-    <a href="#/user/{{model.user._id}}/website" class="btn btn-primary btn-block">Websites</a>
-    <a ng-click="model.update(model.user)" class="btn btn-success btn-block">Update</a>
-    <a ng-click="model.logout()" class="btn btn-danger btn-block">Logout</a>
-</div>
+            <div class="alert alert-danger" ng-show="model.error">
+                {{model.error}}
+            </div>
 
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container-fluid">
-        <div class="navbar-text pull-right">
-            <a href="#/user/{{model.user._id}}">
-                <span class="glyphicon glyphicon-user"></span>
-            </a>
+            <div class="alert alert-success" ng-show="model.message">
+                {{model.message}}
+            </div>
+
+            <div>
+                <a ng-click="model.update(model.user)" class="btn btn-primary btn-block wbdv-button-reg-margin">Save</a>
+            </div>
+
+            <div>
+                <a ng-click="model.delete(model.user)" class="btn btn-danger btn-block wbdv-button-reg-margin">Delete Profile</a>
+            </div>
+
+
         </div>
     </div>
-</nav>
+</div>

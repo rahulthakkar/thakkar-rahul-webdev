@@ -36,17 +36,21 @@ module.exports = function (app, model) {
     }
 
     function sendTransformObject(company){
+        console.log("Called with"+JSON.stringify(company));
         delete company.password;
         delete company.dateCreated;
         delete company._v;
+        console.log("Left with"+JSON.stringify(company));
         return company;
     }
 
     function updateTransformObject(company){
+        console.log("Left with"+JSON.stringify(company));
         delete company._id;
         delete company.role;
         delete company.dateCreated;
         delete company._v;
+        console.log("Left with"+JSON.stringify(company));
         return company;
     }
 

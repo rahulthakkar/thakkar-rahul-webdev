@@ -1,45 +1,76 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="row container-fluid">
-        <div class="col-sm-4 hidden-xs">
-            <div class="navbar-text pull-left">
-                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page">
-                    <span class="glyphicon glyphicon-chevron-left"></span>
-                </a>
-            </div>
-            <div class="navbar-brand">Pages</div>
-            <div class="navbar-text pull-right">
-                <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/new">
-                    <span class="glyphicon glyphicon-plus"></span>
-                </a>
+<div class="container">
+    <div class="row main">
+        <div class="page-header">
+            <div class="text-center">
+                <h1 class="large-text serif"><b>Edit the Job</b></h1>
             </div>
         </div>
-        <div class="col-sm-8">
-            <div class="navbar-text pull-right">
-                <a ng-click="model.update(model.page)">
-                    <span class="glyphicon glyphicon-ok"></span>
-                </a>
+
+        <div>
+            <div class="form-group">
+                <label for="title" class="cols-sm-2 control-label">Job Title</label>
+                <div class="cols-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-briefcase fa" aria-hidden="true"></i></span>
+                        <input ng-model="model.job.title" type="text" class="form-control" name="title" id="title"  placeholder="Enter the Job Title"/>
+                    </div>
+                </div>
             </div>
 
-            <div class="navbar-brand col-xs-10">Edit Page</div>
+            <div class="form-group">
+                <label for="description" class="cols-sm-2 control-label">Job Description</label>
+                <div class="cols-sm-10">
+                    <textarea ng-model="model.job.description" class="form-control" name="description" id="description" rows="6" placeholder="Enter some info about the Job"/></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="location" class="cols-sm-2 control-label">Job Location</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-map-marker fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.job.location" class="form-control" name="location" id="location"  placeholder="Enter the Job Location"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="jobType" class="cols-sm-2 control-label">Job Type</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-calendar fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.job.jobType" class="form-control" name="jobType" id="jobType"  placeholder="Enter the Job type: Full-Time, Part-Time, Internship"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="salary" class="cols-sm-2 control-label">Compensation</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-money" aria-hidden="true"></i></span>
+                        <input ng-model="model.job.salary" class="form-control" name="salary" id="salary"  placeholder="Enter Compensation information"/>
+                    </div>
+                </div>
+            </div>
+
+            <!---->
+
+            <div class="alert alert-danger" ng-show="model.error">
+                {{model.error}}
+            </div>
+
+            <div class="alert alert-success" ng-show="model.message">
+                {{model.message}}
+            </div>
+
+            <div>
+                <a ng-click="model.update(model.job)" class="btn btn-primary btn-block wbdv-button-reg-margin">Post</a>
+            </div>
+            <div>
+                <a ng-click="model.delete()" class="btn btn-danger btn-block wbdv-button-reg-margin">Delete</a>
+            </div>
+
         </div>
     </div>
-</nav>
-
-<div class="alert alert-success" ng-show="model.jobs">
-    {{model.jobs}}
 </div>
-
-
-<a ng-click="model.testDelete()" class="btn btn-primary btn-block">Test delete</a>
-<a ng-click="model.testUpdate()" class="btn btn-primary btn-block">Test update</a>
-
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container-fluid">
-        <div class="navbar-text pull-right">
-            <a href="#/user/{{model.userId}}">
-                <span class="glyphicon glyphicon-user"></span>
-            </a>
-        </div>
-    </div>
-</nav>
