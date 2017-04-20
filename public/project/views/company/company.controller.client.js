@@ -14,15 +14,16 @@
         vm.login = login;
 
         function init() {
+
         }
         init();
 
-        vm.test = test;
+        /*vm.test = test;
         function test() {
             var company = {email: "rahul1@fb.com", password: "Rahul123"};
 
             login(company);
-        }
+        }*/
 
         function login(company) {
             CompanyService.login(company)
@@ -48,8 +49,9 @@
 
 
         function init() {
-            vm.user = $rootScope.currentUser;
-            console.log("Now"+JSON.stringify(vm.user));
+            vm.user = angular.copy($rootScope.currentUser);
+            vm.companyName = vm.user.name;
+            vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
         }
 
         init();
@@ -61,7 +63,9 @@
                     if (company == null) {
                         vm.error = "Unable to update the company info";
                     } else {
-                        vm.company = $rootScope.currentUser;
+                        vm.user = $rootScope.currentUser;
+                        vm.companyName = vm.user.name;
+                        vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
                         vm.message = "Company info successfully updated"
                     }
                 })
@@ -131,7 +135,9 @@
             CompanyService
                 .findAllCompanys()
                 .success(function (companys) {
-                    vm.companys = companys;
+                    vm.companys = angular.copy(companys);
+                    vm.companyName = vm.user.name;
+                    vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
                 });
         }
 
@@ -145,7 +151,9 @@
         function init() {
             var promise = CompanyService.findCompanyById(userId);
             promise.success(function (company) {
-                vm.company = company;
+                vm.company = angular.copy(company);
+                vm.companyName = vm.user.name;
+                vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
             });
         }
 

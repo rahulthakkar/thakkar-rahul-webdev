@@ -14,7 +14,8 @@
             .when("/company/login",{
                 templateUrl: "views/company/company.login.view.client.html",
                 controller: "CompanyLoginController",
-                controllerAs: "model"
+                controllerAs: "model",
+
             })
             .when("/candidate/register", {
                 templateUrl: "views/candidate/candidate.register.view.client.html",
@@ -25,6 +26,16 @@
                 templateUrl: "views/company/company.register.view.client.html",
                 controller: 'CompanyRegisterController',
                 controllerAs: 'model'
+            })
+            .when("/candidate/logout",{
+                templateUrl: "views/common/common.logout.view.client.html",
+                controller: "CandidateLogoutController",
+                controllerAs: "model"
+            })
+            .when("/company/logout",{
+                templateUrl: "views/common/common.logout.view.client.html",
+                controller: "CompanyLogoutController",
+                controllerAs: "model"
             })
             .when("/candidate/view/:uid", {
                 templateUrl: 'views/candidate/candidate.view.view.client.html',
@@ -89,7 +100,11 @@
 
             })
             .when("/navigation",{
-                templateUrl: 'views/common/navigation.view.client.html',
+                templateUrl: 'views/job/job.edit.view.client.html',
+                controller: "JobEditController",
+                controllerAs: "model",
+                resolve: { currentUser: checkCompanyLoggedin }
+
             })
 
 

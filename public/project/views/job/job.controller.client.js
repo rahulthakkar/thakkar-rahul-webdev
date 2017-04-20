@@ -17,7 +17,7 @@
             JobService
                 .findAllJobsForCompany(vm.companyId)
                 .success(function (jobs) {
-                    vm.jobs = jobs;
+                    vm.jobs = angular.copy(jobs);
                 });
         }
         init();
@@ -37,7 +37,7 @@
             JobService
                 .findJobById(vm.jobId)
                 .success(function (job) {
-                    vm.job = job;
+                    vm.job = angular.copy(job);
                 });
         }
         init();
@@ -93,7 +93,7 @@
             JobService
                 .findAllJobsForCompany(vm.companyId)
                 .success(function (jobs) {
-                    vm.jobs = jobs;
+                    vm.jobs = angular.copy(jobs);
                 });
         }
         init();
@@ -146,7 +146,7 @@
                 userip: '1.2.3.4',
                 useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
             }, function (response) {
-                vm.jobs = response.results;
+                vm.jobs = angular.copy(response.results);
             });
         }
 
