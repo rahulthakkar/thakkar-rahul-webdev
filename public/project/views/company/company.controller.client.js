@@ -5,7 +5,8 @@
         .controller("CompanyProfileController", companyProfileController)
         .controller("CompanyRegisterController", companyRegisterController)
         .controller("CompanyListController", companyListController)
-        .controller("CompanyViewController", companyViewController);
+        .controller("CompanyViewController", companyViewController)
+        .controller("CompanyLogoutController", companyLogoutController);
 
     function companyLoginController($location, CompanyService, $rootScope) {
         var vm = this;
@@ -14,7 +15,7 @@
         vm.login = login;
 
         function init() {
-
+            setLoginDetails(vm);
         }
         init();
 
@@ -45,13 +46,12 @@
 
         // event handlers
         vm.update = update;
-        vm.logout = logout;
+        //vm.logout = logout;
 
 
         function init() {
             vm.user = angular.copy($rootScope.currentUser);
-            vm.companyName = vm.user.name;
-            vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+            setLoginDetails(vm);
         }
 
         init();
@@ -64,8 +64,7 @@
                         vm.error = "Unable to update the company info";
                     } else {
                         vm.user = $rootScope.currentUser;
-                        vm.companyName = vm.user.name;
-                        vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+                        setLoginDetails(vm);
                         vm.message = "Company info successfully updated"
                     }
                 })
@@ -73,6 +72,20 @@
                     vm.error = "Unable to update the company info";
                 });
         }
+
+    }
+
+    function companyLogoutController($routeParams, CompanyService, $rootScope, $location) {
+        var vm = this;
+        vm.logout = logout;
+        console.log("Logout called");
+
+        function init() {
+            setLoginDetails(vm);
+            logout();
+        }
+
+        init();
 
         function logout() {
             CompanyService
@@ -95,6 +108,7 @@
         vm.register = register;
 
         function init() {
+            setLoginDetails(vm);
         }
         init();
 
@@ -117,6 +131,7 @@
                         function(response) {
                             var company = response.data;
                             $rootScope.currentUser = company;
+
                             $location.url("/company/profile/");
                         },
                         function (err) {
@@ -136,8 +151,7 @@
                 .findAllCompanys()
                 .success(function (companys) {
                     vm.companys = angular.copy(companys);
-                    vm.companyName = vm.user.name;
-                    vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+                    setLoginDetails(vm);
                 });
         }
 
@@ -152,11 +166,21 @@
             var promise = CompanyService.findCompanyById(userId);
             promise.success(function (company) {
                 vm.company = angular.copy(company);
-                vm.companyName = vm.user.name;
-                vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+                setLoginDetails(vm);
             });
         }
 
         init();
+    }
+
+    function setLoginDetails(vm){
+        vm.notLoggedIn = vm.user? false: true;
+        if(!vm.notLoggedIn) {
+            vm.companyName = vm.user.name;
+            vm.isCompany = vm.companyName ? true : false;
+            vm.candidateName = vm.user.firstName ? vm.user.firstName : vm.user.email;
+            vm.isCandidate = vm.candidateName && vm.user.role == 'User' ? true : false;
+            vm.isAdmin = vm.candidateName && vm.user.role == 'Admin' ? true : false;
+        }
     }
 })();

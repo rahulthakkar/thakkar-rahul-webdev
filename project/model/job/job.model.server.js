@@ -43,12 +43,16 @@ module.exports = function() {
     }
 
     function findJobById(jobId){
+        //console.log(jobId)
         var deferred = q.defer();
-        jobModel.findById(jobId,
-            function(err, job){
+        jobModel.findById(jobId)
+            .populate('company')
+            .exec(function(err, job){
                 if(err){
+                    //console.log("Error in model"+ err);
                     deferred.reject(err);
                 }else{
+                    //console.log("Job in model"+ JSON.stringify(job));
                     deferred.resolve(job);
                 }
             });

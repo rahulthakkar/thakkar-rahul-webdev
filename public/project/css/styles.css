@@ -13,6 +13,18 @@ body {
     padding-right: 100px;
 }
 
+.wbdv-show-format{
+    white-space: pre-wrap;
+}
+
+.wbdv-small-left-margin{
+    margin-left: 3px;
+}
+.wbdv-small-margin{
+    margin-left: 3px;
+    margin-right: 3px;
+}
+
 .wbdv-left-navbar{
     margin-left: 20px;
 }

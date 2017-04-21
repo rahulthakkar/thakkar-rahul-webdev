@@ -69,6 +69,7 @@ module.exports = function (app, model) {
 
     function findJobById(req, res) {
         var jobId = req.params.jobId;
+        console.log("Server job id"+ jobId);
         model.jobModel.findJobById(jobId)
             .then(function (job) {
                     res.status(200).send(job);

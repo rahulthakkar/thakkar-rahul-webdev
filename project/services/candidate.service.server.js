@@ -30,23 +30,25 @@ module.exports = function (app, model) {
     app.get("/api/admin/candidate", authorize, findAllCandidates);
     app.get("/api/admin/loggedin", authorize, adminLoggedin);
     app.get("/api/candidate/:candidateId", authorize, findCandidateById);
+    app.put("/api/candidate/follow", followCompany);
     app.put("/api/candidate/:candidateId", authorize, updateCandidate);
+
     app.delete("/api/candidate/:candidateId", authorize, deleteCandidate);
 
     app.get('/auth/candidate/facebook', passport.authenticate('facebook', {scope: 'email'}));
     app.get('/auth/candidate/facebook/callback',
         passport.authenticate('facebook', {
-            failureRedirect: '/project/#/candidate/login'
+            failureRedirect: 'project/#/candidate/login'
         }),
         function(req, res) {
-            //console.log(req._passport.session);
-            //console.log(req._passport.session.user._id);
-            var url = 'http://localhost:3000/project/index.html#/candidate/profile/';
+            var url = req.protocol + '://' + req.get('host');
+            url = url+'/project/#/candidate/profile/';
             res.redirect(url);
         });
 
 
     function authorize (req, res, next) {
+
         if (!req.isAuthenticated()) {
             res.send(401);
         } else {
@@ -62,24 +64,24 @@ module.exports = function (app, model) {
     }
 
     function sendTransformObject(candidate){
-        console.log("Before"+ JSON.stringify(candidate, null, 2));
+        //console.log("Before"+ JSON.stringify(candidate, null, 2));
         delete candidate.password;
         delete candidate.facebook;
         delete candidate.role;
         delete candidate.dateCreated;
         delete candidate._v;
-        console.log("After"+ JSON.stringify(candidate, null, 2))
+        //console.log("After"+ JSON.stringify(candidate, null, 2))
         return candidate;
     }
 
     function updateTransformObject(candidate){
-        console.log("Before"+ JSON.stringify(candidate, null, 2))
+        //console.log("Before"+ JSON.stringify(candidate, null, 2))
         delete candidate.facebook;
         delete candidate._id;
         delete candidate.role;
         delete candidate.dateCreated;
         delete candidate._v;
-        console.log("After"+ JSON.stringify(candidate, null, 2))
+        //console.log("After"+ JSON.stringify(candidate, null, 2))
         return candidate;
     }
 
@@ -88,6 +90,24 @@ module.exports = function (app, model) {
         var newCandidate = req.body;
         if(candidateId && candidateId==req.user._id) {
             model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else {
+            res.status(403);
+        }
+    }
+
+    function followCompany(req, res) {
+        console.log("followcompany server called");
+        var candidateId = req.query.candidateId;
+        var companyId = req.query.companyId;
+        console.log(candidateId+" followcompany server called "+ companyId);
+        if(candidateId && candidateId==req.user._id) {
+            model.candidateModel.followCompany(candidateId, companyId)
                 .then(function (candidate) {
                         res.status(200).send(sendTransformObject(candidate));
                     },

@@ -1,19 +1,5 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-text pull-left">
-            <a href="#/user/{{model.userId}}/website/">
-                <span class="glyphicon glyphicon-chevron-left"></span>
-            </a>
-        </div>
-        <div class="navbar-text pull-right">
-            <a href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/new">
-                <span class="glyphicon glyphicon-plus"></span>
-            </a>
-        </div>
+<wbdv-navigation></wbdv-navigation>
 
-        <div class="navbar-brand">Pages</div>
-    </div>
-</nav>
 
 <div ng-repeat="page in model.pages" class="container-fluid">
     <div class="row">

@@ -5,7 +5,8 @@
         .controller("CandidateLogoutController", candidateLogoutController)
         .controller("CandidateProfileController", candidateProfileController)
         .controller("CandidateRegisterController", candidateRegisterController)
-        .controller("CandidateListController", candidateListController);
+        .controller("CandidateListController", candidateListController)
+        .controller("CandidateFollowController", candidateFollowController);
 
     function candidateLoginController($location, CandidateService, $rootScope, $templateCache) {
         var vm = this;
@@ -15,9 +16,7 @@
         vm.login = login;
 
         function init() {
-            console.log("$templateCache"+JSON.stringify($templateCache));
-            $templateCache.removeAll();
-            console.log("$templateCache"+JSON.stringify($templateCache));
+            setLoginDetails(vm);
         }
         init();
 
@@ -51,9 +50,7 @@
         console.log("Logout called");
 
         function init() {
-            console.log("$templateCache"+JSON.stringify($templateCache));
-            $templateCache.removeAll();
-            console.log("$templateCache"+JSON.stringify($templateCache));
+            setLoginDetails(vm);
             logout();
         }
 
@@ -87,10 +84,7 @@
             //console.log("Profile inti")
             //console.log(JSON.stringify($rootScope.currentUser));
             vm.user = angular.copy($rootScope.currentUser);
-            vm.companyName = vm.user.name;
-            vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
-            console.log("companyName"+vm.companyName);
-            console.log("candidateName"+vm.candidateName);
+            setLoginDetails(vm);
             //console.log("username"+vm.companyName);
 
         }
@@ -106,8 +100,7 @@
                         vm.error = "Unable to update user";
                     } else {
                         vm.message = "User successfully updated"
-                        vm.companyName = vm.user.name;
-                        vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+                        setLoginDetails(vm);
                     }
                 })
                 .error(function () {
@@ -125,6 +118,7 @@
 
 
         function init() {
+            setLoginDetails(vm);
         }
         init();
 
@@ -148,6 +142,7 @@
                             var candidate = response.data;
                             $rootScope.currentUser = candidate;
                             $location.url("/candidate/profile/");
+
                         },
                         function (err) {
                             vm.error = "Unable to register user";
@@ -166,11 +161,55 @@
                 .findAllCandidates()
                 .success(function (candidates) {
                     vm.candidates = angular.copy(candidates);
-                    vm.companyName = vm.user.name;
-                    vm.candidateName = vm.user.firstName? vm.user.firstName: vm.user.email;
+                    setLoginDetails(vm);
                 });
+
         }
 
         init();
+    }
+
+    function candidateFollowController($routeParams, CandidateService, $rootScope) {
+        var vm = this;
+
+        // event handlers
+        vm.follow = follow;
+
+        function init() {
+            setLoginDetails(vm);
+        }
+        init();
+
+
+
+        function follow(companyId) {
+            //var promise = CandidateService.followCompany($rootScope.currentUser._id, companyId);
+            var promise = CandidateService.followCompany("1", "");
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        vm.error = "Unable to update user";
+                    } else {
+                        vm.message = "User successfully updated"
+                        //setLoginDetails(vm);
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update user";
+                });
+
+        }
+
+    }
+
+    function setLoginDetails(vm){
+        vm.notLoggedIn = vm.user? false: true;
+        if(!vm.notLoggedIn) {
+            vm.companyName = vm.user.name;
+            vm.isCompany = vm.companyName ? true : false;
+            vm.candidateName = vm.user.firstName ? vm.user.firstName : vm.user.email;
+            vm.isCandidate = vm.candidateName && vm.user.role == 'User' ? true : false;
+            vm.isAdmin = vm.candidateName && vm.user.role == 'Admin' ? true : false;
+        }
     }
 })();

@@ -9,7 +9,8 @@
             .when("/candidate/login",{
                 templateUrl: "views/candidate/candidate.login.view.client.html",
                 controller: "CandidateLoginController",
-                controllerAs: "model"
+                controllerAs: "model",
+                //resolve: { currentUser: checkCandidateLoggedin }
             })
             .when("/company/login",{
                 templateUrl: "views/company/company.login.view.client.html",
@@ -49,7 +50,7 @@
                 resolve: { currentUser: checkCandidateLoggedin }
             })
             .when("/company/view/:uid", {
-                templateUrl: 'views/company/company.view.view.client.html',
+                templateUrl: 'views/company/company.view.client.html',
                 controller: 'CompanyViewController',
                 controllerAs: 'model'
             })
@@ -98,6 +99,11 @@
                 controllerAs: "model",
                 resolve: { currentUser: checkCompanyLoggedin }
 
+            })
+            .when("/job/view/:jid",{
+                templateUrl: 'views/job/job.view.client.html',
+                controller: "JobViewController",
+                controllerAs: "model",
             })
             .when("/navigation",{
                 templateUrl: 'views/job/job.edit.view.client.html',
@@ -198,7 +204,7 @@
                 deferred.resolve();
             } else {
                 deferred.reject();
-                $location.url('/candidate/profile');
+                $location.url('/candidate/login');
             }
         });
         return deferred.promise;

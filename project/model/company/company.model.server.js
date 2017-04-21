@@ -1,8 +1,13 @@
 module.exports = function(app) {
     var mongoose = require("mongoose");
+    //mongoose.Promise = require("q")
     var companySchema = require("./company.schema.server");
     var companyModel  = mongoose.model("companyModel", companySchema);
+    var jobSchema = require("../job/job.schema.server");
+    var jobModel  = mongoose.model("jobModel", jobSchema);
+
     var q = require("q");
+
 
     var api = {
         "createCompany": createCompany,
@@ -30,10 +35,25 @@ module.exports = function(app) {
         return deferred.promise;
     }
 
+    /*function findCompanyById(companyId){
+        var deferred = q.defer();
+        companyModel.findById(companyId)
+            .populate(jobs)
+            .exec(function(err, company){
+                if(err){
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(company);
+                }
+            });
+        return deferred.promise;
+    }*/
+
     function findCompanyById(companyId){
         var deferred = q.defer();
-        companyModel.findById(companyId,
-            function(err, company){
+        return companyModel.findById(companyId)
+            .populate('jobs','title location jobType salary')
+            .exec(function(err, company){
                 if(err){
                     deferred.reject(err);
                 }else{

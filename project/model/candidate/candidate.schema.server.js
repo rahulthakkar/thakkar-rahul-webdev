@@ -7,9 +7,9 @@ var candidateSchema = mongoose.Schema({
     phone : String,
     facebook: {id: String, token: String},
     // Applied jobs
-    applications : [{type : mongoose.Schema.Types.ObjectId, ref : 'application'}],
+    applications : [{type : mongoose.Schema.Types.ObjectId, ref : 'applicationModel'}],
     // Follows these companies
-    companies : [{type : mongoose.Schema.Types.ObjectId, ref : 'company'}],
+    companies : [{type : mongoose.Schema.Types.ObjectId, ref : 'companyModel'}],
     skills : [{type : String}],
     role: {type: String, enum : ['User', 'Admin'],  default:'User'},
     ethnicity: String,

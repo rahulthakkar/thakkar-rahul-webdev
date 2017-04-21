@@ -4,7 +4,9 @@
         .controller("JobListController", JobListController)
         .controller("JobEditController", JobEditController)
         .controller("JobNewController", JobNewController)
-        .controller("JobIndeedSearchController", JobIndeedSearchController);
+        .controller("JobIndeedSearchController", JobIndeedSearchController)
+        .controller("JobViewController", jobViewController)
+    ;
 
     function JobListController($routeParams, JobService, $rootScope) {
         var vm = this;
@@ -18,6 +20,7 @@
                 .findAllJobsForCompany(vm.companyId)
                 .success(function (jobs) {
                     vm.jobs = angular.copy(jobs);
+                    setLoginDetails(vm, $rootScope);
                 });
         }
         init();
@@ -38,6 +41,7 @@
                 .findJobById(vm.jobId)
                 .success(function (job) {
                     vm.job = angular.copy(job);
+                    setLoginDetails(vm, $rootScope);
                 });
         }
         init();
@@ -94,6 +98,7 @@
                 .findAllJobsForCompany(vm.companyId)
                 .success(function (jobs) {
                     vm.jobs = angular.copy(jobs);
+                    setLoginDetails(vm, $rootScope);
                 });
         }
         init();
@@ -123,15 +128,16 @@
         }
     }
 
-    function JobIndeedSearchController($routeParams, $location) {
+    function JobIndeedSearchController($routeParams, $location, $rootScope) {
         var vm = this;
         vm.searchJobs = searchJobs
         vm.searchTerm = "Web Developer"
 
-        var publisherKey = process.env.INDEED_PUBLISHER_KEY;
+        var publisherKey = "3576802165611426";
         var indeed_client = new Indeed(publisherKey);
 
         function init() {
+            setLoginDetails(vm, $rootScope);
             searchJobs(vm.searchTerm, "US");
         }
         init();
@@ -149,17 +155,52 @@
                 vm.jobs = angular.copy(response.results);
             });
         }
+    }
 
-        /*function searchJobs(searchTerm) {
-            console.log("searchTerm "+searchTerm);
+    function jobViewController($routeParams, JobService, $rootScope, $location) {
+        var vm = this;
+        var jobId = $routeParams['jid'];
 
-            IndeedService
-                .searchJobs(searchTerm)
-                .then(function(response) {
-                    //data = data.substring(0,data.length - 1);
-                    data = JSON.parse(data);
-                    vm.jobs = data.results;
-                });
-        }*/
+        function init() {
+            var promise = JobService.findJobById(jobId);
+            promise.success(function (job) {
+                vm.job = angular.copy(job);
+                //vm.job.description = hyperlinksAnchored(vm.job.description);
+                setLoginDetails(vm);
+            });
+        }
+
+        init();
+        function hyperlinksAnchored($text) {
+            return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+        }
+    }
+
+    /*function setLoginDetails(vm){
+
+        vm.notLoggedIn = vm.user? false: true;
+        console.log(vm.user);
+        console.log(vm.notLoggedIn);
+        if(!vm.notLoggedIn) {
+            vm.companyName = vm.user.name;
+            vm.isCompany = vm.companyName ? true : false;
+            vm.candidateName = vm.user.firstName ? vm.user.firstName : vm.user.email;
+            vm.isCandidate = vm.candidateName && vm.user.role == 'User' ? true : false;
+            vm.isAdmin = vm.candidateName && vm.user.role == 'Admin' ? true : false;
+        }
+    }*/
+
+    function setLoginDetails(vm, $rootScope){
+
+        vm.notLoggedIn = $rootScope.currentUser? false: true;
+        console.log($rootScope.currentUser);
+        console.log(vm.notLoggedIn);
+        if(!vm.notLoggedIn) {
+            vm.companyName = $rootScope.currentUser.name;
+            vm.isCompany = vm.companyName ? true : false;
+            vm.candidateName = $rootScope.currentUser.firstName ? $rootScope.currentUser.firstName : $rootScope.currentUser.email;
+            vm.isCandidate = vm.candidateName && $rootScope.currentUser.role == 'User' ? true : false;
+            vm.isAdmin = vm.candidateName && $rootScope.currentUser.role == 'Admin' ? true : false;
+        }
     }
 })();

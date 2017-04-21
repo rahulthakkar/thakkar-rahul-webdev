@@ -13,7 +13,8 @@ module.exports = function(app) {
         "updateCandidate": updateCandidate,
         "deleteCandidate": deleteCandidate,
         "findCandidateByFacebookId": findCandidateByFacebookId,
-        "findAllCandidates": findAllCandidates
+        "findAllCandidates": findAllCandidates,
+        "followCompany": followCompany
     };
     return api;
 
@@ -79,6 +80,22 @@ module.exports = function(app) {
         var deferred = q.defer();
         candidateModel.update({"_id" : candidateId},
             {$set : newCandidate}, {multi : true},
+            function(err, candidate){
+                if(err){
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(candidate);
+                }
+            });
+        return deferred.promise;
+    }
+
+    function followCompany(candidateId, companyId) {
+        var deferred = q.defer();
+        candidateModel.findByIdAndUpdate(
+            candidateId,
+            {$push : {'companies': companyId}},
+            {safe : true},
             function(err, candidate){
                 if(err){
                     deferred.reject(err);

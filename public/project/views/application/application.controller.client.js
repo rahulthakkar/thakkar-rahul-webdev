@@ -104,4 +104,15 @@
             }
         }
     }
+
+    function setLoginDetails(vm){
+        vm.notLoggedIn = vm.user? false: true;
+        if(!vm.notLoggedIn) {
+            vm.companyName = vm.user.name;
+            vm.isCompany = vm.companyName ? true : false;
+            vm.candidateName = vm.user.firstName ? vm.user.firstName : vm.user.email;
+            vm.isCandidate = vm.candidateName && vm.user.role == 'User' ? true : false;
+            vm.isAdmin = vm.candidateName && vm.user.role == 'Admin' ? true : false;
+        }
+    }
 })();

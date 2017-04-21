@@ -6,7 +6,7 @@ var companySchema = mongoose.Schema({
     description: String,
     phone : String,
     // posted jobs
-    jobs : [{type : mongoose.Schema.Types.ObjectId, ref : 'job'}],
+    jobs : [{type : mongoose.Schema.Types.ObjectId, ref : 'jobModel'}],
     size : {type: String, enum : ['1-50', '51-200', '201-1000', '1001-10000', '10000+']},
     linkedinURL : String,
     facebookURL : String,
