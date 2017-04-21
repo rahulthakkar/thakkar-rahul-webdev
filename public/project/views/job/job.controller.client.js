@@ -6,7 +6,7 @@
         .controller("JobNewController", JobNewController)
         .controller("JobIndeedSearchController", JobIndeedSearchController)
         .controller("JobViewController", jobViewController)
-    ;
+        .controller("JobCompanyViewController", jobCompanyViewController);
 
     function JobListController($routeParams, JobService, $rootScope) {
         var vm = this;
@@ -46,21 +46,12 @@
         }
         init();
 
-        /*vm.testDelete = function(){
-            deleteJob();
-        };
-        vm.testUpdate = function () {
-            var job = {title: "New", description: "java developer", location: "Boston, MA", jobType: "full-time", isActive:"true"
-                , salary:"190K-200K"};
-            update(job);
-        };*/
-
         function deleteJob() {
             console.log("Deleting job "+vm.jobId);
             JobService
                 .deleteJob(vm.jobId)
                 .success(function () {
-                    $location.url("/company/job/");
+                    $location.url("/company/dashboard/");
                 })
                 .error(function () {
                     vm.error = "Unable to delete the job";
@@ -74,7 +65,7 @@
                     if(job == null) {
                         vm.error = "Unable to update the job";
                     } else {
-                        $location.url("/company/job/");
+                        $location.url("/company/job/view/"+vm.jobId);
                     }
                 })
                 .error(function () {
@@ -171,9 +162,21 @@
         }
 
         init();
-        function hyperlinksAnchored($text) {
-            return preg_replace('@(http)?(s)?(://)?(([-\w]+\.)+([^\s]+)+[^,.\s])@', '<a href="http$2://$4">$1$2$3$4</a>', $text);
+    }
+
+    function jobCompanyViewController($routeParams, JobService, $rootScope, $location) {
+        var vm = this;
+        var jobId = $routeParams['jid'];
+
+        function init() {
+            var promise = JobService.findJobById(jobId);
+            promise.success(function (job) {
+                vm.job = angular.copy(job);
+                setLoginDetails(vm);
+            });
         }
+
+        init();
     }
 
     /*function setLoginDetails(vm){

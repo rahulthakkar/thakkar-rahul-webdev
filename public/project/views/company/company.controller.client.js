@@ -6,7 +6,8 @@
         .controller("CompanyRegisterController", companyRegisterController)
         .controller("CompanyListController", companyListController)
         .controller("CompanyViewController", companyViewController)
-        .controller("CompanyLogoutController", companyLogoutController);
+        .controller("CompanyLogoutController", companyLogoutController)
+        .controller("CompanyDashboardController", companyDashboardController);
 
     function companyLoginController($location, CompanyService, $rootScope) {
         var vm = this;
@@ -18,13 +19,6 @@
             setLoginDetails(vm);
         }
         init();
-
-        /*vm.test = test;
-        function test() {
-            var company = {email: "rahul1@fb.com", password: "Rahul123"};
-
-            login(company);
-        }*/
 
         function login(company) {
             CompanyService.login(company)
@@ -112,16 +106,6 @@
         }
         init();
 
-        /*vm.test = test;
-        function test() {
-            console.log("test called");
-            var company = {email: "rahul1@fb.com", password: "Rahul123", password2: "Rahul123", name: "Facebook", phone:"857-928-5539"
-                , size:"1001-10000", linkedinURL: "https://www.linkedin.com/company-beta/10667", facebookURL:"https://www.facebook.com/facebookcareers/"
-                , twitterURL:"https://twitter.com/facebook", siteURL:"https://www.facebook.com/careers/"};
-
-            register(company);
-        }*/
-
         function register(newCompany) {
             console.log("register called with "+ JSON.stringify(newCompany));
             if(newCompany.password === newCompany.password2) {
@@ -153,6 +137,18 @@
                     vm.companys = angular.copy(companys);
                     setLoginDetails(vm);
                 });
+        }
+
+        init();
+    }
+
+    function companyDashboardController($routeParams, CompanyService, $rootScope, $location) {
+        var vm = this;
+
+
+        function init() {
+            vm.company = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
         }
 
         init();

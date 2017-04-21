@@ -1,0 +1,61 @@
+<wbdv-navigation></wbdv-navigation>
+<div class="container">
+    <div class="row main container">
+        <div class="center-block">
+            <div class="text-center">
+                <img src="images/drawbridge.png" class="img-thumbnail" alt="{{model.company.name}}">
+                <h1 class="large-text ">Work at {{model.company.name}}</h1>
+            </div>
+            <div class="wbdv-show-format">{{model.company.description}}</div></br>
+            <div>
+                <center>
+                    <a href="#/company/profile" class="btn btn-primary btn-lg wbdv-button-reg-margin">Edit Profile</a>
+                    <a href="#/company/job/new" class="btn btn-success btn-lg wbdv-button-reg-margin">Add a Job</a>
+                </center>
+            </div>
+        </div>
+        <hr/>
+
+        <div class="center-block">
+            <h3 class="text-center ">Open Positions</h3><br/>
+            <div>
+                <div ng-repeat="job in model.company.jobs">
+                    <div class="pull-left">
+                        <div ng-show="job.title">
+                        <h4 ><a href="#/company/job/view/{{job._id}}"> {{job.title}}</a></h4>
+                        <div>
+                            <span ng-show="job.location" class="text-muted">{{job.location}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                            <span ng-show="job.jobType" class="text-muted">{{job.jobType}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                            <span ng-show="job.salary" class="text-muted">{{job.salary}}</span>
+                        </div>
+                    </div>
+                    </div>
+                        <a class="btn btn-primary pull-right" href="#/company/job/{{job._id}}">Edit Job</a>
+                    </div>
+                </div>
+            </div>
+
+        </div><hr/>
+
+        <div class="center-block">
+            <div class="text-center">
+                <h3 class="">More Info</h3><br/>
+                <div class="text-muted">
+                    <div ng-show="model.company.hiringin"><i class="fa fa-map-marker" aria-hidden="true"></i> Hiring in {{model.company.hiringin}}</div>
+                    <div ng-show="model.company.size"><i class="fa fa-users" aria-hidden="true"></i> {{model.company.size}} Employees</div>
+                    <div ng-show="model.company.funding"><i class="fa fa-signal" aria-hidden="true"></i> {{model.company.funding}}</div>
+                    <div ng-show="model.company.buzzwords"><i class="fa fa-tag" aria-hidden="true"></i> {{model.company.buzzwords}}</div>
+                    <div>
+                        <a class="wbdv-small-margin" ng-show="model.company.twitterURL" href="{{model.company.twitterURL}}" target="_blank"><i class="fa text-muted fa-twitter fa-lg" aria-hidden="true"></i></a>
+                        <a class="wbdv-small-margin" ng-show="model.company.facebookURL" href="{{model.company.facebookURL}}" target="_blank"><i class="fa text-muted fa-facebook fa-lg" aria-hidden="true"></i></a>
+                        <a class="wbdv-small-margin" ng-show="model.company.linkedinURL" href="{{model.company.linkedinURL}}" target="_blank"><i class="fa text-muted fa-linkedin-square fa-lg" aria-hidden="true"></i></a>
+                        <a class="wbdv-small-margin" ng-show="model.company.siteURL" href="{{model.company.siteURL}}" ><i class="fa text-muted fa-info-circle fa-lg" aria-hidden="true"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+

@@ -60,6 +60,12 @@
                 controllerAs: 'model',
                 resolve: { currentUser: checkCompanyLoggedin }
             })
+            .when("/company/dashboard/", {
+                templateUrl: 'views/company/company.dashboard.view.client.html',
+                controller: 'CompanyDashboardController',
+                controllerAs: 'model',
+                resolve: { currentUser: checkCompanyLoggedin }
+            })
             .when("/admin/company", {
                 templateUrl: 'views/company/company.list.view.client.html',
                 controller: 'CompanyListController',
@@ -96,6 +102,13 @@
             .when("/company/job/:jid",{
                 templateUrl: 'views/job/job.edit.view.client.html',
                 controller: "JobEditController",
+                controllerAs: "model",
+                resolve: { currentUser: checkCompanyLoggedin }
+
+            })
+            .when("/company/job/view/:jid",{
+                templateUrl: 'views/job/job.company.view.client.html',
+                controller: "JobCompanyViewController",
                 controllerAs: "model",
                 resolve: { currentUser: checkCompanyLoggedin }
 
