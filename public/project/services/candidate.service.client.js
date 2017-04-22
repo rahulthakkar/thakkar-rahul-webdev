@@ -36,8 +36,12 @@
             return $http.get("/api/candidate/"+candidateId);
         }
 
-        function updateCandidate(candidateId, newCandidate) {
+        /*function updateCandidate(candidateId, newCandidate) {
             return $http.put("/api/candidate/"+candidateId, newCandidate);
+        }*/
+
+        function updateCandidate(candidateId, fd) {
+            return $http.post("/api/candidate/"+candidateId, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}});
         }
 
         function deleteCandidate(candidateId) {

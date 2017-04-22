@@ -45,7 +45,7 @@ module.exports = function (app, model) {
     app.get("/api/admin/loggedin", authorize, adminLoggedin);
     app.get("/api/candidate/:candidateId", authorize, findCandidateById);
     app.put("/api/candidate/follow", followCompany);
-    app.put("/api/candidate/:candidateId", authorize, updateCandidate);
+    app.post("/api/candidate/:candidateId", authorize, updateCandidate);
 
     app.delete("/api/candidate/:candidateId", authorize, deleteCandidate);
 
@@ -61,21 +61,10 @@ module.exports = function (app, model) {
         });
 
 
-    function fileUpload(req, res) {
-        upload(req,res,function(err){
-            if(err){
-                res.json({error_code:1,err_desc:err});
-                return;
-            }
-            //console.log(req.data.file.fileName);
-            console.log("File upload called.."+ util.inspect(req.data));
-            console.log("File upload called.."+ util.inspect(req.file));
-            res.json({error_code:0,err_desc:null});
-        });
-    }
+
 
     function authorize (req, res, next) {
-
+        console.log("authorized called");
         if (!req.isAuthenticated()) {
             res.send(401);
         } else {
@@ -112,20 +101,47 @@ module.exports = function (app, model) {
         return candidate;
     }
 
+    function fileUpload(req, res) {
+        upload(req,res,function(err){
+            if(err){
+                res.json({error_code:1,err_desc:err});
+                return;
+            }
+            //console.log(req.data.file.fileName);
+            console.log("File upload called.."+ util.inspect(req.data));
+            console.log("File upload called.."+ util.inspect(req.file));
+            res.json({error_code:0,err_desc:null});
+        });
+    }
+
     function updateCandidate(req, res) {
-        var candidateId = req.params.candidateId;
-        var newCandidate = req.body;
-        if(candidateId && candidateId==req.user._id) {
-            model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
-                .then(function (candidate) {
-                        res.status(200).send(sendTransformObject(candidate));
-                    },
-                    function (err) {
-                        res.status(404).send(err);
-                    });
-        } else {
-            res.status(403);
-        }
+        //var candidateId = req.params.candidateId;
+        //var newCandidate = JSON.parse(req.body.data);
+        //console.log("New candidate"+ newCandidate);
+        //if(candidateId && candidateId==req.user._id) {
+            upload(req,res,function(err){
+                if(err){
+                    res.json({error_code:1,err_desc:err});
+                    return;
+                }
+                //console.log(req.data.file.fileName);
+                console.log("File upload called.."+ util.inspect(req));
+
+                var candidateId = req.params.candidateId;
+                var newCandidate = JSON.parse(req.body.data);
+                //console.log("New candidate"+ JSON.stringify(newCandidate));
+                //console.log("candidateId"+ candidateId);
+                model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
+                    .then(function (candidate) {
+                            res.status(200).send(sendTransformObject(candidate));
+                        },
+                        function (err) {
+                            res.status(404).send(err);
+                        });
+            });
+
+
+
     }
 
     function followCompany(req, res) {

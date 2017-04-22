@@ -77,6 +77,7 @@
 
         // event handlers
         vm.update = update;
+        //vm.filesChanged = filesChanged;
 
 
 
@@ -92,22 +93,32 @@
         init();
 
         function update(newCandidate) {
+            var fd = new FormData();
+            angular.forEach(vm.resume, function (file) {
+               fd.append('file', file);
+            });
+            fd.append('data', JSON.stringify(newCandidate));
+            console.log("Received request"+ vm.resume);
 
-            var promise = CandidateService.updateCandidate($rootScope.currentUser._id, newCandidate);
+            var promise = CandidateService.updateCandidate($rootScope.currentUser._id, fd);
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
+                        console.log("Unable to update user");
                         vm.error = "Unable to update user";
                     } else {
+                        console.log("User successfully updated");
                         vm.message = "User successfully updated"
                         setLoginDetails(vm);
                     }
                 })
                 .error(function () {
+                    console.log("User successfully updated");
                     vm.error = "Unable to update user";
                 });
 
         }
+
     }
 
     function candidateRegisterController($location, CandidateService, $rootScope) {
