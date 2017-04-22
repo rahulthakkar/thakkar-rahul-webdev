@@ -13,6 +13,19 @@ module.exports = function (app, model) {
         profileFields: ['id', 'email', 'name']
     };
 
+    var multer = require('multer');
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, __dirname+'/../../public/uploads')
+        },
+        filename: function (req, file, cb) {
+
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    });
+    var upload = multer({ //multer settings
+        storage: storage
+    }).single('file');
 
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
@@ -22,6 +35,7 @@ module.exports = function (app, model) {
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
+    app.post('/api/candidate/file/upload', fileUpload);
     app.post('/api/candidate/logout', logout);
     app.post('/api/candidate/login', passport.authenticate('candidate'), login);
     app.post('/api/candidate/register', register);
@@ -46,6 +60,19 @@ module.exports = function (app, model) {
             res.redirect(url);
         });
 
+
+    function fileUpload(req, res) {
+        upload(req,res,function(err){
+            if(err){
+                res.json({error_code:1,err_desc:err});
+                return;
+            }
+            //console.log(req.data.file.fileName);
+            console.log("File upload called.."+ util.inspect(req.data));
+            console.log("File upload called.."+ util.inspect(req.file));
+            res.json({error_code:0,err_desc:null});
+        });
+    }
 
     function authorize (req, res, next) {
 

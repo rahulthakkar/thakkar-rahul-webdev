@@ -1,0 +1,50 @@
+<form action="/api/candidate/file/upload"   method="post" enctype="multipart/form-data">
+    <div class="container-fluid">
+        <label for="name">Name</label>
+        <input ng-model="model.widget.name"
+               id="name"
+               name="name"
+               class="form-control"
+               placeholder="Widget Name"/>
+
+        <label for="text">Text</label>
+        <input ng-model="model.widget.text"
+               id="text"
+               name="text"
+               class="form-control"
+               placeholder="Widget Title"/>
+
+        <label for="width">Width</label>
+        <input ng-model="model.widget.width"
+               id="width"
+               name="width"
+               class="form-control"
+               placeholder="Width in percent"
+               value="100%"
+               min="0" max="100"/>
+
+        <label for="url">URL</label>
+        <input ng-model="model.widget.url"
+               id="url"
+               name="url"
+               class="form-control"
+               placeholder="Image URL"/>
+
+        <input  name="userId"    value="{{model.userId}}"   style="display: none"/>
+        <input  name="websiteId" value="{{model.websiteId}}"   style="display: none"/>
+        <input  name="pageId"    value="{{model.pageId}}"   style="display: none"/>
+        <input  name="widgetId"  value="{{model.widget._id}}"   style="display: none"/>
+
+
+        <label for="fileInput">File input</label>
+        <input type="file" id="fileInput" name="file" class="form-control">
+        <div id="file_path_display" ng-show="model.widget.url">
+            {{model.widget.url}}
+        </div>
+        <a class="btn btn-primary btn-block"
+           href="#/user/{{model.userId}}/website/{{model.websiteId}}/page/{{model.pageId}}/widget/{{model.widgetId}}/flickr">Search Image</a>
+        <button type="submit" class="btn btn-primary  btn-block">Upload Image</button>
+
+        <a ng-click="model.deleteWidget(model.widget)" class="btn btn-danger btn-block">Delete</a>
+    </div>
+</form>

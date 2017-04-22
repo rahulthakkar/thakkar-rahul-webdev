@@ -6,6 +6,12 @@
     function configuration($routeProvider, $locationProvider, $httpProvider) {
 
         $routeProvider
+            .when("/upload",{
+                templateUrl: "views/common/upload.html",
+                controller: "UploadController",
+                controllerAs: "model",
+                //resolve: { currentUser: checkCandidateLoggedin }
+            })
             .when("/candidate/login",{
                 templateUrl: "views/candidate/candidate.login.view.client.html",
                 controller: "CandidateLoginController",
