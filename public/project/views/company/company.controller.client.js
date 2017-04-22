@@ -16,6 +16,7 @@
         vm.login = login;
 
         function init() {
+            vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
         }
         init();
@@ -57,7 +58,7 @@
                     if (company == null) {
                         vm.error = "Unable to update the company info";
                     } else {
-                        vm.user = $rootScope.currentUser;
+                        vm.user = angular.copy($rootScope.currentUser);
                         setLoginDetails(vm);
                         vm.message = "Company info successfully updated"
                     }
@@ -75,6 +76,7 @@
         console.log("Logout called");
 
         function init() {
+            vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
             logout();
         }
@@ -102,6 +104,7 @@
         vm.register = register;
 
         function init() {
+            vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
         }
         init();
@@ -135,6 +138,7 @@
                 .findAllCompanys()
                 .success(function (companys) {
                     vm.companys = angular.copy(companys);
+                    vm.user = angular.copy($rootScope.currentUser);
                     setLoginDetails(vm);
                 });
         }
@@ -148,6 +152,7 @@
 
         function init() {
             vm.company = angular.copy($rootScope.currentUser);
+            vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
         }
 
@@ -159,9 +164,11 @@
         var userId = $routeParams['uid'];
 
         function init() {
+            vm.user = angular.copy($rootScope.currentUser);
             var promise = CompanyService.findCompanyById(userId);
             promise.success(function (company) {
                 vm.company = angular.copy(company);
+                vm.user = angular.copy($rootScope.currentUser);
                 setLoginDetails(vm);
             });
         }
@@ -178,5 +185,6 @@
             vm.isCandidate = vm.candidateName && vm.user.role == 'User' ? true : false;
             vm.isAdmin = vm.candidateName && vm.user.role == 'Admin' ? true : false;
         }
+
     }
 })();

@@ -1,56 +1,57 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-bar-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href=""><b>JobNow!</b></a>
-        </div>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!--<div>{{currentUser}}</div>-->
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-bar-1" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand large-text" href=""><b>JobNow!</b></a>
+            </div>
 
-        <div  ng-if="model.isCandidate" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
-            <ul class="nav navbar-nav navbar-right">
-                <!--<li ng-show="model.user.firstName"><a href="#/candidate/profile">{{angular.copy(model.user.firstName)}}</a></li>
-                <li ng-hide="model.user.firstName"><a href="#/candidate/profile">{{angular.copy(model.user.email)}}</a></li>-->
-                <li><a href="#/candidate/profile">{{model.candidateName}}</a></li>
-                <li><a href="#/candidate/logout">Logout</a></li>
-                <!--<li><a class="btn" ng-click="model.logout()">Logout</a></li>-->
-            </ul>
-        </div>
+            <div  ng-if="model.isCandidate" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li ng-show="model.user.firstName"><a href="#/candidate/profile">{{angular.copy(model.user.firstName)}}</a></li>
+                    <li ng-hide="model.user.firstName"><a href="#/candidate/profile">{{angular.copy(model.user.email)}}</a></li>-->
+                    <li><a href="#/candidate/profile" class="text-uppercase">{{model.candidateName}}</a></li>
+                    <li><a href="#/candidate/logout">LOGOUT</a></li>
+                    <!--<li><a class="btn" ng-click="model.logout()">LOGOUT</a></li>-->
+                </ul>
+            </div>
 
-        <div  ng-if="model.isAdmin" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/candidate/profile">{{model.candidateName}}</a></li>
-                <li><a href="#/admin/candidate">Candidates</a></li>
-                <li><a href="#/admin/company">Companies</a></li>
-                <li><a href="#/candidate/logout">Logout</a></li>
-                <!--<li><a class="btn" ng-click="model.logout()">Logout</a></li>-->
-            </ul>
-        </div>
+            <div  ng-if="model.isAdmin" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-2">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/candidate/profile" class="text-uppercase">{{model.candidateName}}</a></li>
+                    <li><a href="#/admin/candidate">CANDIDATES</a></li>
+                    <li><a href="#/admin/company">COMPANIES</a></li>
+                    <li><a href="#/candidate/logout">LOGOUT</a></li>
+                    <!--<li><a class="btn" ng-click="model.logout()">LOGOUT</a></li>-->
+                </ul>
+            </div>
 
-        <div  ng-if="model.isCompany" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/company/profile">{{model.companyName}}</a></li>
-                <li><a href="#/company/logout">Logout</a></li>
-                <!--<li><a class="btn" ng-click="model.logout()">Logout</a></li>-->
-            </ul>
-        </div>
+            <div  ng-if="model.isCompany" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-3">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/company/profile" class="text-uppercase">{{model.companyName}}</a></li>
+                    <li><a href="#/company/logout">LOGOUT</a></li>
+                    <!--<li><a class="btn" ng-click="model.logout()">LOGOUT</a></li>-->
+                </ul>
+            </div>
 
-        <div  ng-if="model.notLoggedIn" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/candidate/register">FIND JOBS</a></li>
-                <li><a href="#/company/register">RECRUIT</a></li>
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">LOGIN<span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#/company/login">COMPANY LOGIN</a></li>
-                        <li><a href="#/candidate/login">JOBSEEKER LOGIN</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!-- /.navbar-collapse -->
-    </div><!-- /.container-fluid -->
-</nav>
+            <div  ng-if="model.notLoggedIn" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-4">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/candidate/register">FIND JOBS</a></li>
+                    <li><a href="#/company/register">RECRUIT</a></li>
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">LOGIN<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#/company/login">COMPANY LOGIN</a></li>
+                            <li><a href="#/candidate/login">JOBSEEKER LOGIN</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>

@@ -14,9 +14,10 @@ module.exports = function (app, model) {
     app.post('/api/company/logout', logout);
     app.post('/api/company/register', register);
     app.get('/api/company/loggedin', loggedin);
+    app.get("/api/company/:companyId", findCompanyById);
     app.get("/api/company", authorize, findCompany);
     app.get("/api/admin/company", authorize, findAllCompany);
-    app.get("/api/company/:companyId", findCompanyById);
+
     app.put("/api/company/:companyId", authorize, updateCompany);
     app.delete("/api/company/:companyId", authorize, deleteCompany);
 

@@ -83,6 +83,7 @@
 
 
         function init() {
+            console.log($rootScope);
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
         }

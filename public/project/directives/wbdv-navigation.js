@@ -2,9 +2,16 @@
     angular
         .module('JobNowMaker')
         .directive('wbdvNavigation', ['$http', '$rootScope','$templateCache', '$compile', navigation])
-        .controller('wbdvNavigationController'['$scope', function($scope) {
-            $scope.naomi = { name: 'Naomi', address: '1600 Amphitheatre' };
-            $scope.igor = { name: 'Igor', address: '123 Somewhere' };
+        .controller('wbdvNavigationController', ['$scope', '$rootScope', function($scope, $rootScope) {
+            var vm = this;
+            console.log("controller Called");
+            console.log($rootScope.currentUser);
+            $scope.$on('candidateLoggedIn', function(event, data) {
+                console.log("Called");
+                $rootScope.currentUser = data;
+                vm.currentUser = data;
+            });
+
         }]);
 
     function navigation($http, $rootScope, $templateCache, $compile) {

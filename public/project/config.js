@@ -58,7 +58,8 @@
             .when("/company/view/:uid", {
                 templateUrl: 'views/company/company.view.client.html',
                 controller: 'CompanyViewController',
-                controllerAs: 'model'
+                controllerAs: 'model',
+                resolve: {currentUser: checkCurrentUser}
             })
             .when("/company/profile/", {
                 templateUrl: 'views/company/company.profile.view.client.html',
@@ -87,7 +88,8 @@
             .when("/main", {
                 templateUrl: 'views/job/job.indeed.search.view.client.html',
                 controller: 'JobIndeedSearchController',
-                controllerAs: 'model'
+                controllerAs: 'model',
+                resolve: { currentUser: checkCurrentUser }
             })
 
 
@@ -181,7 +183,7 @@
             .otherwise({redirectTo : '/candidate/login'});
     }
 
-    var checkCandidateLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+    var checkCandidateLoggedin = function ($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();
         //console.log("Check loggedin client");
         $http.get('/api/candidate/loggedin').success(function(user) {
@@ -189,6 +191,9 @@
             //console.log("Check loggedin client not 0" + JSON.stringify(user));
             if (user !== '0') {
                 $rootScope.currentUser = user;
+                //$scope.currentUser = user;
+                $rootScope.$broadcast('candidateLoggedIn', user);
+                $rootScope.$emit('candidateLoggedIn', user);
                 deferred.resolve();
             } else {
                 deferred.reject();
@@ -205,6 +210,7 @@
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
+                $rootScope.$broadcast("login");
                 deferred.resolve();
             } else {
                 deferred.reject();
@@ -224,6 +230,41 @@
             } else {
                 deferred.reject();
                 $location.url('/candidate/login');
+            }
+        });
+        return deferred.promise;
+    };
+
+    var checkCurrentUser = function ($q, $timeout, $http, $location, $rootScope) {
+        var deferred = $q.defer();
+        console.log("checkCurrentUser called")
+        $http.get('/api/admin/loggedin').success(function(user) {
+            $rootScope.errorMessage = null;
+            if (user !== '0') {
+                $rootScope.currentUser = user;
+                deferred.resolve();
+            } else {
+                console.log("checkCurrentUser called candidate")
+                $http.get('/api/candidate/loggedin').success(function (user) {
+                    $rootScope.errorMessage = null;
+                    // User is Authenticated
+                    console.log("Got candidate");
+                    console.log(user);
+                    if (user !== '0') {
+                        $rootScope.currentUser = user;
+                        deferred.resolve();
+                    } else {
+                        console.log("checkCurrentUser called company")
+                        $http.get('/api/company/loggedin').success(function (user) {
+                            $rootScope.errorMessage = null;
+                            if (user !== '0') {
+                                $rootScope.currentUser = user;
+                                deferred.resolve();
+                            }
+                            deferred.resolve();
+                        });
+                    }
+                });
             }
         });
         return deferred.promise;

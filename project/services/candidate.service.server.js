@@ -47,7 +47,7 @@ module.exports = function (app, model) {
     app.get('/api/candidate/loggedin', loggedin);
     app.get("/api/candidate", authorize, findCandidate);
     app.get("/api/admin/candidate", authorize, findAllCandidates);
-    app.get("/api/admin/loggedin", authorize, adminLoggedin);
+    app.get("/api/admin/loggedin", adminLoggedin);
     app.get("/api/candidate/:candidateId", authorize, findCandidateById);
     app.put("/api/candidate/follow", followCompany);
     app.put("/api/candidate/:candidateId", authorize, updateCandidate);
@@ -342,7 +342,7 @@ module.exports = function (app, model) {
     }
 
     function adminLoggedin(req, res) {
-        res.send(isAdmin(req.user) ? sendTransformObject(req.user) : '0');
+        res.send(req.isAuthenticated() && isAdmin(req.user) ? sendTransformObject(req.user) : '0');
     }
 
     function facebookStrategy(token, refreshToken, profile, done) {
