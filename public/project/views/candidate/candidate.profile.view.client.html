@@ -83,20 +83,21 @@
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <input file-input="model.resume" name="resume" id="resume" type="file"/>
+                        <a ng-click="model.uploadResume()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="resume" class="cols-sm-2 control-label">Photo</label>
+                <label for="resume" class="cols-sm-2 control-label">Profile Pic</label>
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <input file-input="model.pic" name="pic" id="pic" type="file"/>
+                        <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
                     </div>
                 </div>
             </div>
-            <li ng-repeat="file in model.resume">{{file.name}}</li>
-            <li ng-repeat="file in model.pic">{{file.name}}</li>
+
             <!---->
 
             <div class="alert alert-danger" ng-show="model.error">

@@ -16,7 +16,9 @@
             "logout": logout,
             "register": register,
             "findAllCandidates": findAllCandidates,
-            "followCompany": followCompany
+            "followCompany": followCompany,
+            "uploadPic": uploadPic,
+            "uploadResume": uploadResume
         };
         return api;
 
@@ -36,12 +38,16 @@
             return $http.get("/api/candidate/"+candidateId);
         }
 
-        /*function updateCandidate(candidateId, newCandidate) {
+        function updateCandidate(candidateId, newCandidate) {
             return $http.put("/api/candidate/"+candidateId, newCandidate);
-        }*/
+        }
 
-        function updateCandidate(candidateId, fd) {
-            return $http.post("/api/candidate/"+candidateId, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}});
+        function uploadPic(candidateId, fd) {
+            return $http.post("/api/candidate/pic/"+candidateId, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}});
+        }
+
+        function uploadResume(candidateId, fd) {
+            return $http.post("/api/candidate/resume/"+candidateId, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}});
         }
 
         function deleteCandidate(candidateId) {

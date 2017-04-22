@@ -77,30 +77,78 @@
 
         // event handlers
         vm.update = update;
-        //vm.filesChanged = filesChanged;
+        vm.uploadResume = uploadResume;
+        vm.uploadPic = uploadPic;
 
 
 
         function init() {
-            //console.log("Profile inti")
-            //console.log(JSON.stringify($rootScope.currentUser));
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
-            //console.log("username"+vm.companyName);
-
         }
 
         init();
 
-        function update(newCandidate) {
+        function uploadResume() {
             var fd = new FormData();
             angular.forEach(vm.resume, function (file) {
-               fd.append('file', file);
+                fd.append('resume', file);
+            });
+
+            var promise = CandidateService.uploadResume($rootScope.currentUser._id, fd);
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        console.log("Unable to upload resume");
+                        vm.error = "Unable to upload resume";
+                    } else {
+                        console.log("Resume successfully updated");
+                        vm.message = "Resume successfully updated"
+                        setLoginDetails(vm);
+                    }
+                })
+                .error(function () {
+                    console.log("Unable to upload resume");
+                    vm.error = "Unable to upload resume";
+                });
+        }
+
+        function uploadPic() {
+            var fd = new FormData();
+            angular.forEach(vm.pic, function (file) {
+                fd.append('pic', file);
+            });
+
+            var promise = CandidateService.uploadPic($rootScope.currentUser._id, fd);
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        console.log("Unable to upload pic");
+                        vm.error = "Unable to upload pic";
+                    } else {
+                        console.log("Pic successfully updated");
+                        vm.message = "Pic successfully updated"
+                        setLoginDetails(vm);
+                    }
+                })
+                .error(function () {
+                    console.log("Unable to upload pic");
+                    vm.error = "Unable to upload pic";
+                });
+        }
+
+        function update(newCandidate) {
+            /*var fd = new FormData();
+            angular.forEach(vm.resume, function (file) {
+               fd.append('resume', file);
+            });
+            angular.forEach(vm.pic, function (file) {
+                fd.append('pic', file);
             });
             fd.append('data', JSON.stringify(newCandidate));
             console.log("Received request"+ vm.resume);
-
-            var promise = CandidateService.updateCandidate($rootScope.currentUser._id, fd);
+            */
+            var promise = CandidateService.updateCandidate($rootScope.currentUser._id, newCandidate);
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
@@ -132,16 +180,6 @@
             setLoginDetails(vm);
         }
         init();
-
-
-        /*vm.test = test;
-        function test() {
-            console.log("test called");
-            var candidate = {email: "rahul1@gmail.com", password: "rahul123", password2: "rahul123", firstName: "Rahul", lastName: "Thakkar", phone:"857-928-5539"
-                ,skills: ["Java", "R", "Hadoop", "MapReduce"], ethnicity: "Asian", education: "Matsers"};
-
-            register(candidate);
-        }*/
 
         function register(newCandidate) {
             //console.log("register called with "+ JSON.stringify(newCandidate));

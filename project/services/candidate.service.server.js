@@ -23,9 +23,13 @@ module.exports = function (app, model) {
             cb(null, Date.now() + '-' + file.originalname);
         }
     });
-    var upload = multer({ //multer settings
+    var resumeUpload = multer({ //multer settings
         storage: storage
-    }).single('file');
+    }).single('resume');
+
+    var picUpload = multer({ //multer settings
+        storage: storage
+    }).single('pic');
 
     var bcrypt = require("bcrypt-nodejs");
     const util = require('util');
@@ -35,7 +39,8 @@ module.exports = function (app, model) {
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
-    app.post('/api/candidate/file/upload', fileUpload);
+    app.post('/api/candidate/resume/:candidateId', authorize, resumeUploadFunc);
+    app.post('/api/candidate/pic/:candidateId', authorize, picUploadFunc);
     app.post('/api/candidate/logout', logout);
     app.post('/api/candidate/login', passport.authenticate('candidate'), login);
     app.post('/api/candidate/register', register);
@@ -45,7 +50,7 @@ module.exports = function (app, model) {
     app.get("/api/admin/loggedin", authorize, adminLoggedin);
     app.get("/api/candidate/:candidateId", authorize, findCandidateById);
     app.put("/api/candidate/follow", followCompany);
-    app.post("/api/candidate/:candidateId", authorize, updateCandidate);
+    app.put("/api/candidate/:candidateId", authorize, updateCandidate);
 
     app.delete("/api/candidate/:candidateId", authorize, deleteCandidate);
 
@@ -114,33 +119,64 @@ module.exports = function (app, model) {
         });
     }
 
+    function resumeUploadFunc(req, res, next) {
+        console.log("starting 1");
+        //if(candidateId && candidateId==req.user._id) {
+
+        resumeUpload(req,res,function(err) {
+            console.log("File upload called..1");
+            if (err) {
+                res.status(404);
+            }
+            res.status(200);
+
+        });
+    }
+
+    function picUploadFunc(req, res, next) {
+        console.log("starting 2");
+        //if(candidateId && candidateId==req.user._id) {
+
+        picUpload(req,res,function(err) {
+            console.log("File upload called..1");
+            if (err) {
+                res.status(404);
+            }
+            res.status(200);
+
+        });
+    }
+
     function updateCandidate(req, res) {
         //var candidateId = req.params.candidateId;
         //var newCandidate = JSON.parse(req.body.data);
-        //console.log("New candidate"+ newCandidate);
-        //if(candidateId && candidateId==req.user._id) {
-            upload(req,res,function(err){
-                if(err){
-                    res.json({error_code:1,err_desc:err});
-                    return;
-                }
-                //console.log(req.data.file.fileName);
-                console.log("File upload called.."+ util.inspect(req));
 
-                var candidateId = req.params.candidateId;
-                var newCandidate = JSON.parse(req.body.data);
-                //console.log("New candidate"+ JSON.stringify(newCandidate));
-                //console.log("candidateId"+ candidateId);
-                model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
-                    .then(function (candidate) {
-                            res.status(200).send(sendTransformObject(candidate));
-                        },
-                        function (err) {
-                            res.status(404).send(err);
-                        });
-            });
+        /*picUpload(req, res, function (err) {
+            console.log("File upload called..2");
+            if (err) {
+                res.json({error_code: 1, err_desc: err});
+            }
+            //console.log(req.data.file.fileName);
 
+        });
+        res.json({error_code:0,err_desc:null});*/
+        console.log("After");
+        var candidateId = req.params.candidateId;
+        console.log("Req"+ util.inspect(req));
+        /*var newCandidate = JSON.parse(req.body.data);
+        //console.log("New candidate"+ JSON.stringify(newCandidate));
+        //console.log("candidateId"+ candidateId);
+        model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
+            .then(function (candidate) {
+                    res.status(200).send(sendTransformObject(candidate));
+                },
+                function (err) {
+                    res.status(404).send(err);
+                });
 
+        *
+        */
+        res.status(200);
 
     }
 
