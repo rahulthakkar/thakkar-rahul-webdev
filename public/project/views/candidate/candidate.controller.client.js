@@ -221,33 +221,50 @@
 
     function candidateFollowController($routeParams, CandidateService, $rootScope) {
         var vm = this;
+        var companyId = $routeParams['uid'];
 
         // event handlers
         vm.follow = follow;
 
+
         function init() {
+            console.log("init called");
+            vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
+            checkFollow();
         }
         init();
 
-
+        function checkFollow() {
+            vm.showUnfollow = { message: false };
+            if($rootScope.currentUser) {
+                if($rootScope.currentUser.companies.indexOf(companyId)> -1){
+                    vm.showUnfollow.message = true;
+                }
+            }
+            //$scope.$digest();
+        }
 
         function follow(companyId) {
             //var promise = CandidateService.followCompany($rootScope.currentUser._id, companyId);
-            var promise = CandidateService.followCompany("1", "");
-            promise
-                .success(function (candidate) {
-                    if (candidate == null) {
+            if($rootScope.currentUser) {
+                var promise = CandidateService.followCompany($rootScope.currentUser._id, companyId);
+                promise
+                    .success(function (candidate) {
+                        if (candidate == null) {
+                            vm.error = "Unable to update user";
+                        } else {
+                            vm.message = "User successfully updated"
+                            vm.showUnfollow.message = !vm.showUnfollow.message;
+                        }
+                    })
+                    .error(function () {
                         vm.error = "Unable to update user";
-                    } else {
-                        vm.message = "User successfully updated"
-                        //setLoginDetails(vm);
-                    }
-                })
-                .error(function () {
-                    vm.error = "Unable to update user";
-                });
+                    });
 
+            } else{
+                vm.error = "Not logged in";
+            }
         }
 
     }

@@ -14,7 +14,8 @@ module.exports = function(app) {
         "deleteCandidate": deleteCandidate,
         "findCandidateByFacebookId": findCandidateByFacebookId,
         "findAllCandidates": findAllCandidates,
-        "followCompany": followCompany
+        "followCompany": followCompany,
+        "unfollowCompany": unfollowCompany
     };
     return api;
 
@@ -90,7 +91,24 @@ module.exports = function(app) {
         return deferred.promise;
     }
 
+    function unfollowCompany(candidateId, companyId) {
+        console.log("unfollow");
+        var deferred = q.defer();
+        candidateModel.findByIdAndUpdate(
+            candidateId,
+            {$pullAll : {'companies': [companyId]}},
+            function(err, candidate){
+                if(err){
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(candidate);
+                }
+            });
+        return deferred.promise;
+    }
+
     function followCompany(candidateId, companyId) {
+        console.log("follow");
         var deferred = q.defer();
         candidateModel.findByIdAndUpdate(
             candidateId,

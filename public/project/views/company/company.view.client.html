@@ -8,8 +8,17 @@
             </div>
             <div class="wbdv-show-format">{{model.company.description}}</div></br>
             <div ng-controller="CandidateFollowController as followController">
-                <center><a ng-click="followController.follow(model.company._id)" class="btn btn-primary btn-lg wbdv-button-reg-margin">Follow</a></center>
+                <center>
+                    <a ng-click="followController.follow(model.company._id)" class="btn btn-primary btn-lg wbdv-button-reg-margin">
+                        <span ng-hide="followController.showUnfollow.message">Follow</span>
+                        <span ng-show="followController.showUnfollow.message">Unfollow</span>
+                    </a>
+                </center>
+                <div ng-show="followController.error" class="alert alert-danger" role="alert">
+                    <center>{{followController.error}}</center>
+                </div>
             </div>
+
         </div>
         <hr/>
 

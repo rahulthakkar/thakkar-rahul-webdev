@@ -49,7 +49,7 @@ module.exports = function (app, model) {
     app.get("/api/admin/candidate", authorize, findAllCandidates);
     app.get("/api/admin/loggedin", adminLoggedin);
     app.get("/api/candidate/:candidateId", authorize, findCandidateById);
-    app.put("/api/candidate/follow", followCompany);
+    app.put("/api/candidate/follow", authorize, followToggle);
     app.put("/api/candidate/:candidateId", authorize, updateCandidate);
 
     app.delete("/api/candidate/:candidateId", authorize, deleteCandidate);
@@ -148,22 +148,8 @@ module.exports = function (app, model) {
     }
 
     function updateCandidate(req, res) {
-        //var candidateId = req.params.candidateId;
-        //var newCandidate = JSON.parse(req.body.data);
-
-        /*picUpload(req, res, function (err) {
-            console.log("File upload called..2");
-            if (err) {
-                res.json({error_code: 1, err_desc: err});
-            }
-            //console.log(req.data.file.fileName);
-
-        });
-        res.json({error_code:0,err_desc:null});*/
-        console.log("After");
         var candidateId = req.params.candidateId;
-        console.log("Req"+ util.inspect(req));
-        /*var newCandidate = JSON.parse(req.body.data);
+        var newCandidate = req.body;
         //console.log("New candidate"+ JSON.stringify(newCandidate));
         //console.log("candidateId"+ candidateId);
         model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
@@ -174,25 +160,31 @@ module.exports = function (app, model) {
                     res.status(404).send(err);
                 });
 
-        *
-        */
-        res.status(200);
-
     }
 
-    function followCompany(req, res) {
-        console.log("followcompany server called");
+    function followToggle(req, res) {
+        console.log("followToggle server called");
         var candidateId = req.query.candidateId;
         var companyId = req.query.companyId;
         console.log(candidateId+" followcompany server called "+ companyId);
         if(candidateId && candidateId==req.user._id) {
-            model.candidateModel.followCompany(candidateId, companyId)
-                .then(function (candidate) {
-                        res.status(200).send(sendTransformObject(candidate));
-                    },
-                    function (err) {
-                        res.status(404).send(err);
-                    });
+            if(req.user.companies.indexOf(companyId) > -1){
+                model.candidateModel.unfollowCompany(candidateId, companyId)
+                    .then(function (candidate) {
+                            res.status(200).send(sendTransformObject(candidate));
+                        },
+                        function (err) {
+                            res.status(404).send(err);
+                        });
+            } else {
+                model.candidateModel.followCompany(candidateId, companyId)
+                    .then(function (candidate) {
+                            res.status(200).send(sendTransformObject(candidate));
+                        },
+                        function (err) {
+                            res.status(404).send(err);
+                        });
+            }
         } else {
             res.status(403);
         }
