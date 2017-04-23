@@ -22,7 +22,7 @@
                 templateUrl: "views/company/company.login.view.client.html",
                 controller: "CompanyLoginController",
                 controllerAs: "model",
-
+                resolve: { currentUser: forwardToCompanyProfile }
             })
             .when("/candidate/register", {
                 templateUrl: "views/candidate/candidate.register.view.client.html",
@@ -191,9 +191,6 @@
             //console.log("Check loggedin client not 0" + JSON.stringify(user));
             if (user !== '0') {
                 $rootScope.currentUser = user;
-                //$scope.currentUser = user;
-                $rootScope.$broadcast('candidateLoggedIn', user);
-                $rootScope.$emit('candidateLoggedIn', user);
                 deferred.resolve();
             } else {
                 deferred.reject();
@@ -204,16 +201,23 @@
     };
 
     var checkCompanyLoggedin = function($q, $timeout, $http, $location, $rootScope) {
+
         console.log("Check loggedin company client");
         var deferred = $q.defer();
         $http.get('/api/company/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
-                $rootScope.$broadcast("login");
+                console.log($rootScope);
+                if($rootScope.lastPath){
+                    $location.url($rootScope.lastPath);
+                }
                 deferred.resolve();
             } else {
                 deferred.reject();
+                //console.log("$location");
+                //console.log($location.$$path);
+                $rootScope.lastPath = $location.$$path
                 $location.url('/company/login');
             }
         });
@@ -234,6 +238,22 @@
         });
         return deferred.promise;
     };
+
+
+    var forwardToCompanyProfile = function ($q, $timeout, $http, $location, $rootScope) {
+        var deferred = $q.defer();
+        console.log("forward called")
+        $http.get('/api/company/loggedin').success(function (user) {
+            $rootScope.errorMessage = null;
+            if (user !== '0') {
+                $rootScope.currentUser = user;
+                deferred.resolve();
+                $location.url("/company/profile");
+            }
+            deferred.resolve();
+        });
+        return deferred.promise;
+    }
 
     var checkCurrentUser = function ($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();

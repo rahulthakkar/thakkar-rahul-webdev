@@ -44,6 +44,9 @@
                 .findJobById(vm.jobId)
                 .success(function (job) {
                     vm.job = angular.copy(job);
+                })
+                .error(function () {
+                    $location.url("/company/dashboard/");
                 });
         }
         init();
