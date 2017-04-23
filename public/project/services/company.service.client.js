@@ -15,6 +15,7 @@
             "login": login,
             "logout": logout,
             "register": register,
+            "uploadPic": uploadPic,
             "findAllCompanys": findAllCompanys
         };
         return api;
@@ -58,6 +59,10 @@
 
         function findAllCompanys() {
             return $http.get("/api/admin/company");
+        }
+
+        function uploadPic(companyId, fd) {
+            return $http.post("/api/company/pic/"+companyId, fd, {transformRequest: angular.identity, headers:{'Content-Type': undefined}});
         }
     }
 })();

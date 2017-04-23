@@ -81,18 +81,20 @@
             <div class="form-group">
                 <label for="resume" class="cols-sm-2 control-label">Resume</label>
                 <div class="cols-sm-10">
+                    <div class="small-text">{{model.user.resumeName}}</div>
                     <div class="input-group">
-                        <input file-input="model.resume" name="resume" id="resume" type="file"/>
+                        <input class="file" file-input="model.resume" name="resume" id="resume" type="file"/>
                         <a ng-click="model.uploadResume()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="resume" class="cols-sm-2 control-label">Profile Pic</label>
+                <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
                 <div class="cols-sm-10">
+                    <div class="small-text">{{model.user.photoName}}</div>
                     <div class="input-group">
-                        <input file-input="model.pic" name="pic" id="pic" type="file"/>
+                        <input file-input="model.pic" ng-bind="model.user.photoName" name="pic" id="pic" type="file"/>
                         <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
                     </div>
                 </div>

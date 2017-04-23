@@ -14,9 +14,19 @@ module.exports = function (app, model) {
     };
 
     var multer = require('multer');
-    var storage = multer.diskStorage({
+    var resumeStorage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, __dirname+'/../../public/uploads')
+            cb(null, __dirname+'/../../public/uploads/candidate/resumes/')
+        },
+        filename: function (req, file, cb) {
+
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    });
+
+    var picStorage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, __dirname+'/../../public/uploads/candidate/pics/')
         },
         filename: function (req, file, cb) {
 
@@ -24,11 +34,11 @@ module.exports = function (app, model) {
         }
     });
     var resumeUpload = multer({ //multer settings
-        storage: storage
+        storage: resumeStorage
     }).single('resume');
 
     var picUpload = multer({ //multer settings
-        storage: storage
+        storage: picStorage
     }).single('pic');
 
     var bcrypt = require("bcrypt-nodejs");
@@ -106,44 +116,66 @@ module.exports = function (app, model) {
         return candidate;
     }
 
-    function fileUpload(req, res) {
-        upload(req,res,function(err){
-            if(err){
-                res.json({error_code:1,err_desc:err});
-                return;
-            }
-            //console.log(req.data.file.fileName);
-            console.log("File upload called.."+ util.inspect(req.data));
-            console.log("File upload called.."+ util.inspect(req.file));
-            res.json({error_code:0,err_desc:null});
-        });
-    }
-
     function resumeUploadFunc(req, res, next) {
-        console.log("starting 1");
-        //if(candidateId && candidateId==req.user._id) {
+        //console.log("starting 1");
 
-        resumeUpload(req,res,function(err) {
-            console.log("File upload called..1");
-            if (err) {
+        resumeUpload(req, res, function (err) {
+            //console.log("File upload called..1");
+            if(req.file) {
+                if (err) {
+                    res.status(404);
+                }
+                //console.log("Uploaded");
+                //console.log(req.file.filename);
+                model.candidateModel.findCandidateById(req.user._id)
+                    .then(function(candidate){
+                        candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
+                        candidate.photoName = req.file.originalname;
+                        model.candidateModel.updateCandidate(req.user._id, candidate)
+                            .then(function (candidate) {
+                                    res.status(200).send(sendTransformObject(candidate));
+                                },
+                                function (err) {
+                                    res.status(404).send(err);
+                                });
+                    });
+                res.status(200);
+            } else {
+                //console.log("Else");
                 res.status(404);
             }
-            res.status(200);
-
         });
+
     }
 
     function picUploadFunc(req, res, next) {
-        console.log("starting 2");
-        //if(candidateId && candidateId==req.user._id) {
+        //console.log("starting 2");
 
-        picUpload(req,res,function(err) {
-            console.log("File upload called..1");
-            if (err) {
+        picUpload(req, res, function (err) {
+            //console.log("File upload called..1");
+            if(req.file) {
+                if (err) {
+                    res.status(404);
+                }
+                //console.log("Uploaded");
+                //console.log(req.file.filename);
+                model.candidateModel.findCandidateById(req.user._id)
+                    .then(function(candidate){
+                        candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
+                        candidate.photoName = req.file.originalname;
+                        model.candidateModel.updateCandidate(req.user._id, candidate)
+                            .then(function (candidate) {
+                                    res.status(200).send(sendTransformObject(candidate));
+                                },
+                                function (err) {
+                                    res.status(404).send(err);
+                                });
+                    });
+                res.status(200);
+            } else {
+                //console.log("Else");
                 res.status(404);
             }
-            res.status(200);
-
         });
     }
 
@@ -270,14 +302,12 @@ module.exports = function (app, model) {
             .findCandidateByEmail(email)
             .then(
                 function(candidate) {
-                    //console.log(candidate);
-                    //console.log("password1" + password);
+
                     console.log("password1" + bcrypt.hashSync(password));
                     console.log("password " + candidate.password);
                     if(candidate && bcrypt.compareSync(password, candidate.password)) {
                         return done(null, sendTransformObject(candidate));
                     }
-                    //console.log("some error");
                     return done(null, false);
                 },
                 function(err) {
@@ -299,12 +329,10 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var candidate = req.body;
-        //console.log("Craeting a candidate"+ JSON.stringify(candidate));
-        //console.log("Email"+ candidate.email);
+
         updateTransformObject(candidate);
         model.candidateModel.findCandidateByEmail(candidate.email)
             .then(function (candidate) {
-                    //console.log("Found already"+ candidate);
                     res.sendStatus(404).send(err);
                 },
                 function (err) {
@@ -351,10 +379,6 @@ module.exports = function (app, model) {
                     var email = profile.emails ? profile.emails[0].value: "";
                     var firstName = profile.name? profile.name.givenName: "";
                     var lastName = profile.name? profile.name.familyName: "";
-                    //console.log("email" + email);
-                    //console.log("firstName" + firstName);
-                    //console.log("lastName" + lastName);
-
                     var newCandidate = {
                         email: email,
                         firstName: firstName,
@@ -364,7 +388,6 @@ module.exports = function (app, model) {
                             token: token
                         }
                     };
-                    //console.log("New candidate"+ JSON.stringify(newCandidate));
 
                     model.candidateModel.createCandidate(newCandidate).then(function (candidate) {
                             //console.log("Returning"+ candidate);

@@ -6,7 +6,8 @@ body {
     padding-top: 70px;
     padding-bottom: 70px;
     overflow-y: scroll;
-    background-color: #FEFEFE
+    /*background-color: #FEFEFE*/
+    background-color: white;
 }
 
 .wbdv-right-navbar{
@@ -25,7 +26,7 @@ body {
     margin-right: 3px;
 }
 
-.wbdv-padding{
+.wbdv-margin{
     margin-top: 20px;
 
 }

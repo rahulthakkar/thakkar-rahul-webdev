@@ -83,7 +83,6 @@
 
 
         function init() {
-            console.log($rootScope);
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
         }
@@ -139,30 +138,20 @@
         }
 
         function update(newCandidate) {
-            /*var fd = new FormData();
-            angular.forEach(vm.resume, function (file) {
-               fd.append('resume', file);
-            });
-            angular.forEach(vm.pic, function (file) {
-                fd.append('pic', file);
-            });
-            fd.append('data', JSON.stringify(newCandidate));
-            console.log("Received request"+ vm.resume);
-            */
             var promise = CandidateService.updateCandidate($rootScope.currentUser._id, newCandidate);
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
-                        console.log("Unable to update user");
+                        //console.log("Unable to update user");
                         vm.error = "Unable to update user";
                     } else {
-                        console.log("User successfully updated");
+                        //console.log("User successfully updated");
                         vm.message = "User successfully updated"
                         setLoginDetails(vm);
                     }
                 })
                 .error(function () {
-                    console.log("User successfully updated");
+                    //console.log("User successfully updated");
                     vm.error = "Unable to update user";
                 });
 

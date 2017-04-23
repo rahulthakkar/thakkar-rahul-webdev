@@ -37,12 +37,10 @@
 
     function companyProfileController($routeParams, CompanyService, $rootScope, $location) {
         var vm = this;
-        //var userId = $routeParams['uid'];
 
         // event handlers
         vm.update = update;
-        //vm.logout = logout;
-
+        vm.uploadPic = uploadPic;
 
         function init() {
             vm.user = angular.copy($rootScope.currentUser);
@@ -50,6 +48,30 @@
         }
 
         init();
+
+        function uploadPic() {
+            var fd = new FormData();
+            angular.forEach(vm.pic, function (file) {
+                fd.append('pic', file);
+            });
+
+            var promise = CompanyService.uploadPic($rootScope.currentUser._id, fd);
+            promise
+                .success(function (company) {
+                    if (company == null) {
+                        console.log("Unable to upload pic");
+                        vm.error = "Unable to upload pic";
+                    } else {
+                        console.log(company);
+                        vm.message = "Pic successfully updated"
+                        setLoginDetails(vm);
+                    }
+                })
+                .error(function () {
+                    console.log("Unable to upload pic");
+                    vm.error = "Unable to upload pic";
+                });
+        }
 
         function update(newCompany) {
             var promise = CompanyService.updateCompany($rootScope.currentUser._id, newCompany);

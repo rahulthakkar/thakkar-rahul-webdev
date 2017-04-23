@@ -15,7 +15,9 @@ var candidateSchema = mongoose.Schema({
     ethnicity: String,
     education: String,
     resumeURI : String,
-    photoURI : String,
+    resumeName : String,
+    photoURI : {type:String, default:'/uploads/candidate/pics/default-candidate-pic.png'},
+    photoName : {type:String, default:''},
     dateCreated : {type : Date , default : Date.now()}
 }, {collection : 'candidate'});
 

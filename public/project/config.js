@@ -210,7 +210,9 @@
                 $rootScope.currentUser = user;
                 console.log($rootScope);
                 if($rootScope.lastPath){
-                    $location.url($rootScope.lastPath);
+                    var path = $rootScope.lastPath;
+                    $rootScope.lastPath = false;
+                    $location.url(path);
                 }
                 deferred.resolve();
             } else {

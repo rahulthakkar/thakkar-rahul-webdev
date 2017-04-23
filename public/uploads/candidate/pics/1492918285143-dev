@@ -1,0 +1,1 @@
+perl C:\dev\neu\cs6200\hws\data\output\trec_eval.txt -q  C:\dev\neu\cs6200\hws\data\output\qrels.adhoc.51-100.AP89.txt  C:\dev\neu\cs6200\hws\assignments\information-retrieval-hw1\TestDataEval > TestDataOutput.txt

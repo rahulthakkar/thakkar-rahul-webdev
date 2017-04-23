@@ -96,6 +96,16 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
+                <div class="cols-sm-10">
+                    <div class="small-text">{{model.user.photoName}}</div>
+                    <div class="input-group">
+                        <input file-input="model.pic" class="file" name="pic" id="pic" type="file"/>
+                        <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
+                    </div>
+                </div>
+            </div>
             <!---->
 
             <div class="alert alert-danger" ng-show="model.error">

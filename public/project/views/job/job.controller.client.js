@@ -117,18 +117,19 @@
     function JobIndeedSearchController($routeParams, $location, $rootScope) {
         var vm = this;
         vm.searchJobs = searchJobs
-        vm.searchTerm = "Web Developer"
 
         var publisherKey = "3576802165611426";
         var indeed_client = new Indeed(publisherKey);
+        vm.showSpinner = false;
 
         function init() {
             setLoginDetails(vm, $rootScope);
-            searchJobs(vm.searchTerm, "US");
+            //searchJobs(vm.searchTerm, "US");
         }
         init();
 
         function searchJobs(searchTerm, location) {
+            vm.showSpinner = true;
             vm.searchTerm = searchTerm;
             indeed_client.search({
                 q: searchTerm,
@@ -138,6 +139,7 @@
                 userip: '1.2.3.4',
                 useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
             }, function (response) {
+                vm.showSpinner = false;
                 vm.jobs = angular.copy(response.results);
             });
         }

@@ -22,17 +22,17 @@
                 </ul>
             </div>
 
-            <div  ng-if="model.isAdmin" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-2">
+            <div  ng-if="model.isAdmin" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#/candidate/profile" class="text-uppercase">{{model.candidateName}}</a></li>
                     <li><a href="#/admin/candidate">CANDIDATES</a></li>
-                    <li><a href="#/admin/company">COMPANIES</a></li>
+                    <li><a href="#/admin/company">Companies</a></li>
                     <li><a href="#/candidate/logout">LOGOUT</a></li>
                     <!--<li><a class="btn" ng-click="model.logout()">LOGOUT</a></li>-->
                 </ul>
             </div>
 
-            <div  ng-if="model.isCompany" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-3">
+            <div  ng-if="model.isCompany" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#/company/profile" class="text-uppercase">{{model.companyName}}</a></li>
                     <li><a href="#/company/logout">LOGOUT</a></li>
@@ -40,7 +40,7 @@
                 </ul>
             </div>
 
-            <div  ng-if="model.notLoggedIn" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-4">
+            <div  ng-if="model.notLoggedIn" class="collapse navbar-collapse wbdv-right-navbar" id="nav-bar-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#/candidate/register">FIND JOBS</a></li>
                     <li><a href="#/company/register">RECRUIT</a></li>

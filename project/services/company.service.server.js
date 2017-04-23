@@ -10,6 +10,22 @@ module.exports = function (app, model) {
     const util = require('util');
     passport.use('company', new LocalStrategy({usernameField: 'email', passwordField: 'password'},localStrategy));
 
+    var multer = require('multer');
+    var picStorage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, __dirname+'/../../public/uploads/company/pics/')
+        },
+        filename: function (req, file, cb) {
+
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    });
+
+    var picUpload = multer({ //multer settings
+        storage: picStorage
+    }).single('pic');
+
+    app.post('/api/company/pic/:companyId', authorize, picUploadFunc);
     app.post('/api/company/login', passport.authenticate('company'), login);
     app.post('/api/company/logout', logout);
     app.post('/api/company/register', register);
@@ -70,6 +86,37 @@ module.exports = function (app, model) {
         } else {
             res.status(403);
         }
+    }
+
+    function picUploadFunc(req, res, next) {
+        console.log("starting 2");
+
+        picUpload(req, res, function (err) {
+            console.log("File upload called..1");
+            if(req.file) {
+                if (err) {
+                    res.status(404);
+                }
+                console.log("Uploaded");
+                console.log(req.file.filename);
+                model.companyModel.findCompanyById(req.user._id)
+                    .then(function(company){
+                        company.photoURI = '/uploads/company/pics/' + req.file.filename;
+                        company.photoName = req.file.originalname;
+                        model.companyModel.updateCompany(req.user._id, company)
+                            .then(function (company) {
+                                    res.status(200).send(sendTransformObject(company));
+                                },
+                                function (err) {
+                                    res.status(404).send(err);
+                                });
+                    });
+                res.status(200);
+            } else {
+                console.log("Else");
+                res.status(404);
+            }
+        });
     }
 
     function findCompanyById(req, res) {

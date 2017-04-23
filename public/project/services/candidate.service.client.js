@@ -71,7 +71,6 @@
         }
 
         function followCompany(candidateId, companyId) {
-            //console.log("Follows called");
             return $http.put("/api/candidate/follow?candidateId="+candidateId+"&companyId="+companyId);
         }
 

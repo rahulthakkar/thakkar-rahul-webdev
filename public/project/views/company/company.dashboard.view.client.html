@@ -3,7 +3,7 @@
     <div class="row main container">
         <div class="center-block">
             <div class="text-center">
-                <img src="images/drawbridge.png" class="img-thumbnail" alt="{{model.company.name}}">
+                <img ng-src="{{model.company.photoURI}}" height="200" width="200" class="img-thumbnail" alt="{{model.company.name}}">
                 <h1 class="large-text ">Work at {{model.company.name}}</h1>
             </div>
             <div class="wbdv-show-format">{{model.company.description}}</div></br>
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     </div>
-                        <a class="btn btn-primary pull-right wbdv-padding" href="#/company/job/{{job._id}}">Edit Job</a><br/><br/><br/><br/>
+                        <a class="btn btn-primary pull-right wbdv-margin" href="#/company/job/{{job._id}}">Edit Job</a><br/><br/><br/><br/>
                     </div>
                 </div>
             </div>

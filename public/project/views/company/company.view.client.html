@@ -3,19 +3,21 @@
     <div class="row main container">
         <div class="center-block">
             <div class="text-center">
-                <img src="images/drawbridge.png" class="img-thumbnail" alt="{{model.company.name}}">
+                <img ng-src="{{model.company.photoURI}}" height="200" width="200" class="img-thumbnail" alt="{{model.company.name}}">
                 <h1 class="large-text ">Work at {{model.company.name}}</h1>
             </div>
             <div class="wbdv-show-format">{{model.company.description}}</div></br>
-            <div ng-controller="CandidateFollowController as followController">
-                <center>
-                    <a ng-click="followController.follow(model.company._id)" class="btn btn-primary btn-lg wbdv-button-reg-margin">
-                        <span ng-hide="followController.showUnfollow.message">Follow</span>
-                        <span ng-show="followController.showUnfollow.message">Unfollow</span>
-                    </a>
-                </center>
-                <div ng-show="followController.error" class="alert alert-danger" role="alert">
-                    <center>{{followController.error}}</center>
+            <div ng-if="model.isCandidate">
+                <div ng-controller="CandidateFollowController as followController">
+                    <center>
+                        <a ng-click="followController.follow(model.company._id)" class="btn btn-primary btn-lg wbdv-button-reg-margin">
+                            <span ng-hide="followController.showUnfollow.message">Follow</span>
+                            <span ng-show="followController.showUnfollow.message">Unfollow</span>
+                        </a>
+                    </center>
+                    <div ng-show="followController.error" class="alert alert-danger" role="alert">
+                        <center>{{followController.error}}</center>
+                    </div>
                 </div>
             </div>
 
@@ -36,7 +38,7 @@
                         </div>
                     </div>
                     </div>
-                        <a class="btn btn-primary pull-right wbdv-padding" href="#/job/view/{{job._id}}/apply">Apply</a><br/><br/><br/><br/>
+                        <a class="btn btn-primary pull-right wbdv-margin" href="#/job/view/{{job._id}}/apply">Apply</a><br/><br/><br/><br/>
                     </div>
                 </div>
             </div>
