@@ -1,7 +1,7 @@
 var mongoose = require("mongoose");
 var applicationSchema;
 applicationSchema = mongoose.Schema({
-    status: {type: String, enum : ['Closed', 'In Process', 'New', 'Not Selected'],  default:'New'},
+    status: {type: String,  default:'New'},
     job : {type : mongoose.Schema.Types.ObjectId, ref : 'jobModel'},
     applicant: {type : mongoose.Schema.Types.ObjectId, ref : 'candidateModel'},
     answers: [{type: String}],

@@ -130,7 +130,6 @@ module.exports = function (app, model) {
                 model.candidateModel.findCandidateById(req.user._id)
                     .then(function(candidate){
                         candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
-                        candidate.resumeName = req.file.originalname;
                         model.candidateModel.updateCandidate(req.user._id, candidate)
                             .then(function (candidate) {
                                     res.status(200).send(sendTransformObject(candidate));
@@ -141,7 +140,7 @@ module.exports = function (app, model) {
                     });
                 res.status(200);
             } else {
-                //console.log("Else");
+                console.log("Else");
                 res.status(404);
             }
         });
@@ -162,7 +161,6 @@ module.exports = function (app, model) {
                 model.candidateModel.findCandidateById(req.user._id)
                     .then(function(candidate){
                         candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
-                        candidate.photoName = req.file.originalname;
                         model.candidateModel.updateCandidate(req.user._id, candidate)
                             .then(function (candidate) {
                                     res.status(200).send(sendTransformObject(candidate));
@@ -238,11 +236,8 @@ module.exports = function (app, model) {
         if(isAdmin(req.user)) {
             var email = req.query.email;
             var password = req.query.password;
-            if (email && password) {
-                findCandidateByCredentials(req, res);
-            } else if (email) {
-                findCandidateByEmail(req, res);
-            }
+            findCandidateByEmail(req, res);
+
         } else {
             res.status(403);
         }

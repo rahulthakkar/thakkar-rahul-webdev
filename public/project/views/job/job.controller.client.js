@@ -92,11 +92,6 @@
         function init() {
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
-            JobService
-                .findAllJobsForCompany(vm.companyId)
-                .success(function (jobs) {
-                    vm.jobs = angular.copy(jobs);
-                });
         }
         init();
 
@@ -164,7 +159,15 @@
         vm.showSpinner = false;
 
         function init() {
-            setLoginDetails(vm, $rootScope);
+            vm.user = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
+
+            if(vm.user && vm.user.role && vm.user.role == 'User'){
+                vm.appliedJobs = vm.user.applications.map(function (obj) {
+                    return obj.job;
+                });
+                console.log(vm.appliedJobs);
+            }
         }
         init();
 
@@ -178,7 +181,17 @@
                     if(jobs == null) {
                         vm.noResults = true;
                     } else {
+                        if(vm.appliedJobs.length>0){
+                            for(var j in jobs){
+                                console.log("Here"+jobs[j]._id);
+                                if(vm.appliedJobs.indexOf(jobs[j]._id)> -1){
+                                    console.log("Here");
+                                    jobs[j].applied = true;
+                                }
+                            }
+                        }
                         vm.jobs = jobs;
+                        console.log(vm.jobs);
                     }
                 })
                 .error(function () {

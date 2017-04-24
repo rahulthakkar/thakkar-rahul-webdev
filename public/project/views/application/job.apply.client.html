@@ -1,0 +1,40 @@
+<wbdv-navigation></wbdv-navigation>
+
+<div class="container">
+    <div class="row main container">
+        <div class="center-block">
+            <div class="text-center">
+                <a href="#/company/view/{{model.job.company._id}}">
+                    <img src="images/drawbridge.png" class="img-thumbnail" alt="{{model.company.name}}">
+                </a>
+                <h1 class="">{{model.job.title}} at {{model.job.company.name}}</h1>
+                <div>
+                    <span ng-show="model.job.location" class="text-muted">{{model.job.location}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                    <span ng-show="model.job.jobType" class="text-muted">{{model.job.jobType}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                    <span ng-show="model.job.salary" class="text-muted">{{model.job.salary}}</span>
+
+                </div>
+                <div class="wbdv-applied-job" ng-show="model.isApplied">
+
+                    <h4><i class="fa fa-check-circle" aria-hidden="true"></i>
+                        You have already applied to this Job</h4>
+                </div>
+            </div><br/>
+            <div class="text-muted" ng-show="model.job.company.description">{{model.job.company.description}}</div>
+
+        </div>
+        <hr/>
+
+        <div>
+            <h3>Job Description</h3><br/>
+
+            <div class="wbdv-show-format text-muted">{{model.job.description}}</div><br/>
+            <a ng-hide="model.isApplied || model.appliedNow" class="btn btn-primary btn-lg" ng-click="model.apply()">Apply Now</a>
+            <div class="wbdv-applied-job" ng-show="model.appliedNow">
+
+                <h4><i class="fa fa-check-circle" aria-hidden="true"></i>
+                    You have applied successfully!!</h4>
+            </div>
+        </div>
+    </div>
+</div>

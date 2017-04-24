@@ -119,59 +119,19 @@
                 templateUrl: 'views/job/job.view.client.html',
                 controller: "JobViewController",
                 controllerAs: "model",
+                resolve: {currentUser: checkCurrentUser}
+            })
+            .when("/job/:jid/apply",{
+                templateUrl: 'views/application/job.apply.client.html',
+                controller: "JobApplicationController",
+                controllerAs: "model",
+                resolve: {currentUser: checkCandidateLoggedin}
             })
             .when("/job/search",{
                 templateUrl: 'views/job/job.search.view.client.html',
                 controller: "JobSearchController",
                 controllerAs: "model",
-                //resolve: { currentUser: checkCompanyLoggedin }
-            })
-
-
-            .when("/user/:uid/website/new",{
-                templateUrl: 'views/company/company-new.view.client.html',
-                controller: "WebsiteNewController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid",{
-                templateUrl: 'views/company/company-edit.view.client.html',
-                controller: "WebsiteEditController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page",{
-                templateUrl: 'views/page/page-list.view.client.html',
-                controller: "PageListController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/new",{
-                templateUrl: 'views/page/page-new.view.client.html',
-                controller: "PageNewController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid",{
-                templateUrl: 'views/page/page-edit.view.client.html',
-                controller: "PageEditController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget",{
-                templateUrl: 'views/application/widget-list.view.client.html',
-                controller: "WidgetListController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget/new",{
-                templateUrl: 'views/application/widget-chooser.view.client.html',
-                controller: "WidgetNewController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget/:wgid",{
-                templateUrl: 'views/application/widget-edit.view.client.html',
-                controller: "WidgetEditController",
-                controllerAs: "model"
-            })
-            .when("/user/:uid/website/:wid/page/:pid/widget/:wgid/flickr",{
-                templateUrl: 'views/application/editors/widget-flickr-search.view.client.html',
-                controller: "WidgetFlickrSearchController",
-                controllerAs: "model"
+                resolve: { currentUser: checkCurrentUser}
             })
             .otherwise({redirectTo : '/main'});
     }

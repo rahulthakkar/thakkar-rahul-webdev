@@ -6,8 +6,6 @@ body {
     padding-top: 70px;
     padding-bottom: 70px;
     overflow-y: scroll;
-    /*background-color: #FEFEFE*/
-    background-color: white;
 }
 
 .wbdv-right-navbar{
@@ -28,9 +26,15 @@ body {
 
 .wbdv-margin{
     margin-top: 20px;
-
 }
 
+.wbdv-body-color {
+    "background-color: #f9f9fa"
+}
+.wbdv-applied-job{
+    color: darkgreen;
+    margin: 5px;
+}
 .wbdv-left-navbar{
     margin-left: 15px;
 }

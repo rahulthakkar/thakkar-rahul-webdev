@@ -37,11 +37,16 @@ module.exports = function(app) {
 
     function findCandidateById(candidateId){
         var deferred = q.defer();
-        candidateModel.findById(candidateId,
-            function(err, candidate){
+        candidateModel.findById(candidateId)
+            .populate('applications','status job applicant')
+            .exec(function(err, candidate){
                 if(err){
+                    console.log("Error in fetching candidate model");
+                    console.log(err);
                     deferred.reject(err);
                 }else{
+                    console.log("found candidate");
+                    console.log(candidate.applications);
                     deferred.resolve(candidate);
                 }
             });
@@ -50,7 +55,20 @@ module.exports = function(app) {
 
     function findCandidateByEmail(email){
         var deferred = q.defer();
-        candidateModel.findOne({"email" : email},
+        candidateModel.findOne({"email" : email})
+            .populate('applications','status job applicant')
+            .exec(function(err, candidate){
+                if(err){
+                    console.log("Error in fetching candidate model");
+                    console.log(err);
+                    deferred.reject(err);
+                }else{
+                    deferred.resolve(candidate);
+                }
+            });
+        return deferred.promise;
+
+        /*candidateModel.findOne({"email" : email},
             function(err, candidate){
                 if(candidate){
                     //console.log("No error in model"+candidate);
@@ -61,7 +79,7 @@ module.exports = function(app) {
                     deferred.reject(err);
                 }
             });
-        return deferred.promise;
+        return deferred.promise;*/
     }
 
     function findCandidateByCredentials(email, password){
@@ -138,7 +156,21 @@ module.exports = function(app) {
     }
 
     function findCandidateByFacebookId(facebookId) {
-        return candidateModel.findOne({'facebook.id': facebookId});
+        var deferred = q.defer();
+        candidateModel.findOne({'facebook.id': facebookId})
+            .populate('applications','status job applicant')
+            .exec(function(err, candidate){
+                if(err){
+                    console.log("Error in fetching candidate model");
+                    console.log(err);
+                    deferred.reject(err);
+                }else{
+                    console.log("found candidate");
+                    console.log(candidate.applications);
+                    deferred.resolve(candidate);
+                }
+            });
+        return deferred.promise;
     }
 
     function findAllCandidates() {

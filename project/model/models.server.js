@@ -14,7 +14,7 @@ module.exports = function(app) {
     mongoose.createConnection(connectionString);
 
     var model = {
-        //applicationModel : require("./application/application.model.server")(),
+        applicationModel : require("./application/application.model.server")(),
         jobModel : require("./job/job.model.server")(),
         candidateModel : require("./candidate/candidate.model.server")(),
         companyModel : require("./company/company.model.server")()

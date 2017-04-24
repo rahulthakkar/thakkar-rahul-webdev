@@ -1,23 +1,19 @@
 (function () {
     angular
         .module("JobNowMaker")
-        .service("WidgetService", widgetService);
+        .service("ApplicationService", applicationService);
 
-    function widgetService($http) {
+    function applicationService($http) {
 
         var api = {
-            "createWidget": createWidget,
-            "findAllWidgetsForPage": findAllWidgetsForPage,
-            "findWidgetById": findWidgetById,
-            "updateWidget": updateWidget,
-            "deleteWidget": deleteWidget,
-            "updateIndex": updateIndex
+            "apply" : apply
         };
         return api;
 
 
-        function createWidget(pageId, widget) {
-            return $http.post("/api/page/"+pageId+"/widget", widget);
+        function apply(candidateId, jobId) {
+            console.log("apply client service");
+            return $http.post("/api/application?candidateId="+ candidateId +"&jobId="+jobId);
         }
 
         function findAllWidgetsForPage(pageId) {
