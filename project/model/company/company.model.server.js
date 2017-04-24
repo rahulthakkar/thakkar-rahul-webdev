@@ -51,12 +51,16 @@ module.exports = function(app) {
 
     function findCompanyById(companyId){
         var deferred = q.defer();
-        return companyModel.findById(companyId)
+        companyModel.findById(companyId)
             .populate('jobs','title location jobType salary')
             .exec(function(err, company){
                 if(err){
+                    //console.log("error");
+                    //console.log(err);
                     deferred.reject(err);
                 }else{
+                    //console.log("company");
+                    //console.log(company);
                     deferred.resolve(company);
                 }
             });

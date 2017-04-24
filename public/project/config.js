@@ -155,13 +155,13 @@
 
     var checkCompanyLoggedin = function($q, $timeout, $http, $location, $rootScope) {
 
-        console.log("Check loggedin company client");
+        //console.log("Check loggedin company client");
         var deferred = $q.defer();
         $http.get('/api/company/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
-                console.log($rootScope);
+                //console.log($rootScope);
                 if($rootScope.lastPath){
                     var path = $rootScope.lastPath;
                     $rootScope.lastPath = false;
@@ -197,7 +197,7 @@
 
     var forwardToCompanyProfile = function ($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();
-        console.log("forward called")
+        //console.log("forward called")
         $http.get('/api/company/loggedin').success(function (user) {
             $rootScope.errorMessage = null;
             if (user !== '0') {
@@ -212,24 +212,24 @@
 
     var checkCurrentUser = function ($q, $timeout, $http, $location, $rootScope) {
         var deferred = $q.defer();
-        console.log("checkCurrentUser called")
+        //console.log("checkCurrentUser called")
         $http.get('/api/admin/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
                 deferred.resolve();
             } else {
-                console.log("checkCurrentUser called candidate")
+                //console.log("checkCurrentUser called candidate")
                 $http.get('/api/candidate/loggedin').success(function (user) {
                     $rootScope.errorMessage = null;
                     // User is Authenticated
-                    console.log("Got candidate");
-                    console.log(user);
+                    //console.log("Got candidate");
+                    //console.log(user);
                     if (user !== '0') {
                         $rootScope.currentUser = user;
                         deferred.resolve();
                     } else {
-                        console.log("checkCurrentUser called company")
+                        //console.log("checkCurrentUser called company")
                         $http.get('/api/company/loggedin').success(function (user) {
                             $rootScope.errorMessage = null;
                             if (user !== '0') {

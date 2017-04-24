@@ -1,7 +1,8 @@
 module.exports = function (app, model) {
 
     app.post('/api/application', authorize, createApplication);
-
+    app.get('/api/application/job/:jobId', authorize, findApplicationsForJob);
+    app.get('/api/application/candidate/:candidateId', authorize, findApplicationsForCandidate);
 
 
     function authorize (req, res, next) {
@@ -64,6 +65,78 @@ module.exports = function (app, model) {
         }
     }
 
+
+    function findApplicationsForJob(req, res) {
+        //console.log("Server called");
+        var jobId = req.params.jobId;
+        if(req.user.jobs){
+            var ids = req.user.jobs.map(function (obj) {
+                return String(obj._id);
+            });
+            if(ids.indexOf(jobId)> -1) {
+                //console.log("authorized");
+                model.applicationModel
+                    .findApplicationsByJobId(jobId)
+                    .then(
+                        function (applications) {
+                            //console.log("Found applications");
+                            //console.log(applications);
+                            res.json(applications);
+                        },
+                        function (err) {
+                            //console.log("error");
+                            //console.log(err);
+                            res.status(400).send(err);
+                        }
+                    );
+            } else {
+                console.log("error 1");
+                res.status(403);
+            }
+        } else {
+            console.log("error 2");
+            res.status(403);
+        }
+
+    }
+
+    function findApplicationsForCandidate(req, res) {
+        var candidateId = req.params.candidateId;
+        if(req.user && req.user._id == candidateId) {
+            model.applicationModel
+                .findApplicationsByCandidateId(candidateId)
+                .then(
+                    function (applications) {
+                        res.json(applications);
+                    },
+                    function () {
+                        res.status(400).send(err);
+                    }
+                );
+        } else {
+            res.status(403);
+        }
+    }
+
+    /*function findApplicationsByCandidate(req, res) {
+     var jobId = req.params.jobId;
+     if(req.user.jobs && req.user.jobs.indexOf(jobId) > -1) {
+     model.applicationModel
+     .findByJobId(jobId)
+     .then(
+     function (applications) {
+     res.json(applications);
+     },
+     function () {
+     res.status(400).send(err);
+     }
+     );
+     } else {
+     res.status(403);
+     }
+     }*/
+
+
     function updateCandidate(req, res) {
         var candidateId = req.params.candidateId;
         var newCandidate = req.body;
@@ -106,21 +179,6 @@ module.exports = function (app, model) {
         }
     }
 
-    function findAllCandidates(req, res) {
-        if(isAdmin(req.user)) {
-            model.candidateModel
-                .findAllCandidates()
-                .then(
-                    function (candidates) {
-                        res.json(candidates);
-                    },
-                    function () {
-                        res.status(400).send(err);
-                    }
-                );
-        } else {
-            res.status(403);
-        }
-    }
+
 }
 

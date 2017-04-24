@@ -6,7 +6,9 @@
     function applicationService($http) {
 
         var api = {
-            "apply" : apply
+            "apply" : apply,
+            "findApplicationsForJob": findApplicationsForJob,
+            "findApplicationsForCandidate": findApplicationsForCandidate
         };
         return api;
 
@@ -16,8 +18,12 @@
             return $http.post("/api/application?candidateId="+ candidateId +"&jobId="+jobId);
         }
 
-        function findAllWidgetsForPage(pageId) {
-            return $http.get("/api/page/"+pageId+"/widget");
+        function findApplicationsForJob(jobId) {
+            return $http.get("/api/application/job/"+jobId);
+        }
+
+        function findApplicationsForCandidate(candidateId) {
+            return $http.get("/api/application/candidate/"+candidateId);
         }
 
         function findWidgetById(widgetId) {

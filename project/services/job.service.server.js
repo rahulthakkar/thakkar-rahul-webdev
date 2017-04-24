@@ -4,6 +4,7 @@ module.exports = function (app, model) {
     app.get("/api/jobs/search",  searchJobs);
     app.get("/api/company/:companyId/job", authorize, findAllJobsForCompany);
     app.get("/api/job/:jobId", findJobById);
+    //app.get("/api/company/job/:jobId", authorize, findCompanyJobById);
     app.put("/api/company/job/:jobId", authorize, updateJob);
     app.delete("/api/company/job/:jobId", authorize, deleteJob);
 
@@ -70,7 +71,7 @@ module.exports = function (app, model) {
 
     function findJobById(req, res) {
         var jobId = req.params.jobId;
-        console.log("Server job id"+ jobId);
+        //console.log("Server job id"+ jobId);
         model.jobModel.findJobById(jobId)
             .then(function (job) {
                     res.status(200).send(job);
@@ -80,6 +81,22 @@ module.exports = function (app, model) {
                 });
 
     }
+
+    /*function findJobById(req, res) {
+        var jobId = req.params.jobId;
+        if(req.user.jobs && req.user.jobs.indexOf(jobId)>-1) {
+            model.jobModel.findJobByIdPopulate(jobId)
+                .then(function (job) {
+                        res.status(200).send(job);
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else{
+            res.status(403);
+        }
+
+    }*/
 
     function updateable(req, res, next){
         var jobId = req.params.jobId;

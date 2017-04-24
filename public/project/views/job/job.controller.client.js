@@ -181,7 +181,7 @@
                     if(jobs == null) {
                         vm.noResults = true;
                     } else {
-                        if(vm.appliedJobs.length>0){
+                        if(vm.appliedJobs && vm.appliedJobs.length>0){
                             for(var j in jobs){
                                 console.log("Here"+jobs[j]._id);
                                 if(vm.appliedJobs.indexOf(jobs[j]._id)> -1){
@@ -217,7 +217,7 @@
         init();
     }
 
-    function JobCompanyViewController($routeParams, JobService, $rootScope, $location) {
+    function JobCompanyViewController($routeParams, JobService, ApplicationService, $rootScope, $location) {
         var vm = this;
         var jobId = $routeParams['jid'];
 
@@ -227,7 +227,13 @@
             var promise = JobService.findJobById(jobId);
             promise.success(function (job) {
                 vm.job = angular.copy(job);
+                ApplicationService.findApplicationsForJob(jobId)
+                    .success(function(applications) {
+                        console.log(applications);
+                        vm.applications = applications;
+                    });
             });
+
         }
 
         init();

@@ -8,6 +8,8 @@ module.exports = function() {
 
     var api = {
         "createApplication": createApplication,
+        "findApplicationsByJobId": findApplicationsByJobId,
+        "findApplicationsByCandidateId": findApplicationsByCandidateId
     };
     return api;
 
@@ -32,11 +34,30 @@ module.exports = function() {
         return deferred.promise;
     }
 
-    /*
-    function findAllApplicationsForCompany(companyId){
+
+    function findApplicationsByJobId(jobId){
         var deferred = q.defer();
-        applicationModel.find({"company" : companyId},
-            function(err, application){
+        applicationModel.find({"job" : jobId})
+            .populate('applicant', 'firstName lastName email resumeURI resumeName photoURI photoName education ethnicity')
+            .exec(function(err, application){
+                if(err){
+                    //console.log("error");
+                    //console.log(err);
+                    deferred.reject(err);
+                }else{
+                    //console.log("model application");
+                    //console.log(application);
+                    deferred.resolve(application);
+                }
+            });
+        return deferred.promise;
+    }
+
+    function findApplicationsByCandidateId(candidateId){
+        var deferred = q.defer();
+        applicationModel.find({"applicant" : candidateId})
+            .populate('job',{applications:0})
+            .exec(function(err, application){
                 if(err){
                     deferred.reject(err);
                 }else{
@@ -46,7 +67,7 @@ module.exports = function() {
         return deferred.promise;
     }
 
-    function searchApplications(term){
+    /*function searchApplications(term){
         console.log("model application");
         var deferred = q.defer();
         applicationModel.find({$text : {$search: term}},

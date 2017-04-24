@@ -39,7 +39,7 @@
     <center>
         <h3 class="text-center">Find the Jobs from Indeed</h3>
         <div class="input-group wbdv-margin col-sm-6">
-            <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs with keywords like Java Developer">
+            <input ng-keyup="$event.keyCode == 13 ? model.searchJobs(model.searchTerm) : null" ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs with keywords like Java Developer">
             <span class="input-group-btn">
             <a ng-click="model.searchJobs(model.searchTerm)" class="btn btn-default" type="button">
                 <span class="glyphicon glyphicon-search"></span>

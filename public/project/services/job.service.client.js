@@ -9,6 +9,7 @@
             "createJob": createJob,
             "findAllJobsForCompany": findAllJobsForCompany,
             "findJobById": findJobById,
+            "findCompanyJobById": findCompanyJobById,
             "updateJob": updateJob,
             "deleteJob": deleteJob,
             "searchJobs": searchJobs
@@ -29,6 +30,10 @@
 
         function findJobById(jobId) {
             return $http.get("/api/job/"+jobId);
+        }
+
+        function findCompanyJobById(jobId) {
+            return $http.get("/api/company/job/"+jobId);
         }
 
         function updateJob(jobId, job) {

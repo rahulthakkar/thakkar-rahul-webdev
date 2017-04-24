@@ -10,6 +10,7 @@ module.exports = function() {
         "createJobForCompany": createJobForCompany,
         "findAllJobsForCompany": findAllJobsForCompany,
         "findJobById": findJobById,
+        //"findJobByIdPopulate": findJobByIdPopulate,
         "updateJob": updateJob,
         "deleteJob": deleteJob,
         "searchJobs": searchJobs
@@ -77,6 +78,23 @@ module.exports = function() {
             });
         return deferred.promise;
     }
+
+    /*function findJobByIdPopulate(jobId){
+        //console.log(jobId)
+        var deferred = q.defer();
+        jobModel.findById(jobId)
+            .populate('applications')
+            .exec(function(err, job){
+                if(err){
+                    //console.log("Error in model"+ err);
+                    deferred.reject(err);
+                }else{
+                    //console.log("Job in model"+ JSON.stringify(job));
+                    deferred.resolve(job);
+                }
+            });
+        return deferred.promise;
+    }*/
 
     function updateJob(jobId, newJob){
         var deferred = q.defer();
