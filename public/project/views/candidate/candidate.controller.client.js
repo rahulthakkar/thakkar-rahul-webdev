@@ -71,7 +71,7 @@
         }
     }
 
-    function candidateProfileController($routeParams, CandidateService, $rootScope, $location) {
+    function candidateProfileController($routeParams, CandidateService, $rootScope, $location, $scope) {
         var vm = this;
         //var userId = $routeParams['uid'];
 
@@ -99,16 +99,18 @@
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
-                        console.log("Unable to upload resume");
+                        //console.log("Unable to upload resume");
                         vm.error = "Unable to upload resume";
                     } else {
-                        console.log("Resume successfully updated");
-                        vm.message = "Resume successfully updated"
+                        //console.log("Resume successfully updated");
+                        vm.message = "Resume successfully updated";
+                        $rootScope.currentUser = candidate;
+                        vm.user = angular.copy($rootScope.currentUser);
                         setLoginDetails(vm);
                     }
                 })
                 .error(function () {
-                    console.log("Unable to upload resume");
+                    //console.log("Unable to upload resume");
                     vm.error = "Unable to upload resume";
                 });
         }
@@ -123,16 +125,20 @@
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
-                        console.log("Unable to upload pic");
+                        //console.log("Unable to upload pic");
                         vm.error = "Unable to upload pic";
                     } else {
-                        console.log("Pic successfully updated");
+                        //console.log(candidate);
                         vm.message = "Pic successfully updated"
+                        $rootScope.currentUser = candidate;
+                        vm.user = angular.copy($rootScope.currentUser);
                         setLoginDetails(vm);
-                    }
+                        /*if(!$scope.$$phase) {
+                            $scope.$digest();
+                        }*/                    }
                 })
                 .error(function () {
-                    console.log("Unable to upload pic");
+                    //console.log("Unable to upload pic");
                     vm.error = "Unable to upload pic";
                 });
         }

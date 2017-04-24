@@ -14,5 +14,7 @@ jobSchema = mongoose.Schema({
     dateCreated: {type: Date, default: Date.now()}
 }, {collection: 'job'});
 
+jobSchema.index({title:'text', description:'text'});
+
 
 module.exports = jobSchema;

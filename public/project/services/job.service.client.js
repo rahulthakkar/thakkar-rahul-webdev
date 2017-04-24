@@ -10,7 +10,8 @@
             "findAllJobsForCompany": findAllJobsForCompany,
             "findJobById": findJobById,
             "updateJob": updateJob,
-            "deleteJob": deleteJob
+            "deleteJob": deleteJob,
+            "searchJobs": searchJobs
         };
         return api;
 
@@ -20,6 +21,10 @@
 
         function findAllJobsForCompany(companyId) {
             return $http.get("/api/company/"+companyId+"/job");
+        }
+
+        function searchJobs(term) {
+            return $http.get("/api/jobs/search?term="+ term);
         }
 
         function findJobById(jobId) {

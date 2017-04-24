@@ -11,7 +11,8 @@ module.exports = function() {
         "findAllJobsForCompany": findAllJobsForCompany,
         "findJobById": findJobById,
         "updateJob": updateJob,
-        "deleteJob": deleteJob
+        "deleteJob": deleteJob,
+        "searchJobs": searchJobs
     };
     return api;
 
@@ -37,6 +38,24 @@ module.exports = function() {
                     deferred.reject(err);
                 }else{
                     deferred.resolve(job);
+                }
+            });
+        return deferred.promise;
+    }
+
+    function searchJobs(term){
+        console.log("model job");
+        var deferred = q.defer();
+        jobModel.find({$text : {$search: term}},
+            function(err, jobs){
+                if(err){
+                    console.log("model error");
+                    console.log(err);
+                    deferred.reject(err);
+                }else{
+                    console.log("model jobs");
+                    console.log(jobs);
+                    deferred.resolve(jobs);
                 }
             });
         return deferred.promise;

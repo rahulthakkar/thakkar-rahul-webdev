@@ -95,8 +95,8 @@ module.exports = function(app) {
 
     function updateCompany(companyId, newCompany){
         var deferred = q.defer();
-        companyModel.update({"_id" : companyId},
-            {$set : newCompany}, {multi : true},
+        companyModel.findOneAndUpdate({"_id" : companyId},
+            {$set : newCompany}, {new : true},
             function(err, company){
                 if(err){
                     deferred.reject(err);

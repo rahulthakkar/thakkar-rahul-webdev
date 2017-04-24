@@ -6,12 +6,6 @@
     function configuration($routeProvider, $locationProvider, $httpProvider) {
 
         $routeProvider
-            .when("/upload",{
-                templateUrl: "views/common/upload.html",
-                controller: "UploadController",
-                controllerAs: "model",
-                //resolve: { currentUser: checkCandidateLoggedin }
-            })
             .when("/candidate/login",{
                 templateUrl: "views/candidate/candidate.login.view.client.html",
                 controller: "CandidateLoginController",
@@ -126,12 +120,11 @@
                 controller: "JobViewController",
                 controllerAs: "model",
             })
-            .when("/navigation",{
-                templateUrl: 'views/job/job.edit.view.client.html',
-                controller: "JobEditController",
+            .when("/job/search",{
+                templateUrl: 'views/job/job.search.view.client.html',
+                controller: "JobSearchController",
                 controllerAs: "model",
-                resolve: { currentUser: checkCompanyLoggedin }
-
+                //resolve: { currentUser: checkCompanyLoggedin }
             })
 
 
@@ -180,7 +173,7 @@
                 controller: "WidgetFlickrSearchController",
                 controllerAs: "model"
             })
-            .otherwise({redirectTo : '/candidate/login'});
+            .otherwise({redirectTo : '/main'});
     }
 
     var checkCandidateLoggedin = function ($q, $timeout, $http, $location, $rootScope) {

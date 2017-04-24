@@ -130,7 +130,7 @@ module.exports = function (app, model) {
                 model.candidateModel.findCandidateById(req.user._id)
                     .then(function(candidate){
                         candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
-                        candidate.photoName = req.file.originalname;
+                        candidate.resumeName = req.file.originalname;
                         model.candidateModel.updateCandidate(req.user._id, candidate)
                             .then(function (candidate) {
                                     res.status(200).send(sendTransformObject(candidate));

@@ -5,8 +5,9 @@
         .controller("JobEditController", JobEditController)
         .controller("JobNewController", JobNewController)
         .controller("JobIndeedSearchController", JobIndeedSearchController)
-        .controller("JobViewController", jobViewController)
-        .controller("JobCompanyViewController", jobCompanyViewController);
+        .controller("JobViewController", JobViewController)
+        .controller("JobCompanyViewController", JobCompanyViewController)
+        .controller("JobSearchController", JobSearchController);
 
     function JobListController($routeParams, JobService, $rootScope) {
         var vm = this;
@@ -114,7 +115,7 @@
         }
     }
 
-    function JobIndeedSearchController($routeParams, $location, $rootScope) {
+    function JobIndeedSearchController($routeParams, $location, $rootScope, $scope) {
         var vm = this;
         vm.searchJobs = searchJobs
 
@@ -123,29 +124,71 @@
         vm.showSpinner = false;
 
         function init() {
-            setLoginDetails(vm, $rootScope);
-            //searchJobs(vm.searchTerm, "US");
+            vm.user = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
         }
         init();
 
-        function searchJobs(searchTerm, location) {
+        function searchJobs(searchTerm) {
+            vm.noResults = false;
             vm.showSpinner = true;
             vm.searchTerm = searchTerm;
+            console.log("Started search");
             indeed_client.search({
                 q: searchTerm,
-                l: location,
+                //l: 'US',
                 limit:25,
                 highlight:0,
                 userip: '1.2.3.4',
                 useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
             }, function (response) {
                 vm.showSpinner = false;
-                vm.jobs = angular.copy(response.results);
+                console.log("Got response");
+                console.log(response);
+                vm.jobs = response.results;
+                if(response.totalResults === 0){
+                    vm.noResults = true;
+                }
+                if(!$scope.$$phase) {
+                    $scope.$digest();
+                }
             });
         }
     }
 
-    function jobViewController($routeParams, JobService, $rootScope, $location) {
+    function JobSearchController($routeParams, $location, $rootScope, JobService) {
+        var vm = this;
+        vm.searchJobs = searchJobs
+
+
+        vm.showSpinner = false;
+
+        function init() {
+            setLoginDetails(vm, $rootScope);
+        }
+        init();
+
+        function searchJobs() {
+            vm.noResults = false;
+            vm.showSpinner = true;
+            console.log("Started search");
+            JobService
+                .searchJobs(vm.searchTerm)
+                .success(function (jobs) {
+                    if(jobs == null) {
+                        vm.noResults = true;
+                    } else {
+                        vm.jobs = jobs;
+                    }
+                })
+                .error(function () {
+                    vm.error = "Enable to search";
+                });
+        }
+    }
+
+
+    function JobViewController($routeParams, JobService, $rootScope, $location) {
         var vm = this;
         var jobId = $routeParams['jid'];
 
@@ -161,7 +204,7 @@
         init();
     }
 
-    function jobCompanyViewController($routeParams, JobService, $rootScope, $location) {
+    function JobCompanyViewController($routeParams, JobService, $rootScope, $location) {
         var vm = this;
         var jobId = $routeParams['jid'];
 

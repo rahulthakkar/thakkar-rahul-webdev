@@ -1,0 +1,63 @@
+<wbdv-navigation></wbdv-navigation>
+
+
+
+<div class="container">
+    <center>
+        <h3 class="text-center">Find the exclusive Jobs</h3>
+        <div class="input-group wbdv-margin col-sm-6">
+            <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs with keywords like Java Developer">
+            <span class="input-group-btn">
+            <a ng-click="model.searchJobs()" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+        </span>
+        </div>
+    </center><hr/>
+
+    <!--<div ng-if="model.showSpinner">
+        <center><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></center>
+    </div>-->
+
+    <div>
+        <div ng-if="model.noResults">
+            <h4 class="text-muted">No Results found...</h4>
+        </div>
+
+        <div class="center-block">
+
+            <div>
+                <div ng-repeat="job in model.jobs">
+                    <div class="pull-left">
+                        <div ng-show="job.title">
+                            <h4 ><a href="#/job/view/{{job._id}}" target="_blank"> {{job.title}}</a></h4>
+                            <div>
+                                <span ng-show="job.location" class="text-muted">{{job.location}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                                <span ng-show="job.jobType" class="text-muted">{{job.jobType}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                                <span ng-show="job.salary" class="text-muted">{{job.salary}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary pull-right wbdv-margin" href="#/job/view/{{job._id}}/apply" target="_blank">Apply</a><br/><br/><br/><br/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--<div ng-repeat="job in model.jobs">
+    <div ng-show="job.jobtitle">
+        <h4 ng-show="job.jobtitle"><a href="{{job.url}}" target="_blank"> {{job.jobtitle}}</a></h4>
+        <div>
+            <h5 ng-show="job.company">{{job.company}}</h5>
+            <h6 ng-show="job.formattedLocationFull">{{job.formattedLocationFull}}</h6>
+        </div>
+        <div class="wbdv-show-html" ng-show="job.snippet">{{job.snippet}}</div>
+    </div>
+</div>-->
+
+</div>
+</div>
+
+

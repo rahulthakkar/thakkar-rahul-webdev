@@ -59,16 +59,17 @@
             promise
                 .success(function (company) {
                     if (company == null) {
-                        console.log("Unable to upload pic");
+                        //console.log("Unable to upload pic");
                         vm.error = "Unable to upload pic";
                     } else {
-                        console.log(company);
+                        //console.log(company);
                         vm.message = "Pic successfully updated"
-                        setLoginDetails(vm);
-                    }
+                        $rootScope.currentUser = candidate;
+                        vm.user = angular.copy($rootScope.currentUser);
+                        setLoginDetails(vm);                    }
                 })
                 .error(function () {
-                    console.log("Unable to upload pic");
+                    //console.log("Unable to upload pic");
                     vm.error = "Unable to upload pic";
                 });
         }

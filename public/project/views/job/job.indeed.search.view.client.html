@@ -35,34 +35,61 @@
         <span class="sr-only">Next</span>
     </a>
 </div>
-
-<center>
-    <div class="input-group wbdv-margin col-sm-6">
-        <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs with keywords like Java Developer">
-        <span class="input-group-btn">
+<div class="container">
+    <center>
+        <h3 class="text-center">Find the Jobs from Indeed</h3>
+        <div class="input-group wbdv-margin col-sm-6">
+            <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Search Jobs with keywords like Java Developer">
+            <span class="input-group-btn">
             <a ng-click="model.searchJobs(model.searchTerm)" class="btn btn-default" type="button">
                 <span class="glyphicon glyphicon-search"></span>
             </a>
         </span>
-    </div>
-</center>
+        </div>
+    </center><hr/>
 
-<div ng-if="model.showSpinner">
-    <center><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></center>
-</div>
+    <!--<div ng-if="model.showSpinner">
+        <center><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i></center>
+    </div>-->
 
-<div>
-    <div ng-repeat="job in model.jobs">
-        <div ng-show="job.jobtitle">
-            <h4 ng-show="job.jobtitle"><a href="{{job.url}}" target="_blank"> {{job.jobtitle}}</a></h4>
+    <div>
+        <div ng-if="model.noResults">
+            <h4 class="text-muted">No Results found...</h4>
+        </div>
+
+        <div class="center-block">
+
             <div>
-                <h5 ng-show="job.company">{{job.company}}</h5>
-                <h6 ng-show="job.formattedLocationFull">{{job.formattedLocationFull}}</h6>
+                <div ng-repeat="job in model.jobs">
+                    <div class="pull-left">
+                        <div ng-show="job.jobtitle">
+                            <h4 ><a href="{{job.url}}" target="_blank"> {{job.jobtitle}}</a></h4>
+                            <div ng-show="job.company">{{job.company}}
+                                <span ng-show="job.formattedLocationFull" class="text-muted">at {{job.formattedLocationFull}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <a class="btn btn-primary pull-right wbdv-margin" href="{{job.url}}" target="_blank">Apply on Indeed</a><br/><br/><br/><br/>
+                </div>
+
             </div>
-            <div class="wbdv-show-html" ng-show="job.snippet">{{job.snippet}}</div>
         </div>
     </div>
+
 </div>
 
+<!--<div ng-repeat="job in model.jobs">
+    <div ng-show="job.jobtitle">
+        <h4 ng-show="job.jobtitle"><a href="{{job.url}}" target="_blank"> {{job.jobtitle}}</a></h4>
+        <div>
+            <h5 ng-show="job.company">{{job.company}}</h5>
+            <h6 ng-show="job.formattedLocationFull">{{job.formattedLocationFull}}</h6>
+        </div>
+        <div class="wbdv-show-html" ng-show="job.snippet">{{job.snippet}}</div>
+    </div>
+</div>-->
+
+</div>
+</div>
 
 

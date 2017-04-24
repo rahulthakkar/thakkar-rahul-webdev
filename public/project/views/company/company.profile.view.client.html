@@ -99,7 +99,9 @@
             <div class="form-group">
                 <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
                 <div class="cols-sm-10">
-                    <div class="small-text">{{model.user.photoName}}</div>
+                    <a ng-show="model.user.photoURI" href="{{model.user.photoURI}}" target="_blank">
+                        <span class="small-text">{{model.user.photoName}}</span>
+                    </a>
                     <div class="input-group">
                         <input file-input="model.pic" class="file" name="pic" id="pic" type="file"/>
                         <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
