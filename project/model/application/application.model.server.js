@@ -39,15 +39,15 @@ module.exports = function() {
         var deferred = q.defer();
         applicationModel.find({"job" : jobId})
             .populate('applicant', 'firstName lastName email resumeURI resumeName photoURI photoName education ethnicity')
-            .exec(function(err, application){
+            .exec(function(err, applications){
                 if(err){
                     //console.log("error");
                     //console.log(err);
                     deferred.reject(err);
                 }else{
                     //console.log("model application");
-                    //console.log(application);
-                    deferred.resolve(application);
+                    //console.log(applications);
+                    deferred.resolve(applications);
                 }
             });
         return deferred.promise;
@@ -56,12 +56,16 @@ module.exports = function() {
     function findApplicationsByCandidateId(candidateId){
         var deferred = q.defer();
         applicationModel.find({"applicant" : candidateId})
-            .populate('job',{applications:0})
-            .exec(function(err, application){
+            .populate('job','title location jobType salary')
+            .exec(function(err, applications){
                 if(err){
+                    console.log("error");
+                    console.log(err);
                     deferred.reject(err);
                 }else{
-                    deferred.resolve(application);
+                    console.log("model application");
+                    console.log(applications);
+                    deferred.resolve(applications);
                 }
             });
         return deferred.promise;

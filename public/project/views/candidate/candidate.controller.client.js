@@ -6,7 +6,9 @@
         .controller("CandidateProfileController", candidateProfileController)
         .controller("CandidateRegisterController", candidateRegisterController)
         .controller("CandidateListController", candidateListController)
-        .controller("CandidateFollowController", candidateFollowController);
+        .controller("CandidateFollowController", candidateFollowController)
+        .controller("CandidateDashboardController", candidateDashboardController);
+
 
     function candidateLoginController($location, CandidateService, $rootScope, $templateCache) {
         var vm = this;
@@ -262,6 +264,24 @@
             }
         }
 
+    }
+
+    function candidateDashboardController($routeParams, CandidateService, ApplicationService, $rootScope) {
+
+        var vm = this;
+
+        function init() {
+            vm.user = angular.copy($rootScope.currentUser);
+            vm.model = vm.user;
+            setLoginDetails(vm);
+            ApplicationService.findApplicationsForCandidate(vm.user._id)
+                    .success(function (applications) {
+                        console.log(applications);
+                        vm.applications = applications;
+                    });
+        }
+
+        init();
     }
 
     function setLoginDetails(vm){

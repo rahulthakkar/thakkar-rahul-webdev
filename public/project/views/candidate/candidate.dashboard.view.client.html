@@ -1,0 +1,45 @@
+<wbdv-navigation></wbdv-navigation>
+
+<div class="center-block container">
+    <div class="pull-left col-xs-8">
+        <div ng-show="model.user.firstName">
+            <img class="col-xs-3 profile-image img-responsive pull-left" ng-src="{{model.user.photoURI}}" height="100" width="100" alt="{{model.user.firstName}}">
+            <div class="col-xs-6 pull-left">
+                <h4 >
+                    <div>{{model.user.firstName}} {{model.user.lastName}}</div>
+                </h4>
+                <h5>
+                    <div>{{model.user.education}}</div>
+                </h5>
+                <h5>
+                    <a ng-show="model.user.resumeURI" href="{{model.user.resumeURI}}" target="_blank">
+                        <span>{{model.user.resumeName}}</span>
+                    </a>
+                </h5>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary pull-right wbdv-margin col-xs-2"
+       href="#/candidate/profile">Edit Profile</a><br/><br/><br/><br/>
+</div>
+<hr/>
+
+<div class="container center-block">
+    <h3 class="text-center ">Applied Jobs</h3><br/>
+    <div>
+        <div class="row" ng-repeat="application in model.applications">
+            <div class="pull-left col-xs-9">
+                <div ng-show="application.job.title">
+                    <h4 ><a href="#/job/{{application.job._id}}/apply"> {{application.job.title}}</a></h4>
+                    <div>
+                        <span ng-show="application.job.location" class="text-muted">{{application.job.location}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                        <span ng-show="application.job.jobType" class="text-muted">{{application.job.jobType}} <b class="wbdv-small-margin">&#x2027;</b></span>
+                        <span ng-show="application.job.salary" class="text-muted">{{application.job.salary}}</span>
+                    </div>
+                </div>
+            </div>
+            <a class="btn btn-default pull-right wbdv-margin col-xs-2" href="#/job/{{application.job._id}}/apply">Applied</a>
+            <br/><br/><br/><br/>
+        </div>
+    </div>
+</div>

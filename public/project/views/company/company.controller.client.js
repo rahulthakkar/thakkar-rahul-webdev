@@ -64,7 +64,7 @@
                     } else {
                         //console.log(company);
                         vm.message = "Pic successfully updated"
-                        $rootScope.currentUser = candidate;
+                        $rootScope.currentUser = company;
                         vm.user = angular.copy($rootScope.currentUser);
                         setLoginDetails(vm);                    }
                 })

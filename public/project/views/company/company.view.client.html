@@ -27,8 +27,8 @@
         <div class="center-block">
             <h3 class="text-center ">Open Positions</h3><br/>
             <div>
-                <div ng-repeat="job in model.company.jobs">
-                    <div class="pull-left">
+                <div class="row" ng-repeat="job in model.company.jobs">
+                    <div class="pull-left col-xs-9">
                         <div ng-show="job.title">
                             <a ng-hide="model.isCandidate" href="#/job/view/{{job._id}}" target="_blank"> {{job.title}}</a>
                             <a ng-show="model.isCandidate" href="#/job/{{job._id}}/apply" target="_blank"> {{job.title}}</a>
@@ -39,7 +39,7 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary pull-right wbdv-margin" href="#/job/{{job._id}}/apply">Apply</a><br/><br/><br/><br/>
+                    <a class="btn btn-primary pull-right wbdv-margin cols-xs-2" href="#/job/{{job._id}}/apply">Apply</a><br/><br/><br/><br/>
                 </div>
             </div>
         </div>

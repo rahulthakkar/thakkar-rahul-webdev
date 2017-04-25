@@ -166,7 +166,7 @@
                 vm.appliedJobs = vm.user.applications.map(function (obj) {
                     return obj.job;
                 });
-                console.log(vm.appliedJobs);
+                //console.log(vm.appliedJobs);
             }
         }
         init();
@@ -178,7 +178,7 @@
             JobService
                 .searchJobs(vm.searchTerm)
                 .success(function (jobs) {
-                    if(jobs == null) {
+                    if(jobs == null || jobs.length<=0) {
                         vm.noResults = true;
                     } else {
                         if(vm.appliedJobs && vm.appliedJobs.length>0){

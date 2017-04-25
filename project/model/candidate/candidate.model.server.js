@@ -40,13 +40,13 @@ module.exports = function(app) {
         candidateModel.findById(candidateId)
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
+                if(err || candidate==null){
                     console.log("Error in fetching candidate model");
                     console.log(err);
                     deferred.reject(err);
                 }else{
-                    console.log("found candidate");
-                    console.log(candidate.applications);
+                    //console.log("found candidate");
+                    //console.log(candidate.applications);
                     deferred.resolve(candidate);
                 }
             });
@@ -54,15 +54,17 @@ module.exports = function(app) {
     }
 
     function findCandidateByEmail(email){
+        console.log(email);
         var deferred = q.defer();
         candidateModel.findOne({"email" : email})
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
+                if(err || candidate==null){
                     console.log("Error in fetching candidate model");
                     console.log(err);
                     deferred.reject(err);
                 }else{
+                    console.log(candidate);
                     deferred.resolve(candidate);
                 }
             });
@@ -160,7 +162,7 @@ module.exports = function(app) {
         candidateModel.findOne({'facebook.id': facebookId})
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
+                if(err || candidate==null){
                     console.log("Error in fetching candidate model");
                     console.log(err);
                     deferred.reject(err);

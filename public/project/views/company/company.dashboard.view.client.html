@@ -19,8 +19,8 @@
         <div class="center-block">
             <h3 class="text-center ">Open Positions</h3><br/>
             <div>
-                <div ng-repeat="job in model.company.jobs">
-                    <div class="pull-left">
+                <div class="row" ng-repeat="job in model.company.jobs">
+                    <div class="pull-left col-xs-9">
                         <div ng-show="job.title">
                             <h4 ><a href="#/company/job/view/{{job._id}}"> {{job.title}}</a></h4>
                             <div>
@@ -30,7 +30,8 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary pull-right wbdv-margin" href="#/company/job/{{job._id}}">Edit Job</a><br/><br/><br/><br/>
+                    <a class="btn btn-primary pull-right wbdv-margin col-xs-2" href="#/company/job/{{job._id}}">Edit Job</a>
+                    <br/><br/><br/><br/>
                 </div>
             </div>
         </div>

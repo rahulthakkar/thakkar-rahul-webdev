@@ -67,6 +67,12 @@
                 controllerAs: 'model',
                 resolve: { currentUser: checkCompanyLoggedin }
             })
+            .when("/candidate/dashboard/", {
+                templateUrl: 'views/candidate/candidate.dashboard.view.client.html',
+                controller: 'CandidateDashboardController',
+                controllerAs: 'model',
+                resolve: { currentUser: checkCandidateLoggedin }
+            })
             .when("/admin/company", {
                 templateUrl: 'views/company/company.list.view.client.html',
                 controller: 'CompanyListController',

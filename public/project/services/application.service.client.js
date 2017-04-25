@@ -23,6 +23,7 @@
         }
 
         function findApplicationsForCandidate(candidateId) {
+            console.log("candidate apps");
             return $http.get("/api/application/candidate/"+candidateId);
         }
 

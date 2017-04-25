@@ -324,11 +324,12 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var candidate = req.body;
-
+        console.log("register called");
         updateTransformObject(candidate);
         model.candidateModel.findCandidateByEmail(candidate.email)
             .then(function (candidate) {
-                    res.sendStatus(404).send(err);
+                    console.log("Already found one"+ candidate);
+                    res.sendStatus(404);
                 },
                 function (err) {
                     console.log("Craeting a new one"+ candidate);
@@ -341,6 +342,7 @@ module.exports = function (app, model) {
                                 if (candidate) {
                                     req.login(candidate, function (err) {
                                         if (err) {
+                                            console.log("error on login");
                                             res.status(404).send(err);
                                         } else {
                                             res.json(sendTransformObject(candidate));
@@ -365,7 +367,7 @@ module.exports = function (app, model) {
         model.candidateModel
             .findCandidateByFacebookId(profile.id)
             .then(function (candidate) {
-                console.log("Found candidate"+ candidate);
+                //console.log("Found candidate"+ candidate);
 
 
                 if (candidate) {

@@ -79,13 +79,13 @@ module.exports = function (app, model) {
                     .findApplicationsByJobId(jobId)
                     .then(
                         function (applications) {
-                            //console.log("Found applications");
-                            //console.log(applications);
+                            console.log("Found applications");
+                            console.log(applications);
                             res.json(applications);
                         },
                         function (err) {
-                            //console.log("error");
-                            //console.log(err);
+                            console.log("error");
+                            console.log(err);
                             res.status(400).send(err);
                         }
                     );
@@ -102,83 +102,26 @@ module.exports = function (app, model) {
 
     function findApplicationsForCandidate(req, res) {
         var candidateId = req.params.candidateId;
-        if(req.user && req.user._id == candidateId) {
+        if(req.user._id == candidateId){
+            console.log("authorized");
             model.applicationModel
                 .findApplicationsByCandidateId(candidateId)
                 .then(
                     function (applications) {
+                        console.log("Found applications");
+                        console.log(applications);
                         res.json(applications);
                     },
-                    function () {
-                        res.status(400).send(err);
-                    }
-                );
-        } else {
-            res.status(403);
-        }
-    }
-
-    /*function findApplicationsByCandidate(req, res) {
-     var jobId = req.params.jobId;
-     if(req.user.jobs && req.user.jobs.indexOf(jobId) > -1) {
-     model.applicationModel
-     .findByJobId(jobId)
-     .then(
-     function (applications) {
-     res.json(applications);
-     },
-     function () {
-     res.status(400).send(err);
-     }
-     );
-     } else {
-     res.status(403);
-     }
-     }*/
-
-
-    function updateCandidate(req, res) {
-        var candidateId = req.params.candidateId;
-        var newCandidate = req.body;
-        //console.log("New candidate"+ JSON.stringify(newCandidate));
-        //console.log("candidateId"+ candidateId);
-        model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
-            .then(function (candidate) {
-                    res.status(200).send(sendTransformObject(candidate));
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
-
-    }
-
-    function findCandidateById(req, res) {
-        var candidateId = req.params.candidateId;
-        model.candidateModel.findCandidateById(candidateId)
-            .then(function (candidate) {
-                    res.status(200).send(sendTransformObject(candidate));
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
-
-    }
-
-    function deleteCandidate(req, res) {
-        if(isAdmin(req.user)) {
-            var candidateId = req.params.candidateId;
-            model.candidateModel.deleteCandidate(candidateId)
-                .then(function (result) {
-                        res.status(200).send(result);
-                    },
                     function (err) {
-                        res.status(404).send(err);
+                        console.log("error");
+                        console.log(err);
+                        res.status(400).send(err);
                     });
         } else {
+            console.log("error 1");
             res.status(403);
         }
     }
-
 
 }
 
