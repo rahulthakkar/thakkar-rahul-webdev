@@ -7,7 +7,9 @@
         .controller("CandidateRegisterController", candidateRegisterController)
         .controller("CandidateListController", candidateListController)
         .controller("CandidateFollowController", candidateFollowController)
-        .controller("CandidateDashboardController", candidateDashboardController);
+        .controller("CandidateDashboardController", candidateDashboardController)
+        .controller("CandidateAdminEditController", candidateAdminEditController);
+    ;
 
 
     function candidateLoginController($location, CandidateService, $rootScope, $templateCache) {
@@ -81,6 +83,7 @@
         vm.update = update;
         vm.uploadResume = uploadResume;
         vm.uploadPic = uploadPic;
+        vm.delete = deleteCandidate;
 
 
 
@@ -155,14 +158,132 @@
                     } else {
                         //console.log("User successfully updated");
                         vm.message = "User successfully updated"
+                        $rootScope.currentUser = candidate;
+                        vm.user = angular.copy($rootScope.currentUser);
                         setLoginDetails(vm);
+
                     }
                 })
                 .error(function () {
                     //console.log("User successfully updated");
                     vm.error = "Unable to update user";
                 });
+        }
 
+        function deleteCandidate() {
+            var promise = CandidateService.deleteCandidate($rootScope.currentUser._id);
+            promise
+                .success(function (res) {
+                    $rootScope.currentUser = null;
+                    $location.url("/candidate/login");
+                })
+                .error(function () {
+
+                    vm.error = "Unable to delete user";
+                });
+        }
+    }
+
+    function candidateAdminEditController($routeParams, CandidateService, $rootScope, $location, $scope) {
+        var vm = this;
+        var candidateId = $routeParams['uid'];
+
+        // event handlers
+        vm.update = update;
+        vm.uploadResume = uploadResume;
+        vm.uploadPic = uploadPic;
+        vm.deleteCandidate = deleteCandidate;
+
+
+
+        function init() {
+            vm.user = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
+            CandidateService.findCandidateById(candidateId)
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        vm.error = "Unable to find the candidate";
+                    } else {
+                        vm.candidate = candidate;
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to find the candidate";
+                });
+
+        }
+
+        init();
+
+        function uploadResume() {
+            var fd = new FormData();
+            angular.forEach(vm.resume, function (file) {
+                fd.append('resume', file);
+            });
+
+            var promise = CandidateService.uploadResume(candidateId, fd);
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        //console.log("Unable to upload resume");
+                        vm.error = "Unable to upload resume";
+                    } else {
+                        //console.log("Resume successfully updated");
+                        vm.message = "Resume successfully updated";
+                    }
+                })
+                .error(function () {
+                    //console.log("Unable to upload resume");
+                    vm.error = "Unable to upload resume";
+                });
+        }
+
+        function uploadPic() {
+            var fd = new FormData();
+            angular.forEach(vm.pic, function (file) {
+                fd.append('pic', file);
+            });
+
+            var promise = CandidateService.uploadPic(candidateId, fd);
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        vm.error = "Unable to upload pic";
+                    } else {
+                        vm.message = "Pic successfully updated"
+                    }
+                })
+                .error(function () {
+                    //console.log("Unable to upload pic");
+                    vm.error = "Unable to upload pic";
+                });
+        }
+
+        function update(newCandidate) {
+            var promise = CandidateService.updateCandidate(candidateId, newCandidate);
+            promise
+                .success(function (candidate) {
+                    if (candidate == null) {
+                        //console.log("Unable to update user");
+                        vm.error = "Unable to update user";
+                    } else {
+                        vm.message = "User successfully updated"
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update user";
+                });
+        }
+
+        function deleteCandidate() {
+            var promise = CandidateService.deleteCandidate(candidateId);
+            promise
+                .success(function (res) {
+                    $location.url("/admin/candidate");
+                })
+                .error(function () {
+                    vm.error = "Unable to delete user";
+                });
         }
 
     }
@@ -200,15 +321,18 @@
         }
     }
 
-    function candidateListController($routeParams, CandidateService) {
+    function candidateListController($routeParams, CandidateService, $rootScope) {
         var vm = this;
 
         function init() {
+
+            vm.user = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
+
             CandidateService
                 .findAllCandidates()
                 .success(function (candidates) {
                     vm.candidates = angular.copy(candidates);
-                    setLoginDetails(vm);
                 });
 
         }

@@ -7,7 +7,8 @@
         .controller("CompanyListController", companyListController)
         .controller("CompanyViewController", companyViewController)
         .controller("CompanyLogoutController", companyLogoutController)
-        .controller("CompanyDashboardController", companyDashboardController);
+        .controller("CompanyDashboardController", companyDashboardController)
+        .controller("CompanyAdminEditController", companyAdminEditController);
 
     function companyLoginController($location, CompanyService, $rootScope) {
         var vm = this;
@@ -153,7 +154,89 @@
         }
     }
 
-    function companyListController($routeParams, CompanyService) {
+    function companyAdminEditController($routeParams, CompanyService, $rootScope, $location, $scope) {
+        var vm = this;
+        var companyId = $routeParams['uid'];
+
+        // event handlers
+        vm.update = update;
+        vm.uploadPic = uploadPic;
+        vm.deleteCompany = deleteCompany;
+
+
+
+        function init() {
+            vm.user = angular.copy($rootScope.currentUser);
+            setLoginDetails(vm);
+            CompanyService.findCompanyById(companyId)
+                .success(function (company) {
+                    if (company == null) {
+                        vm.error = "Unable to find the company";
+                    } else {
+                        vm.company = company;
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to find the company";
+                });
+
+        }
+
+        init();
+
+        function uploadPic() {
+            var fd = new FormData();
+            angular.forEach(vm.pic, function (file) {
+                fd.append('pic', file);
+            });
+
+            var promise = CompanyService.uploadPic(companyId, fd);
+            promise
+                .success(function (company) {
+                    if (company == null) {
+                        vm.error = "Unable to upload pic";
+                    } else {
+                        vm.company = company;
+                        vm.message = "Pic successfully updated"
+                    }
+                })
+                .error(function () {
+                    //console.log("Unable to upload pic");
+                    vm.error = "Unable to upload pic";
+                });
+        }
+
+        function update() {
+            var promise = CompanyService.updateCompany(companyId, vm.company);
+            promise
+                .success(function (company) {
+                    if (company == null) {
+                        //console.log("Unable to update user");
+                        vm.error = "Unable to update company";
+                    } else {
+                        vm.message = "User successfully updated"
+                    }
+                })
+                .error(function () {
+                    vm.error = "Unable to update company";
+                });
+        }
+
+        function deleteCompany() {
+            var promise = CompanyService.deleteCompany(companyId);
+            promise
+                .success(function (res) {
+                    $location.url("/admin/company");
+                })
+                .error(function () {
+                    vm.error = "Unable to delete user";
+                });
+        }
+
+    }
+
+
+    function companyListController($routeParams, CompanyService, $rootScope) {
         var vm = this;
 
         function init() {

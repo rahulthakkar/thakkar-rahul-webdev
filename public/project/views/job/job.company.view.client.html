@@ -30,27 +30,27 @@
         <hr/>
         <div>
             <h3>Applications</h3><br/>
-            <div class="row" ng-repeat="applicaton in model.applications">
+            <div class="row" ng-repeat="application in model.applications">
                 <div class="pull-left col-xs-8">
-                    <div ng-show="applicaton.applicant.firstName">
-                        <img class="col-xs-2" ng-src="{{applicaton.applicant.photoURI}}" height="70" width="70" class="img-thumbnail pull-left" alt="{{application.applicant.name}}">
+                    <div ng-show="application.applicant.firstName">
+                        <img class="col-xs-2" ng-src="{{application.applicant.photoURI}}" height="70" width="70" class="img-thumbnail pull-left" alt="{{application.applicant.firstName}}">
                         <div class="col-xs-6 pull-left">
                             <h4 >
-                                <div>{{applicaton.applicant.firstName}} {{applicaton.applicant.lastName}}</div>
+                                <div>{{application.applicant.firstName}} {{application.applicant.lastName}}</div>
                             </h4>
                             <h5>
-                                <div>{{applicaton.applicant.education}}</div>
+                                <div>{{application.applicant.education}}</div>
                             </h5>
                             <h5>
-                                <a ng-show="applicaton.applicant.resumeURI" href="{{applicaton.applicant.resumeURI}}" target="_blank">
-                                    <span>{{applicaton.applicant.resumeName}}</span>
+                                <a ng-show="application.applicant.resumeURI" href="{{application.applicant.resumeURI}}" target="_blank">
+                                    <span>{{application.applicant.resumeName}}</span>
                                 </a>
                             </h5>
                         </div>
                     </div>
                 </div>
-                <a ng-show="applicaton.applicant.email" class="btn btn-success pull-right wbdv-margin col-xs-2"
-                   href="mailto:{{applicaton.applicant.email}}" target="_blank">Contact</a><br/><br/><br/><br/>
+                <a ng-show="application.applicant.email" class="btn btn-success pull-right wbdv-margin col-xs-2"
+                   href="mailto:{{application.applicant.email}}" target="_blank">Contact</a><br/><br/><br/><br/>
 
             </div>
         </div>

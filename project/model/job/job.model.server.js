@@ -47,8 +47,9 @@ module.exports = function() {
     function searchJobs(term){
         console.log("model job");
         var deferred = q.defer();
-        jobModel.find({$text : {$search: term}},
-            function(err, jobs){
+        jobModel.find({$text : {$search: term}})
+            .populate('company')
+            .exec(function(err, jobs){
                 if(err){
                     console.log("model error");
                     console.log(err);

@@ -68,16 +68,16 @@ module.exports = function(app) {
     }
 
     function findCompanyByEmail(email){
-        console.log("findCompanyByEmail"+ email);
+        ///console.log("findCompanyByEmail"+ email);
         var deferred = q.defer();
         companyModel.findOne({"email" : email},
             function(err, company){
                 if(company){
-                    console.log("No error in model"+company);
+                    //console.log("No error in model"+company);
                     deferred.resolve(company);
 
                 }else{
-                    console.log("Error in model"+err);
+                    //console.log("Error in model"+err);
                     deferred.reject(err);
                 }
             });
@@ -99,12 +99,18 @@ module.exports = function(app) {
 
     function updateCompany(companyId, newCompany){
         var deferred = q.defer();
+        //console.log("update compnay model server");
+        //console.log(companyId);
+        //console.log("new Compnay", newCompany);
+
         companyModel.findOneAndUpdate({"_id" : companyId},
             {$set : newCompany}, {new : true},
             function(err, company){
                 if(err){
+                    //console.log("error", err);
                     deferred.reject(err);
                 }else{
+                    //console.log("updated company", company);
                     deferred.resolve(company);
                 }
             });
@@ -117,10 +123,10 @@ module.exports = function(app) {
             {$pullAll : {"jobs": [jobId]}},
             function(err, company){
                 if(err){
-                    console.log("error occured");
+                    //console.log("error occured");
                     deferred.reject(err);
                 }else{
-                    console.log("removed the job ");
+                    //console.log("removed the job ");
                     deferred.resolve(company);
                 }
             });

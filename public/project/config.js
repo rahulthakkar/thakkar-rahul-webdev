@@ -73,6 +73,18 @@
                 controllerAs: 'model',
                 resolve: { currentUser: checkCandidateLoggedin }
             })
+            .when("/admin/candidate/:uid", {
+                templateUrl: 'views/candidate/candidate.admin.edit.view.client.html',
+                controller: 'CandidateAdminEditController',
+                controllerAs: 'model',
+                resolve: { currentUser: checkAdminLoggedin }
+            })
+            .when("/admin/company/:uid", {
+                templateUrl: 'views/company/company.admin.edit.view.client.html',
+                controller: 'CompanyAdminEditController',
+                controllerAs: 'model',
+                resolve: { currentUser: checkAdminLoggedin }
+            })
             .when("/admin/company", {
                 templateUrl: 'views/company/company.list.view.client.html',
                 controller: 'CompanyListController',

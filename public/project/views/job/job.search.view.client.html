@@ -30,9 +30,15 @@
                 <div class="row" ng-repeat="job in model.jobs">
                     <div class="pull-left col-xs-8">
                         <div ng-show="job.title">
-                            <h4 >
-                                <a ng-hide="model.isCandidate" href="#/job/view/{{job._id}}" target="_blank"> {{job.title}}</a>
-                                <a ng-show="model.isCandidate" href="#/job/{{job._id}}/apply" target="_blank"> {{job.title}}</a>
+                            <h4>
+                                <div ng-hide="model.isCandidate" >
+                                <a href="#/job/view/{{job._id}}" target="_blank">{{job.title}}</a>
+                                    <small class="text-muted">at <a href="#/company/view/{{job.company._id}}" target="_blank"> {{job.company.name}}</a></small>
+                            </div>
+                            <div ng-show="model.isCandidate">
+                                <a  href="#/job/{{job._id}}/apply" target="_blank">{{job.title}}</a>
+                                at <a href="#/company/view/{{job.company._id}}" target="_blank"> {{job.company.name}}</a>
+                            </div>
                             </h4>
                             <div>
                                 <span ng-show="job.location" class="text-muted">{{job.location}} <b class="wbdv-small-margin">&#x2027;</b></span>

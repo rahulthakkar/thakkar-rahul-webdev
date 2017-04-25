@@ -162,7 +162,7 @@
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
 
-            if(vm.user && vm.user.role && vm.user.role == 'User'){
+            if(vm.user && vm.user.role){
                 vm.appliedJobs = vm.user.applications.map(function (obj) {
                     return obj.job;
                 });

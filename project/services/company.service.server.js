@@ -73,63 +73,71 @@ module.exports = function (app, model) {
 
 
     function updateCompany(req, res) {
+        //console.log("Server call");
         var companyId = req.params.companyId;
-        var newCompany = req.body;
-        if (companyId && companyId == req.user._id) {
+        if(isAdmin(req.user) || req.user._id == companyId) {
+            var newCompany = req.body;
+            //console.log("before transform", newCompany)
             model.companyModel.updateCompany(companyId, updateTransformObject(newCompany))
                 .then(function (company) {
+                        //console.log("updated company", company);
                         res.status(200).send(sendTransformObject(company));
                     },
                     function (err) {
+                        //console.log("error 2");
                         res.status(404).send(err);
                     });
         } else {
+            //console.log("error 1");
             res.status(403);
         }
     }
 
     function picUploadFunc(req, res, next) {
-        console.log("starting 2");
-
-        picUpload(req, res, function (err) {
-            console.log("File upload called..1");
-            if(req.file) {
-                if (err) {
+        var companyId = req.params.companyId;
+        if(isAdmin(req.user) || req.user._id == companyId) {
+            picUpload(req, res, function (err) {
+                //console.log("File upload called..1");
+                if (req.file) {
+                    if (err) {
+                        res.status(404);
+                    }
+                    //console.log("Uploaded");
+                    //console.log(req.file.filename);
+                    model.companyModel.findCompanyById(companyId)
+                        .then(function (company) {
+                            company.photoURI = '/uploads/company/pics/' + req.file.filename;
+                            company.photoName = req.file.originalname;
+                            model.companyModel.updateCompany(companyId, company)
+                                .then(function (company) {
+                                        res.status(200).send(sendTransformObject(company));
+                                    },
+                                    function (err) {
+                                        res.status(404).send(err);
+                                    });
+                        });
+                    res.status(200);
+                } else {
+                    //console.log("Else");
                     res.status(404);
                 }
-                console.log("Uploaded");
-                console.log(req.file.filename);
-                model.companyModel.findCompanyById(req.user._id)
-                    .then(function(company){
-                        company.photoURI = '/uploads/company/pics/' + req.file.filename;
-                        company.photoName = req.file.originalname;
-                        model.companyModel.updateCompany(req.user._id, company)
-                            .then(function (company) {
-                                    res.status(200).send(sendTransformObject(company));
-                                },
-                                function (err) {
-                                    res.status(404).send(err);
-                                });
-                    });
-                res.status(200);
-            } else {
-                console.log("Else");
-                res.status(404);
-            }
-        });
+            });
+        } else {
+            res.status(403);
+        }
     }
 
     function findCompanyById(req, res) {
         var companyId = req.params.companyId;
         var promise = model.companyModel.findCompanyById(companyId);
-        console.log("Promise" + promise);
+        //console.log("Promise" + promise);
         promise
             .then(function (company) {
                     //console.log("Got company"+ JSON.stringify(company));
                     res.status(200).send(sendTransformObject(company));
                 },
                 function (err) {
-                    console.log("Error");
+                    //console.log("Error");
                     res.status(404).send(err);
                 });
 
@@ -180,19 +188,19 @@ module.exports = function (app, model) {
     }
 
     function localStrategy(email, password, done) {
-        console.log("Company localStrategy");
+        //console.log("Company localStrategy");
         model.companyModel
             .findCompanyByEmail(email)
             .then(
                 function(company) {
-                    console.log(company);
-                    console.log("password1" + bcrypt.hashSync(password));
-                    console.log("password " + company.password);
-                    console.log("password check"+ bcrypt.compareSync(password, company.password));
+                    //console.log(company);
+                    //console.log("password1" + bcrypt.hashSync(password));
+                    //console.log("password " + company.password);
+                    //console.log("password check"+ bcrypt.compareSync(password, company.password));
                     if(company && bcrypt.compareSync(password, company.password)) {
                         return done(null, sendTransformObject(company));
                     }
-                    console.log("some error");
+                    //console.log("some error");
                     return done(null, false);
                 },
                 function(err) {
@@ -203,7 +211,7 @@ module.exports = function (app, model) {
 
     function login(req, res) {
         var company = req.user;
-        console.log("login called" + JSON.stringify(company));
+        //console.log("login called" + JSON.stringify(company));
         res.json(sendTransformObject(company));
     }
 
@@ -214,23 +222,23 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var company = req.body;
-        console.log("Craeting a company"+ JSON.stringify(company));
-        console.log("Email"+ company.email);
+        //console.log("Craeting a company"+ JSON.stringify(company));
+        //console.log("Email"+ company.email);
         updateTransformObject(company);
         model.companyModel.findCompanyByEmail(company.email)
             .then(function (company) {
-                    console.log("Found already"+ company);
+                    //console.log("Found already"+ company);
                     res.sendStatus(404).send(err);
                 },
                 function(err){
                     company.password = bcrypt.hashSync(company.password);
-                    console.log("password " + company.password);
+                    //console.log("password " + company.password);
                     model.companyModel
                         .createCompany(company)
                         .then(
                             function (company) {
                                 if (company) {
-                                    console.log("Logining company" + JSON.stringify(company));
+                                    //console.log("Logining company" + JSON.stringify(company));
                                     req.login(company, function (err) {
                                         if (err) {
                                             res.status(400).send(err);
@@ -245,7 +253,7 @@ module.exports = function (app, model) {
 
     function loggedin(req, res) {
         //console.log("Company loggedin "+ util.inspect(req, {showHidden: false, depth: null}))
-        console.log("Company loggedin "+ req.isAuthenticated());
+        //console.log("Company loggedin "+ req.isAuthenticated());
 
         res.send(req.isAuthenticated() && !req.user.role? sendTransformObject(req.user) : '0');
     }

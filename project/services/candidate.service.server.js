@@ -10,7 +10,8 @@ module.exports = function (app, model) {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-        profileFields: ['id', 'email', 'name']
+        profileFields: ['id', 'email', 'name'],
+        enableProof: true
     };
 
     var multer = require('multer');
@@ -118,77 +119,89 @@ module.exports = function (app, model) {
 
     function resumeUploadFunc(req, res, next) {
         //console.log("starting 1");
-
-        resumeUpload(req, res, function (err) {
-            //console.log("File upload called..1");
-            if(req.file) {
-                if (err) {
+        var candidateId = req.params.candidateId;
+        if(isAdmin(req.user) || req.user._id == candidateId) {
+            resumeUpload(req, res, function (err) {
+                //console.log("File upload called..1");
+                if(req.file) {
+                    if (err) {
+                        res.status(404);
+                    }
+                    //console.log("Uploaded");
+                    //console.log(req.file.filename);
+                    model.candidateModel.findCandidateById(candidateId)
+                        .then(function(candidate){
+                            candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
+                            model.candidateModel.updateCandidate(candidateId, candidate)
+                                .then(function (candidate) {
+                                        res.status(200).send(sendTransformObject(candidate));
+                                    },
+                                    function (err) {
+                                        res.status(404).send(err);
+                                    });
+                        });
+                    res.status(200);
+                } else {
+                    console.log("Else");
                     res.status(404);
                 }
-                //console.log("Uploaded");
-                //console.log(req.file.filename);
-                model.candidateModel.findCandidateById(req.user._id)
-                    .then(function(candidate){
-                        candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
-                        model.candidateModel.updateCandidate(req.user._id, candidate)
-                            .then(function (candidate) {
-                                    res.status(200).send(sendTransformObject(candidate));
-                                },
-                                function (err) {
-                                    res.status(404).send(err);
-                                });
-                    });
-                res.status(200);
-            } else {
-                console.log("Else");
-                res.status(404);
-            }
-        });
+            });
+        } else{
+            res.send(403);
+        }
 
     }
 
     function picUploadFunc(req, res, next) {
         //console.log("starting 2");
-
-        picUpload(req, res, function (err) {
-            //console.log("File upload called..1");
-            if(req.file) {
-                if (err) {
+        var candidateId = req.params.candidateId;
+        if(isAdmin(req.user) || req.user._id == candidateId) {
+            picUpload(req, res, function (err) {
+                //console.log("File upload called..1");
+                if (req.file) {
+                    if (err) {
+                        res.status(404);
+                    }
+                    //console.log("Uploaded");
+                    //console.log(req.file.filename);
+                    model.candidateModel.findCandidateById(candidateId)
+                        .then(function (candidate) {
+                            candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
+                            model.candidateModel.updateCandidate(candidateId, candidate)
+                                .then(function (candidate) {
+                                        res.status(200).send(sendTransformObject(candidate));
+                                    },
+                                    function (err) {
+                                        res.status(404).send(err);
+                                    });
+                        });
+                    res.status(200);
+                } else {
+                    //console.log("Else");
                     res.status(404);
                 }
-                //console.log("Uploaded");
-                //console.log(req.file.filename);
-                model.candidateModel.findCandidateById(req.user._id)
-                    .then(function(candidate){
-                        candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
-                        model.candidateModel.updateCandidate(req.user._id, candidate)
-                            .then(function (candidate) {
-                                    res.status(200).send(sendTransformObject(candidate));
-                                },
-                                function (err) {
-                                    res.status(404).send(err);
-                                });
-                    });
-                res.status(200);
-            } else {
-                //console.log("Else");
-                res.status(404);
-            }
-        });
+            });
+        } else{
+            res.send(403);
+        }
     }
 
     function updateCandidate(req, res) {
         var candidateId = req.params.candidateId;
-        var newCandidate = req.body;
-        //console.log("New candidate"+ JSON.stringify(newCandidate));
-        //console.log("candidateId"+ candidateId);
-        model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
-            .then(function (candidate) {
-                    res.status(200).send(sendTransformObject(candidate));
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(isAdmin(req.user) || req.user._id == candidateId) {
+            var newCandidate = req.body;
+            //console.log("New candidate"+ JSON.stringify(newCandidate));
+            //console.log("candidateId"+ candidateId);
+            model.candidateModel.updateCandidate(candidateId, updateTransformObject(newCandidate))
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else{
+            res.status(403);
+        }
 
     }
 
@@ -222,13 +235,17 @@ module.exports = function (app, model) {
 
     function findCandidateById(req, res) {
         var candidateId = req.params.candidateId;
-        model.candidateModel.findCandidateById(candidateId)
-            .then(function (candidate) {
-                    res.status(200).send(sendTransformObject(candidate));
-                },
-                function (err) {
-                    res.status(404).send(err);
-                });
+        if(isAdmin(req.user) || req.user._id == candidateId) {
+            model.candidateModel.findCandidateById(candidateId)
+                .then(function (candidate) {
+                        res.status(200).send(sendTransformObject(candidate));
+                    },
+                    function (err) {
+                        res.status(404).send(err);
+                    });
+        } else{
+            res.send(403);
+        }
 
     }
 
@@ -259,8 +276,8 @@ module.exports = function (app, model) {
     }
 
     function deleteCandidate(req, res) {
-        if(isAdmin(req.user)) {
-            var candidateId = req.params.candidateId;
+        var candidateId = req.params.candidateId;
+        if(isAdmin(req.user) || req.user._id == candidateId) {
             model.candidateModel.deleteCandidate(candidateId)
                 .then(function (result) {
                         res.status(200).send(result);

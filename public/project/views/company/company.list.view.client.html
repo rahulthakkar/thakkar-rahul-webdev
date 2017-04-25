@@ -1,56 +1,31 @@
 <wbdv-navigation></wbdv-navigation>
 
-
-<div class="alert alert-danger" ng-show="model.error">
-    {{model.error}}
-</div>
-
-<div class="alert alert-success" ng-show="model.companys">
-    {{model.companys}}
-</div>
-
-<div class="container-fluid">
-
-    <label for="username">Username</label>
-    <input ng-model="model.user.username"
-           id="username"
-           class="form-control"
-           value="rahul1"
-           placeholder="rahul1"/>
-
-    <label for="email">Email</label>
-    <input ng-model="model.user.email"
-           id="email"
-           type="email"
-           class="form-control"
-           value="rahul1@ccs.neu.edu"
-           placeholder="rahul1@ccs.neu.edu"/>
-
-    <label for="first">First Name</label>
-    <input ng-model="model.user.firstName"
-           id="first"
-           class="form-control"
-           value="Rahul"
-           placeholder="Rahul"/>
-
-    <label for="last">Last Name</label>
-    <input ng-model="model.user.lastName"
-           id="last"
-           class="form-control"
-           value="Thakkar"
-           placeholder="Thakkar"/>
-
-    <a href="#/user/{{model.user._id}}/website" class="btn btn-primary btn-block">Websites</a>
-    <a ng-click="model.update(model.user)" class="btn btn-success btn-block">Update</a>
-    <a ng-click="model.logout()" class="btn btn-danger btn-block">Logout</a>
-</div>
-
-<nav class="navbar navbar-default navbar-fixed-bottom">
-    <div class="container-fluid">
-        <div class="navbar-text pull-right">
-            <a href="#/user/{{model.user._id}}">
-                <span class="glyphicon glyphicon-user"></span>
-            </a>
+<div class="container">
+    <h3 class="text-center">Companies</h3><br/>
+    <div class="row" ng-repeat="company in model.companys">
+        <div class="pull-left col-xs-8">
+            <div ng-show="company.name">
+                <img class="col-xs-2" ng-src="{{company.photoURI}}" height="70" width="70" class="img-thumbnail pull-left" alt="{{company.name}}">
+                <div class="col-xs-6 pull-left">
+                    <h4 >
+                        <a href="#/admin/company/{{company._id}}"><div>{{company.name}}</div></a>
+                    </h4>
+                    <div class="text-muted">
+                        <div ng-show="company.size"><i class="fa fa-users" aria-hidden="true"></i> {{company.size}} Employees</div>
+                        <div>
+                            <a  ng-show="company.twitterURL" href="{{company.twitterURL}}" target="_blank"><i class="fa text-muted fa-twitter fa-lg" aria-hidden="true"></i></a>
+                            <a  ng-show="company.facebookURL" href="{{company.facebookURL}}" target="_blank"><i class="fa text-muted fa-facebook fa-lg" aria-hidden="true"></i></a>
+                            <a  ng-show="company.linkedinURL" href="{{company.linkedinURL}}" target="_blank"><i class="fa text-muted fa-linkedin-square fa-lg" aria-hidden="true"></i></a>
+                            <a  ng-show="company.siteURL" href="{{company.siteURL}}" target="_blank"><i class="fa text-muted fa-info-circle fa-lg" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <a class="btn btn-success pull-right wbdv-margin col-xs-1"
+           href="#/admin/company/{{company._id}}">Edit</a>
+        <br/><br/><br/><br/>
+
     </div>
-</nav>
+</div>

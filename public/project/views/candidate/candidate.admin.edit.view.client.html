@@ -1,0 +1,128 @@
+<wbdv-navigation ></wbdv-navigation>
+<div class="container">
+    <div class="row main">
+        <div class="page-header">
+            <div class="text-center">
+                <h1 class="large-text serif"><b>Job Seeker Profile</b></h1>
+            </div>
+        </div>
+
+        <div>
+            <div class="form-group">
+                <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                <div class="cols-sm-9">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                        <input disabled ng-model="model.candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="firstName" class="cols-sm-2 control-label">First Name</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.firstName" type="text" class="form-control" name="firstName" id="firstName"  placeholder="Enter your First name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="lastName" class="cols-sm-2 control-label">Last Name</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.lastName" type="text" class="form-control" name="lastName" id="lastName"  placeholder="Enter your Last name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="phone" class="cols-sm-2 control-label">Telephone</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-phone-square fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.phone" type="tel" class="form-control" name="phone" id="phone"  placeholder="Enter your Phone no."/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="skills" class="cols-sm-2 control-label">Skills</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-pencil fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.skills" class="form-control" name="skills" id="skills"  placeholder="Separate each skill with a comma"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="ethnicity" class="cols-sm-2 control-label">Ethnicity</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-user-o fa-lg" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.ethnicity" class="form-control" name="ethnicity" id="ethnicity"  placeholder="Enter your Ethnicity: Asian, African American, White, Hispanic"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="education" class="cols-sm-2 control-label">Education</label>
+                <div class="cols-sm-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-graduation-cap" aria-hidden="true"></i></span>
+                        <input ng-model="model.candidate.education" class="form-control" name="education" id="education"  placeholder="Enter your highest Education Degree"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="resume" class="cols-sm-2 control-label">Resume</label>
+                <div class="cols-sm-10">
+                    <a ng-show="model.candidate.resumeURI" href="{{model.candidate.resumeURI}}" target="_blank">
+                        <span class="small-text">{{model.candidate.resumeName}}</span>
+                    </a>
+                    <div class="input-group inline">
+                        <input class="file" file-input="model.resume" name="resume" id="resume" type="file"/>
+                        <a ng-click="model.uploadResume()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
+                <div class="cols-sm-10">
+                    <a ng-show="model.candidate.photoURI" href="{{model.candidate.photoURI}}" target="_blank">
+                        <span class="small-text">{{model.candidate.photoName}}</span>
+                    </a>
+                    <div class="input-group">
+                        <input file-input="model.pic" ng-bind="model.candidate.photoName" name="pic" id="pic" type="file"/>
+                        <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
+                    </div>
+                </div>
+            </div>
+
+            <!---->
+
+            <div class="alert alert-danger" ng-show="model.error">
+                {{model.error}}
+            </div>
+
+            <div class="alert alert-success" ng-show="model.message">
+                {{model.message}}
+            </div>
+
+            <div>
+                <a ng-click="model.update()" class="btn btn-success btn-block wbdv-button-reg-margin">Save</a>
+            </div>
+
+            <div>
+                <a ng-click="model.deleteCandidate()" class="btn btn-danger btn-block wbdv-button-reg-margin">Delete Profile</a>
+            </div>
+
+
+        </div>
+    </div>
+</div>
