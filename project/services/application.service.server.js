@@ -6,7 +6,7 @@
 
 
         function authorize (req, res, next) {
-            console.log("authorized called");
+            //console.log("authorized called");
             if (!req.isAuthenticated()) {
                 res.send(401);
             } else {

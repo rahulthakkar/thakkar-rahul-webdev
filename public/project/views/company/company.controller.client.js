@@ -285,16 +285,16 @@
                     vm.appliedJobs = vm.user.applications.map(function (obj) {
                         return obj.job;
                     });
+                    //console.log(vm.appliedJobs);
                     if(vm.appliedJobs && vm.appliedJobs.length>0){
-                        for(var j in company.jobs){
+                        for(var j in vm.company.jobs){
                             //console.log("Here"+jobs[j]._id);
-                            if(vm.appliedJobs.indexOf(company.jobs[j]._id)> -1){
+                            if(vm.appliedJobs.indexOf(vm.company.jobs[j]._id)> -1){
                                 //console.log("Here");
-                                company.jobs[j].applied = true;
+                                vm.company.jobs[j].applied = true;
                             }
                         }
                     }
-                    //console.log(vm.jobs);
                 }
             });
         }
