@@ -200,11 +200,7 @@ module.exports = function (app, model) {
                     return done(null, false);
                 },
                 function(err) {
-                    //console.log("Error1");
-                    if (err) {
-                        //console.log("Error2");
-                        return done(err);
-                    }
+                    return done(null, false);
                 }
             );
     }

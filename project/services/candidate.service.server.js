@@ -336,7 +336,7 @@ module.exports = function (app, model) {
                     return done(null, false);
                 },
                 function(err) {
-                    if (err) { return done(err); }
+                    return done(null, false);
                 }
             );
     }

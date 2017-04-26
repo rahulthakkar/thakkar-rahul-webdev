@@ -59,8 +59,10 @@ module.exports = function(app) {
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
                 if(candidate){
+                    //console.log("candidate", candidate);
                     deferred.resolve(candidate);
                 }else{
+                    //console.log("err", err);
                     deferred.reject(err);
                 }
             });

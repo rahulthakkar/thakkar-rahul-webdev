@@ -32,14 +32,14 @@
         }*/
 
         function login(candidate) {
-            console.log("login called"+ JSON.stringify(candidate));
+            //console.log("login called"+ JSON.stringify(candidate));
 
             CandidateService.login(candidate)
                 .then(
                     function(response) {
                         var candidate = response.data;
                         $rootScope.currentUser = candidate;
-                        console.log(candidate);
+                        //console.log(candidate);
                         $location.url("/candidate/profile/");
                     },
                     function (response) {
