@@ -100,22 +100,21 @@
                 fd.append('resume', file);
             });
 
-            console.log(fd);
-            console.log(fd.entries());
+            //console.log(fd);
+            //console.log(fd.entries());
 
 
             var promise = CandidateService.uploadResume($rootScope.currentUser._id, fd);
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
-                        console.log("Unable to upload resume");
+                        //console.log("Unable to upload resume");
                         vm.error = "Unable to upload resume";
                     } else {
-                        console.log("Resume successfully updated");
+                        //console.log("Resume successfully updated");
                         vm.message = "Resume successfully updated";
-                        $rootScope.currentUser = candidate;
-                        vm.user = angular.copy($rootScope.currentUser);
-                        setLoginDetails(vm);
+                        vm.user.resumeURI = candidate.resumeURI;
+                        vm.user.resumeName = candidate.resumeName;
                     }
                 })
                 .error(function () {
@@ -139,9 +138,8 @@
                     } else {
                         //console.log(candidate);
                         vm.message = "Pic successfully updated"
-                        $rootScope.currentUser = candidate;
-                        vm.user = angular.copy($rootScope.currentUser);
-                        setLoginDetails(vm);
+                        vm.user.photoURI = candidate.photoURI;
+                        vm.user.photoName = candidate.photoName;
                         /*if(!$scope.$$phase) {
                             $scope.$digest();
                         }*/                    }
@@ -163,7 +161,7 @@
                         //console.log("User successfully updated");
                         vm.message = "User successfully updated"
                         $rootScope.currentUser = candidate;
-                        vm.user = angular.copy($rootScope.currentUser);
+                        vm.user = angular.copy(candidate);
                         setLoginDetails(vm);
 
                     }

@@ -67,9 +67,11 @@
                     } else {
                         //console.log(company);
                         vm.message = "Pic successfully updated"
-                        $rootScope.currentUser = company;
-                        vm.user = angular.copy($rootScope.currentUser);
-                        setLoginDetails(vm);                    }
+                        //$rootScope.currentUser = company;
+                        vm.user.photoURI = company.photoURI;
+                        vm.user.photoName = company.photoName;
+                        //setLoginDetails(vm);
+                    }
                 })
                 .error(function () {
                     //console.log("Unable to upload pic");
@@ -84,7 +86,8 @@
                     if (company == null) {
                         vm.error = "Unable to update the company info";
                     } else {
-                        vm.user = angular.copy($rootScope.currentUser);
+                        $rootScope.currentUser = company;
+                        vm.user = angular.copy(company);
                         setLoginDetails(vm);
                         vm.message = "Company info successfully updated"
                     }

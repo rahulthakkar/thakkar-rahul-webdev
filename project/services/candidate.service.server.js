@@ -122,18 +122,18 @@ module.exports = function (app, model) {
     }
 
     function resumeUploadFunc(req, res, next) {
-        console.log("starting 1");
+        //console.log("starting 1");
         var candidateId = req.params.candidateId;
         if(isAdmin(req.user) || req.user._id == candidateId) {
-            console.log("authorized");
+            //console.log("authorized");
             resumeUpload(req, res, function (err) {
-                console.log("File upload called..1", req);
+                //console.log("File upload called..1", req);
                 if(req.file) {
                     if (err) {
                         res.status(404);
                     }
-                    console.log("Uploaded");
-                    console.log(req.file.filename);
+                    //console.log("Uploaded");
+                    //console.log(req.file.filename);
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function(candidate){
                             candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
