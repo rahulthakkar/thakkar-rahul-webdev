@@ -1,8 +1,20 @@
 <wbdv-navigation></wbdv-navigation>
 
 <div class="container">
+    <center>
+        <h3 class="text-center">Filter the Companies</h3>
+        <div class="input-group wbdv-margin col-sm-6">
+            <input ng-model="model.searchTerm" type="text" class="form-control" placeholder="Filter companies">
+            <span class="input-group-btn">
+            <a ng-click="" class="btn btn-default" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+        </span>
+        </div>
+    </center><hr/>
+
     <h3 class="text-center">Companies</h3><br/>
-    <div class="row" ng-repeat="company in model.companys">
+    <div class="row" ng-repeat="company in model.companys | search:model.searchTerm">
         <div class="pull-left col-xs-8">
             <div ng-show="company.name">
                 <img class="col-xs-2" ng-src="{{company.photoURI}}" height="70" width="70" class="img-thumbnail pull-left" alt="{{company.name}}">
