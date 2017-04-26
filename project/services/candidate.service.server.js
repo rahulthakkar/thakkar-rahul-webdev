@@ -137,7 +137,7 @@ module.exports = function (app, model) {
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function(candidate){
                             candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
-                            candidate.resumeName = req.file.filename;
+                            candidate.resumeName = req.file.originalname;
                             model.candidateModel.updateCandidate(candidateId, candidate)
                                 .then(function (candidate) {
                                         res.status(200).send(sendTransformObject(candidate));
@@ -173,7 +173,7 @@ module.exports = function (app, model) {
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function (candidate) {
                             candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
-                            candidate.photoName = req.file.filename;
+                            candidate.photoName = req.file.originalname;
                             model.candidateModel.updateCandidate(candidateId, candidate)
                                 .then(function (candidate) {
                                         res.status(200).send(sendTransformObject(candidate));
