@@ -95,7 +95,7 @@ module.exports = function() {
     }
 
     function deleteJob(jobId){
-        console.log("Deleting in model");
+        //console.log("Deleting in model");
         var deferred = q.defer();
         jobModel.remove({"_id" : jobId},
             function(err, job){

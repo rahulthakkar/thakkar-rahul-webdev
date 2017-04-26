@@ -1,5 +1,6 @@
 <wbdv-navigation></wbdv-navigation>
 <div class="container">
+    <form name="jobNew" novalidate>
     <div class="row main">
         <div class="page-header">
             <div class="text-center">
@@ -13,8 +14,9 @@
                 <div class="cols-sm-9">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-briefcase fa" aria-hidden="true"></i></span>
-                        <input ng-model="model.job.title" type="text" class="form-control" name="title" id="title"  placeholder="Enter the Job Title"/>
+                        <input required ng-model="model.job.title" type="text" class="form-control" name="title" id="title"  placeholder="Enter the Job Title"/>
                     </div>
+                    <div class="error small-text" ng-if="jobNew.$submitted && jobNew.title.$error.required">* Title is a required field</div>
                 </div>
             </div>
 
@@ -66,7 +68,7 @@
             </div>
 
             <div>
-                <a ng-click="model.create(model.job)" class="btn btn-primary btn-block wbdv-button-reg-margin">Post</a>
+                <button type="submit" ng-click="jobNew.$valid && model.create(model.job)" name="post" id="post" class="btn btn-primary btn-block wbdv-button-reg-margin">Post</button>
             </div>
 
             <div>
@@ -74,4 +76,5 @@
             </div>
         </div>
     </div>
+    </form>
 </div>

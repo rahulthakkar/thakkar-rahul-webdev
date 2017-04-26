@@ -1,129 +1,132 @@
 <wbdv-navigation></wbdv-navigation>
 <div class="container">
-    <div class="row main">
-        <div class="page-header">
-            <div class="text-center">
-                <h1 class="large-text serif"><b>Company Profile</b></h1>
-            </div>
-        </div>
-
-        <div>
-            <div class="form-group">
-                <label for="email" class="cols-sm-2 control-label">Your Email</label>
-                <div class="cols-sm-9">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                        <input disabled ng-model="model.user.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
-                    </div>
+    <form name="companyProfile" novalidate>
+        <div class="row main">
+            <div class="page-header">
+                <div class="text-center">
+                    <h1 class="large-text serif"><b>Company Profile</b></h1>
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="name" class="cols-sm-2 control-label">Company Name</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.name" type="text" class="form-control" name="name" id="name"  placeholder="Enter the Company name"/>
+            <div>
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <div class="cols-sm-9">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input disabled ng-model="model.user.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="description" class="cols-sm-2 control-label">Company Description</label>
-                <div class="cols-sm-10">
+                <div class="form-group">
+                    <label for="name" class="cols-sm-2 control-label">Company Name</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-address-card" aria-hidden="true"></i></span>
+                            <input required ng-model="model.user.name" type="text" class="form-control" name="name" id="name"  placeholder="Enter the Company name"/>
+                        </div>
+                        <div class="error small-text" ng-if="companyProfile.$submitted && companyProfile.name.$error.required">* Name is a required field</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description" class="cols-sm-2 control-label">Company Description</label>
+                    <div class="cols-sm-10">
                         <textarea ng-model="model.user.description" class="form-control" name="description" id="description" rows="4" placeholder="Enter some info about the Company"/></textarea>
 
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone" class="cols-sm-2 control-label">Telephone</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-phone-square fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.phone" type="tel" class="form-control" name="phone" id="phone"  placeholder="Enter the Company Phone no."/>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="size" class="cols-sm-2 control-label">Company Size</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-users fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.size" class="form-control" name="size" id="size"  placeholder="Enter the Company size: 1-10, 11-50, 51-500"/>
+                <div class="form-group">
+                    <label for="phone" class="cols-sm-2 control-label">Telephone</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-phone-square fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.phone" type="tel" class="form-control" name="phone" id="phone"  placeholder="Enter the Company Phone no."/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="linkedinURL" class="cols-sm-2 control-label">LinkedIn URL</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.linkedinURL" class="form-control" name="linkedinURL" id="linkedinURL"  placeholder="Enter Company's LinkedIn URL"/>
+                <div class="form-group">
+                    <label for="size" class="cols-sm-2 control-label">Company Size</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-users fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.size" class="form-control" name="size" id="size"  placeholder="Enter the Company size: 1-10, 11-50, 51-500"/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="facebookURL" class="cols-sm-2 control-label">Facebook URL</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.facebookURL" class="form-control" name="facebookURL" id="facebookURL"  placeholder="Enter Company's Facebook URL"/>
+                <div class="form-group">
+                    <label for="linkedinURL" class="cols-sm-2 control-label">LinkedIn URL</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.linkedinURL" class="form-control" name="linkedinURL" id="linkedinURL"  placeholder="Enter Company's LinkedIn URL"/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="twitterURL" class="cols-sm-2 control-label">Twitter URL</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.twitterURL" class="form-control" name="twitterURL" id="twitterURL"  placeholder="Enter Company's Twitter URL"/>
+                <div class="form-group">
+                    <label for="facebookURL" class="cols-sm-2 control-label">Facebook URL</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-facebook-official fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.facebookURL" class="form-control" name="facebookURL" id="facebookURL"  placeholder="Enter Company's Facebook URL"/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="siteURL" class="cols-sm-2 control-label">Site URL</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-desktop" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.siteURL" class="form-control" name="siteURL" id="siteURL"  placeholder="Enter Company's site URL"/>
+                <div class="form-group">
+                    <label for="twitterURL" class="cols-sm-2 control-label">Twitter URL</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.twitterURL" class="form-control" name="twitterURL" id="twitterURL"  placeholder="Enter Company's Twitter URL"/>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
-                <div class="cols-sm-10">
-                    <a ng-show="model.user.photoURI" href="{{model.user.photoURI}}" target="_blank">
-                        <span class="small-text">{{model.user.photoName}}</span>
-                    </a>
-                    <div class="input-group">
-                        <input file-input="model.pic" class="file" name="pic" id="pic" type="file"/>
-                        <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
+                <div class="form-group">
+                    <label for="siteURL" class="cols-sm-2 control-label">Site URL</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-desktop" aria-hidden="true"></i></span>
+                            <input ng-model="model.user.siteURL" class="form-control" name="siteURL" id="siteURL"  placeholder="Enter Company's site URL"/>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!---->
 
-            <div class="alert alert-danger" ng-show="model.error">
-                {{model.error}}
-            </div>
+                <div class="form-group">
+                    <label for="pic" class="cols-sm-2 control-label">Profile Pic</label>
+                    <div class="cols-sm-10">
+                        <a ng-show="model.user.photoURI" href="{{model.user.photoURI}}" target="_blank">
+                            <span class="small-text">{{model.user.photoName}}</span>
+                        </a>
+                        <div class="input-group">
+                            <input file-input="model.pic" class="file" name="pic" id="pic" type="file"/>
+                            <a ng-click="model.uploadPic()" class="btn btn-default wbdv-button-reg-margin">Upload</a>
+                        </div>
+                    </div>
+                </div>
+                <!---->
 
-            <div class="alert alert-success" ng-show="model.message">
-                {{model.message}}
-            </div>
+                <div class="alert alert-danger" ng-show="model.error">
+                    {{model.error}}
+                </div>
 
-            <div>
-                <a ng-click="model.update(model.user)" class="btn btn-success btn-block wbdv-button-reg-margin">Save</a>
-            </div>
-            <div>
-                <a href="#/company/dashboard" class="btn btn-primary btn-block wbdv-button-reg-margin">Dashboard</a>
+                <div class="alert alert-success" ng-show="model.message">
+                    {{model.message}}
+                </div>
+
+                <div>
+                    <button type="submit" ng-click="companyProfile.$valid && model.update(model.user)" name="update" id="update" class="btn btn-success btn-block wbdv-button-reg-margin">Save</button>
+                </div>
+                <div>
+                    <a href="#/company/dashboard" class="btn btn-primary btn-block wbdv-button-reg-margin">Dashboard</a>
+                </div>
             </div>
         </div>
-    </div>
+    </form>
 </div>

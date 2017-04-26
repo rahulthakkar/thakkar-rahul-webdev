@@ -1,6 +1,7 @@
 <wbdv-navigation></wbdv-navigation>
 <div class="container">
-    <div class="row main">
+    <form name="jobEdit" novalidate>
+        <div class="row main">
         <div class="page-header">
             <div class="text-center">
                 <h1 class="large-text serif"><b>Edit the Job</b></h1>
@@ -13,8 +14,9 @@
                 <div class="cols-sm-9">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-briefcase fa" aria-hidden="true"></i></span>
-                        <input ng-model="model.job.title" type="text" class="form-control" name="title" id="title"  placeholder="Enter the Job Title"/>
+                        <input required ng-model="model.job.title" type="text" class="form-control" name="title" id="title"  placeholder="Enter the Job Title"/>
                     </div>
+                    <div class="error small-text" ng-if="jobEdit.$submitted && jobEdit.title.$error.required">* Title is a required field</div>
                 </div>
             </div>
 
@@ -66,7 +68,7 @@
             </div>
 
             <div>
-                <a ng-click="model.update(model.job)" class="btn btn-primary btn-block wbdv-button-reg-margin">Save</a>
+                <button type="submit" ng-click="jobEdit.$valid && model.update(model.job)" name="update" id="update" class="btn btn-primary btn-block wbdv-button-reg-margin">Save</button>
             </div>
             <div>
                 <a href="#/company/dashboard" class="btn btn-success btn-block wbdv-button-reg-margin">Cancel</a>
