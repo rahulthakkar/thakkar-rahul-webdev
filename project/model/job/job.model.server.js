@@ -45,18 +45,18 @@ module.exports = function() {
     }
 
     function searchJobs(term){
-        console.log("model job");
+        //console.log("model job");
         var deferred = q.defer();
         jobModel.find({$text : {$search: term}})
             .populate('company')
             .exec(function(err, jobs){
                 if(err){
-                    console.log("model error");
-                    console.log(err);
+                    //console.log("model error");
+                    //console.log(err);
                     deferred.reject(err);
                 }else{
-                    console.log("model jobs");
-                    console.log(jobs);
+                    //console.log("model jobs");
+                    //console.log(jobs);
                     deferred.resolve(jobs);
                 }
             });
@@ -79,23 +79,6 @@ module.exports = function() {
             });
         return deferred.promise;
     }
-
-    /*function findJobByIdPopulate(jobId){
-        //console.log(jobId)
-        var deferred = q.defer();
-        jobModel.findById(jobId)
-            .populate('applications')
-            .exec(function(err, job){
-                if(err){
-                    //console.log("Error in model"+ err);
-                    deferred.reject(err);
-                }else{
-                    //console.log("Job in model"+ JSON.stringify(job));
-                    deferred.resolve(job);
-                }
-            });
-        return deferred.promise;
-    }*/
 
     function updateJob(jobId, newJob){
         var deferred = q.defer();

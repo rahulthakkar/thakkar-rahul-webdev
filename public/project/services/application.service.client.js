@@ -14,7 +14,7 @@
 
 
         function apply(candidateId, jobId) {
-            console.log("apply client service");
+            //console.log("apply client service");
             return $http.post("/api/application?candidateId="+ candidateId +"&jobId="+jobId);
         }
 
@@ -23,7 +23,7 @@
         }
 
         function findApplicationsForCandidate(candidateId) {
-            console.log("candidate apps");
+            //console.log("candidate apps");
             return $http.get("/api/application/candidate/"+candidateId);
         }
 

@@ -51,7 +51,7 @@
     function candidateLogoutController($routeParams, CandidateService, $rootScope, $location, $templateCache) {
         var vm = this;
         vm.logout = logout;
-        console.log("Logout called");
+        //console.log("Logout called");
 
         function init() {
             setLoginDetails(vm);
@@ -66,7 +66,7 @@
                 .then(
                     function (response) {
                         $rootScope.currentUser = null;
-                        console.log("Forwarding to login");
+                        //console.log("Forwarding to login");
                         $location.url("/candidate/login");
                     },
                     function (res) {
@@ -349,7 +349,7 @@
 
 
         function init() {
-            console.log("init called");
+            //console.log("init called");
             vm.user = angular.copy($rootScope.currentUser);
             setLoginDetails(vm);
             checkFollow();
@@ -400,7 +400,7 @@
             setLoginDetails(vm);
             ApplicationService.findApplicationsForCandidate(vm.user._id)
                     .success(function (applications) {
-                        console.log(applications);
+                        //console.log(applications);
                         vm.applications = applications;
                     });
         }

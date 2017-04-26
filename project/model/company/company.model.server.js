@@ -35,20 +35,6 @@ module.exports = function(app) {
         return deferred.promise;
     }
 
-    /*function findCompanyById(companyId){
-        var deferred = q.defer();
-        companyModel.findById(companyId)
-            .populate(jobs)
-            .exec(function(err, company){
-                if(err){
-                    deferred.reject(err);
-                }else{
-                    deferred.resolve(company);
-                }
-            });
-        return deferred.promise;
-    }*/
-
     function findCompanyById(companyId){
         var deferred = q.defer();
         companyModel.findById(companyId)

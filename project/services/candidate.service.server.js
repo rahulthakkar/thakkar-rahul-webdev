@@ -80,7 +80,7 @@ module.exports = function (app, model) {
 
 
     function authorize (req, res, next) {
-        console.log("authorized called");
+        //console.log("authorized called");
         if (!req.isAuthenticated()) {
             res.send(401);
         } else {
@@ -142,7 +142,7 @@ module.exports = function (app, model) {
                         });
                     res.status(200);
                 } else {
-                    console.log("Else");
+                    //console.log("Else");
                     res.status(404);
                 }
             });
@@ -206,10 +206,10 @@ module.exports = function (app, model) {
     }
 
     function followToggle(req, res) {
-        console.log("followToggle server called");
+        //console.log("followToggle server called");
         var candidateId = req.query.candidateId;
         var companyId = req.query.companyId;
-        console.log(candidateId+" followcompany server called "+ companyId);
+        //console.log(candidateId+" followcompany server called "+ companyId);
         if(candidateId && candidateId==req.user._id) {
             if(req.user.companies.indexOf(companyId) > -1){
                 model.candidateModel.unfollowCompany(candidateId, companyId)
@@ -309,14 +309,14 @@ module.exports = function (app, model) {
     }
 
     function localStrategy(email, password, done) {
-        console.log("candidate localstartegy" + email +" " + password);
+        //console.log("candidate localstartegy" + email +" " + password);
         model.candidateModel
             .findCandidateByEmail(email)
             .then(
                 function(candidate) {
 
-                    console.log("password1" + bcrypt.hashSync(password));
-                    console.log("password " + candidate.password);
+                    //console.log("password1" + bcrypt.hashSync(password));
+                    //console.log("password " + candidate.password);
                     if(candidate && bcrypt.compareSync(password, candidate.password)) {
                         return done(null, sendTransformObject(candidate));
                     }
@@ -341,25 +341,25 @@ module.exports = function (app, model) {
 
     function register(req, res) {
         var candidate = req.body;
-        console.log("register called");
+        //console.log("register called");
         updateTransformObject(candidate);
         model.candidateModel.findCandidateByEmail(candidate.email)
             .then(function (candidate) {
-                    console.log("Already found one"+ candidate);
+                    //console.log("Already found one"+ candidate);
                     res.sendStatus(404);
                 },
                 function (err) {
-                    console.log("Craeting a new one"+ candidate);
+                    //console.log("Craeting a new one"+ candidate);
                     candidate.password = bcrypt.hashSync(candidate.password);
                     model.candidateModel
                         .createCandidate(candidate)
                         .then(
                             function (candidate) {
-                                console.log("Craeted successfully a candidate"+ candidate);
+                                //console.log("Craeted successfully a candidate"+ candidate);
                                 if (candidate) {
                                     req.login(candidate, function (err) {
                                         if (err) {
-                                            console.log("error on login");
+                                            //console.log("error on login");
                                             res.status(404).send(err);
                                         } else {
                                             res.json(sendTransformObject(candidate));
@@ -371,7 +371,7 @@ module.exports = function (app, model) {
     }
 
     function loggedin(req, res) {
-        console.log("Checking loggedin sever");
+        //console.log("Checking loggedin sever");
         res.send(req.isAuthenticated() && req.user.role? sendTransformObject(req.user) : '0');
     }
 

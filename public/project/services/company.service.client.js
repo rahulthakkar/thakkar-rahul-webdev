@@ -45,7 +45,7 @@
         }
 
         function login(company) {
-            console.log("Login called");
+            //console.log("Login called");
             return $http.post("/api/company/login", company);
         }
 

@@ -97,7 +97,7 @@
     function companyLogoutController($routeParams, CompanyService, $rootScope, $location) {
         var vm = this;
         vm.logout = logout;
-        console.log("Logout called");
+        //console.log("Logout called");
 
         function init() {
             vm.user = angular.copy($rootScope.currentUser);
@@ -134,7 +134,7 @@
         init();
 
         function register(newCompany) {
-            console.log("register called with "+ JSON.stringify(newCompany));
+            //console.log("register called with "+ JSON.stringify(newCompany));
             if(newCompany.password === newCompany.password2) {
                 CompanyService
                     .register(newCompany)

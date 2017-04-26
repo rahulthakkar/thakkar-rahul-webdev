@@ -1,31 +1,22 @@
 <wbdv-navigation></wbdv-navigation>
 <div class="container">
-    <div class="row main">
-        <div class="page-header">
-            <div class="text-center">
-                <h1 class="large-text serif"><b>Find a Job</b></h1>
-                <small>Hear from 100s of companies hiring on JobNow!</small>
-            </div>
-        </div>
-
-        <!--<div>
-            <div class="form-group">
-                <label for="name" class="cols-sm-2 control-label">Company Name</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-bank fa" aria-hidden="true"></i></span>
-                        <input ng-model="company.name" type="text" class="form-control" name="name" id="name"  placeholder="Enter your Company name"/>
-                    </div>
+    <form name="candidateRegister" novalidate>
+        <div class="row main">
+            <div class="page-header">
+                <div class="text-center">
+                    <h1 class="large-text serif"><b>Find a Job</b></h1>
+                    <small>Hear from 100s of companies hiring on JobNow!</small>
                 </div>
-            </div>-->
-
+            </div>
             <div class="form-group">
                 <label for="email" class="cols-sm-2 control-label">Your Email</label>
                 <div class="cols-sm-9">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                        <input ng-model="candidate.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        <input required ng-model="candidate.email" type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
                     </div>
+                    <div class="error small-text" ng-if="candidateRegister.$submitted && candidateRegister.email.$error.required">* Email is a required field</div>
+                    <div class="error small-text" ng-if="candidateRegister.$submitted && candidateRegister.email.$error.email">* Valid email is required</div>
                 </div>
             </div>
 
@@ -34,7 +25,8 @@
                 <div class="cols-sm-9">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        <input required ng-model="candidate.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        <div class="error small-text" ng-if="candidateRegister.$submitted && candidateRegister.password.$error.required">* Password is a required field</div>
                     </div>
                 </div>
             </div>
@@ -44,8 +36,9 @@
                 <div class="cols-sm-10">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="candidate.password2" type="password" class="form-control" name="password" id="password2"  placeholder="Confirm your Password"/>
+                        <input required ng-model="candidate.password2" type="password" class="form-control" name="password2" id="password2"  placeholder="Confirm your Password"/>
                     </div>
+                    <div class="error small-text" ng-if="candidateRegister.$submitted && candidateRegister.password2.$error.required">* Confirm password is a required field</div>
                 </div>
             </div>
 
@@ -54,12 +47,12 @@
             </div>
 
             <div>
-                <a ng-click="model.register(candidate)" class="btn btn-primary btn-block wbdv-button-reg-margin">Register</a>
+                <button type="submit" ng-click="candidateRegister.$valid && model.register(candidate)" name="register" id="register" class="btn btn-primary btn-block wbdv-button-reg-margin">Register</button>
             </div>
 
             <div class="pull-right">
                 <small><div>Already have an account? <a href="#/candidate/login">Log In >></a></div></small>
             </div>
         </div>
-    </div>
+    </form>
 </div>

@@ -8,6 +8,10 @@ body {
     overflow-y: scroll;
 }
 
+.error {
+    color: red;
+}
+
 .wbdv-right-navbar{
     padding-right: 100px;
 }

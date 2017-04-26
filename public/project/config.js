@@ -162,9 +162,15 @@
             //console.log("Check loggedin client not 0" + JSON.stringify(user));
             if (user !== '0') {
                 $rootScope.currentUser = user;
+                if($rootScope.lastPath){
+                    var path = $rootScope.lastPath;
+                    $rootScope.lastPath = false;
+                    $location.url(path);
+                }
                 deferred.resolve();
             } else {
                 deferred.reject();
+                $rootScope.lastPath = $location.$$path
                 $location.url('/candidate/login');
             }
         });
@@ -203,9 +209,15 @@
             $rootScope.errorMessage = null;
             if (user !== '0') {
                 $rootScope.currentUser = user;
+                if($rootScope.lastPath){
+                    var path = $rootScope.lastPath;
+                    $rootScope.lastPath = false;
+                    $location.url(path);
+                }
                 deferred.resolve();
             } else {
                 deferred.reject();
+                $rootScope.lastPath = $location.$$path
                 $location.url('/candidate/login');
             }
         });

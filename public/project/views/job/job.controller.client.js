@@ -128,7 +128,7 @@
             vm.noResults = false;
             vm.showSpinner = true;
             vm.searchTerm = searchTerm;
-            console.log("Started search");
+            //console.log("Started search");
             indeed_client.search({
                 q: searchTerm,
                 //l: 'US',
@@ -138,8 +138,8 @@
                 useragent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_2)'
             }, function (response) {
                 vm.showSpinner = false;
-                console.log("Got response");
-                console.log(response);
+                //console.log("Got response");
+                //console.log(response);
                 vm.jobs = response.results;
                 if(response.totalResults === 0){
                     vm.noResults = true;
@@ -174,7 +174,7 @@
         function searchJobs() {
             vm.noResults = false;
             vm.showSpinner = true;
-            console.log("Started search");
+            //console.log("Started search");
             JobService
                 .searchJobs(vm.searchTerm)
                 .success(function (jobs) {
@@ -183,15 +183,15 @@
                     } else {
                         if(vm.appliedJobs && vm.appliedJobs.length>0){
                             for(var j in jobs){
-                                console.log("Here"+jobs[j]._id);
+                                //console.log("Here"+jobs[j]._id);
                                 if(vm.appliedJobs.indexOf(jobs[j]._id)> -1){
-                                    console.log("Here");
+                                    //console.log("Here");
                                     jobs[j].applied = true;
                                 }
                             }
                         }
                         vm.jobs = jobs;
-                        console.log(vm.jobs);
+                        //console.log(vm.jobs);
                     }
                 })
                 .error(function () {
@@ -229,7 +229,7 @@
                 vm.job = angular.copy(job);
                 ApplicationService.findApplicationsForJob(jobId)
                     .success(function(applications) {
-                        console.log(applications);
+                        //console.log(applications);
                         vm.applications = applications;
                     });
             });

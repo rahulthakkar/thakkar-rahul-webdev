@@ -21,14 +21,14 @@ module.exports = function(app) {
 
     function createCandidate(newCandidate){
         var deferred = q.defer();
-        console.log("Craeting a new candidate"+ JSON.stringify(newCandidate));
+        //console.log("Craeting a new candidate"+ JSON.stringify(newCandidate));
         candidateModel.create(newCandidate,
             function(err, candidate){
                 if(err){
-                    console.log("error"+err);
+                    //console.log("error"+err);
                     deferred.reject(err);
                 }else{
-                    console.log("Not error"+candidate);
+                    //console.log("Not error"+candidate);
                     deferred.resolve(candidate);
                 }
             });
@@ -40,9 +40,9 @@ module.exports = function(app) {
         candidateModel.findById(candidateId)
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err || candidate==null){
-                    console.log("Error in fetching candidate model");
-                    console.log(err);
+                if(err){
+                    //console.log("Error in fetching candidate model");
+                    //console.log(err);
                     deferred.reject(err);
                 }else{
                     //console.log("found candidate");
@@ -54,17 +54,17 @@ module.exports = function(app) {
     }
 
     function findCandidateByEmail(email){
-        console.log(email);
+        //console.log(email);
         var deferred = q.defer();
         candidateModel.findOne({"email" : email})
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err || candidate==null){
-                    console.log("Error in fetching candidate model");
-                    console.log(err);
+                if(err){
+                    //console.log("Error in fetching candidate model");
+                    //console.log(err);
                     deferred.reject(err);
                 }else{
-                    console.log(candidate);
+                    //console.log(candidate);
                     deferred.resolve(candidate);
                 }
             });
@@ -112,7 +112,7 @@ module.exports = function(app) {
     }
 
     function unfollowCompany(candidateId, companyId) {
-        console.log("unfollow");
+        //console.log("unfollow");
         var deferred = q.defer();
         candidateModel.findByIdAndUpdate(
             candidateId,
@@ -162,13 +162,13 @@ module.exports = function(app) {
         candidateModel.findOne({'facebook.id': facebookId})
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err || candidate==null){
-                    console.log("Error in fetching candidate model");
-                    console.log(err);
+                if(err){
+                    //console.log("Error in fetching candidate model");
+                    //console.log(err);
                     deferred.reject(err);
                 }else{
-                    console.log("found candidate");
-                    console.log(candidate.applications);
+                    //console.log("found candidate");
+                    //console.log(candidate.applications);
                     deferred.resolve(candidate);
                 }
             });

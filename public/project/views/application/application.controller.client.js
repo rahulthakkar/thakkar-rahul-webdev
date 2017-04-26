@@ -19,14 +19,14 @@
             var promise = JobService.findJobById(jobId);
             promise.success(function (job) {
                 vm.job = angular.copy(job);
-                console.log("user");
-                console.log(vm.user);
-                console.log(vm.user.applications);
+                //console.log("user");
+                //console.log(vm.user);
+                //console.log(vm.user.applications);
                 var applied = vm.user.applications.filter(function (obj) {
                     return obj.job == job._id;
                 });
                 vm.isApplied = (applied.length>0);
-                console.log(vm.isApplied);
+                //console.log(vm.isApplied);
             });
         }
 

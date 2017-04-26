@@ -1,4 +1,4 @@
 (function () {
     angular
-        .module("JobNowMaker", ["ngRoute", "textAngular", "ngUpload"]);
+        .module("JobNowMaker", ["ngRoute", "textAngular"]);
 })();

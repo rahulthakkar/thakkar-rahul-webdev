@@ -1,9 +1,5 @@
 module.exports = function (app, model) {
-    //var passport = require('passport');
     var passport = require('passport');
-    //var passport = new passport();
-    //app.use(passport.initialize());
-    //app.use(passport.session());
     var LocalStrategy = require('passport-local').Strategy;
 
     var bcrypt = require("bcrypt-nodejs");
