@@ -298,21 +298,28 @@ module.exports = function (app, model) {
     }
 
     function serializeUser(user, done) {
+        console.log("searilaizeUser called");
         done(null, user);
     }
 
     function deserializeUser(user, done) {
+        //console.log("deserializeUser called");
         var isCandidate = user.role? true: false;
+        //console.log("is canidadate", isCandidate);
         var collection = isCandidate? model.candidateModel: model.companyModel;
+        //console.log("collection is ", collection);
+        //console.log("User ID is ", user._id);
+
         collection.findById(user._id)
             .then(
                 function (user) {
+                    //console.log("Found user and User ID is ", user._id);
                     done(null, user);
                 },
                 function (err) {
+                    //console.log("Some error occured");
                     done(err, null);
-                }
-            );
+                });
     }
 
     function localStrategy(email, password, done) {
@@ -377,8 +384,8 @@ module.exports = function (app, model) {
     }
 
     function loggedin(req, res) {
-        console.log("Checking loggedin sever",req.user);
-        console.log("Checking loggedin sever",req.isAuthenticated());
+        //console.log("Checking loggedin sever",req.user);
+        //console.log("Checking loggedin sever",req.isAuthenticated());
         res.send(req.isAuthenticated() && req.user.role? sendTransformObject(req.user) : '0');
     }
 
@@ -387,11 +394,11 @@ module.exports = function (app, model) {
     }
 
     function facebookStrategy(token, refreshToken, profile, done) {
-        console.log("Profile" + JSON.stringify(profile));
+        //console.log("Profile" + JSON.stringify(profile));
         model.candidateModel
             .findCandidateByFacebookId(profile.id)
             .then(function (candidate) {
-                console.log("Found candidate"+ candidate);
+                //console.log("Found candidate"+ candidate);
 
 
                 if (candidate) {
@@ -420,7 +427,7 @@ module.exports = function (app, model) {
                     );
                 }
             }, function (err) {
-                console.log("err")
+                //console.log("err")
                 if (err) {
                     return done(err);
                 }

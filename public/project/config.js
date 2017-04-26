@@ -159,18 +159,18 @@
         //console.log("Check loggedin client");
         $http.get('/api/candidate/loggedin').success(function(user) {
             $rootScope.errorMessage = null;
-            console.log("Check loggedin client not 0" + JSON.stringify(user));
+            //console.log("Check loggedin client not 0" + JSON.stringify(user));
             if (user !== '0') {
                 $rootScope.currentUser = user;
-                //if($rootScope.lastPath){
-                //    var path = $rootScope.lastPath;
-                //    $rootScope.lastPath = false;
-                //    $location.url(path);
-                //}
+                if($rootScope.lastPath){
+                    var path = $rootScope.lastPath;
+                    $rootScope.lastPath = false;
+                    $location.url(path);
+                }
                 deferred.resolve();
             } else {
                 deferred.reject();
-                //$rootScope.lastPath = $location.$$path
+                $rootScope.lastPath = $location.$$path
                 $location.url('/candidate/login');
             }
         });

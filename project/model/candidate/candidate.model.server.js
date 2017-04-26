@@ -40,10 +40,12 @@ module.exports = function(app) {
         candidateModel.findById(candidateId)
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
+                if(candidate){
+                    //console.log("Found candidate", candidate)
                     deferred.resolve(candidate);
 
                 }else{
+                    //console.log("Error occured", err)
                     deferred.reject(err);
                 }
             });
