@@ -54,17 +54,16 @@ module.exports = function(app) {
     }
 
     function findCompanyByEmail(email){
-        ///console.log("findCompanyByEmail"+ email);
+        //console.log("findCompanyByEmail"+ email);
         var deferred = q.defer();
         companyModel.findOne({"email" : email},
             function(err, company){
-                if(company){
-                    //console.log("No error in model"+company);
-                    deferred.resolve(company);
-
-                }else{
+                if(err){
                     //console.log("Error in model"+err);
                     deferred.reject(err);
+                }else{
+                    //console.log("No error in model"+company);
+                    deferred.resolve(company);
                 }
             });
         return deferred.promise;

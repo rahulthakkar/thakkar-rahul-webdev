@@ -13,6 +13,7 @@
     function companyLoginController($location, CompanyService, $rootScope) {
         var vm = this;
 
+        //console.log("Company")
         // event handlers
         vm.login = login;
 
@@ -31,6 +32,7 @@
                         $location.url("/company/profile/");
                     },
                     function (response) {
+                        //console.log("Error")
                         vm.error = 'Wrong credentials';
                     });
         }

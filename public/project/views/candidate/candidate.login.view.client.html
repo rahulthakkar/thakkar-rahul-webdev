@@ -1,51 +1,56 @@
 <wbdv-navigation></wbdv-navigation>
 <div class="container">
-    <div class="row main">
-        <div class="page-header">
-            <div class="text-center">
-                <h1 class="large-text serif"><b>JobSeeker Log In</b></h1>
-            </div>
-        </div>
-
-        <div>
-            <div class="form-group">
-                <label for="email" class="cols-sm-2 control-label">Your Email</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.email" type="text" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
-                    </div>
+    <form name="candidateLogin" novalidate>
+        <div class="row main">
+            <div class="page-header">
+                <div class="text-center">
+                    <h1 class="large-text serif"><b>JobSeeker Log In</b></h1>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="password" class="cols-sm-2 control-label">Password</label>
-                <div class="cols-sm-10">
-                    <div class="input-group">
-                        <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
-                        <input ng-model="model.user.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
-                    </div>
-                </div>
-            </div>
-
-
-            <div ng-show="model.error" class="alert alert-danger" role="alert">
-                {{model.error}}
             </div>
 
             <div>
-                <a ng-click="model.login(model.user)" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">Login</a>
-                <a href="/auth/candidate/facebook" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">
-                    <span class="fa fa-facebook-official fa-lg"></span>
-                      Log In with Facebook
-                </a>
-            </div>
+                <div class="form-group">
+                    <label for="email" class="cols-sm-2 control-label">Your Email</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+                            <input required ng-model="model.user.email" type="email" class="form-control" name="email" id="email"  placeholder="Enter your Email"/>
+                        </div>
+                        <div class="error small-text" ng-if="candidateLogin.$submitted && candidateLogin.email.$error.required">* Email is a required field</div>
+                        <div class="error small-text" ng-if="candidateLogin.$submitted && candidateLogin.email.$error.email">* Valid email is required</div>
+                    </div>
+                </div>
 
-            <div class="pull-right">
-                <small><div>Need an account? <a href="#/candidate/register">Sign up >></a></div></small>
-            </div>
+                <div class="form-group">
+                    <label for="password" class="cols-sm-2 control-label">Password</label>
+                    <div class="cols-sm-10">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <input required ng-model="model.user.password" type="password" class="form-control" name="password" id="password"  placeholder="Enter your Password"/>
+                        </div>
+                        <div class="error small-text" ng-if="candidateLogin.$submitted && candidateLogin.password.$error.required">* Password is a required field</div>
+                    </div>
+                </div>
 
+
+                <div ng-show="model.error" class="alert alert-danger" role="alert">
+                    {{model.error}}
+                </div>
+
+                <div>
+                    <button type="submit" ng-click="candidateLogin.$valid && model.login(model.user)" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">Login</button>
+                    <a href="/auth/candidate/facebook" aria-pressed="true" class="btn btn-primary btn-block wbdv-button-reg-margin">
+                        <span class="fa fa-facebook-official fa-lg"></span>
+                        Log In with Facebook
+                    </a>
+                </div>
+
+                <div class="pull-right">
+                    <small><div>Need an account? <a href="#/candidate/register">Sign up >></a></div></small>
+                </div>
+
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 

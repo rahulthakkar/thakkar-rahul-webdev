@@ -309,12 +309,11 @@ module.exports = function (app, model) {
     }
 
     function localStrategy(email, password, done) {
-        //console.log("candidate localstartegy" + email +" " + password);
+        console.log("candidate localstartegy" + email +" " + password);
         model.candidateModel
             .findCandidateByEmail(email)
             .then(
                 function(candidate) {
-
                     //console.log("password1" + bcrypt.hashSync(password));
                     //console.log("password " + candidate.password);
                     if(candidate && bcrypt.compareSync(password, candidate.password)) {
