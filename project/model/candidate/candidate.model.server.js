@@ -40,14 +40,11 @@ module.exports = function(app) {
         candidateModel.findById(candidateId)
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
-                    //console.log("Error in fetching candidate model");
-                    //console.log(err);
-                    deferred.reject(err);
-                }else{
-                    //console.log("found candidate");
-                    //console.log(candidate.applications);
+                if(candidate){
                     deferred.resolve(candidate);
+
+                }else{
+                    deferred.reject(err);
                 }
             });
         return deferred.promise;
@@ -59,13 +56,10 @@ module.exports = function(app) {
         candidateModel.findOne({"email" : email})
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(err){
-                    //console.log("Error in fetching candidate model");
-                    //console.log(err);
-                    deferred.reject(err);
-                }else{
-                    //console.log(candidate);
+                if(candidate){
                     deferred.resolve(candidate);
+                }else{
+                    deferred.reject(err);
                 }
             });
         return deferred.promise;

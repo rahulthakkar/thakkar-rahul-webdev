@@ -40,14 +40,10 @@ module.exports = function(app) {
         companyModel.findById(companyId)
             .populate('jobs','title location jobType salary')
             .exec(function(err, company){
-                if(err){
-                    //console.log("error");
-                    //console.log(err);
-                    deferred.reject(err);
-                }else{
-                    //console.log("company");
-                    //console.log(company);
+                if(company){
                     deferred.resolve(company);
+                }else{
+                    deferred.reject(err);
                 }
             });
         return deferred.promise;
@@ -58,12 +54,10 @@ module.exports = function(app) {
         var deferred = q.defer();
         companyModel.findOne({"email" : email},
             function(err, company){
-                if(err){
-                    //console.log("Error in model"+err);
-                    deferred.reject(err);
-                }else{
-                    //console.log("No error in model"+company);
+                if(company){
                     deferred.resolve(company);
+                }else{
+                    deferred.reject(err);
                 }
             });
         return deferred.promise;

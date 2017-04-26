@@ -80,10 +80,12 @@ module.exports = function (app, model) {
 
 
     function authorize (req, res, next) {
-        //console.log("authorized called");
+        console.log("authorized called");
         if (!req.isAuthenticated()) {
+            console.log("authenticate err")
             res.send(401);
         } else {
+            console.log("next")
             next();
         }
     }
@@ -118,17 +120,18 @@ module.exports = function (app, model) {
     }
 
     function resumeUploadFunc(req, res, next) {
-        //console.log("starting 1");
+        console.log("starting 1");
         var candidateId = req.params.candidateId;
         if(isAdmin(req.user) || req.user._id == candidateId) {
+            console.log("authorized");
             resumeUpload(req, res, function (err) {
-                //console.log("File upload called..1");
+                console.log("File upload called..1", req.file);
                 if(req.file) {
                     if (err) {
                         res.status(404);
                     }
-                    //console.log("Uploaded");
-                    //console.log(req.file.filename);
+                    console.log("Uploaded");
+                    console.log(req.file.filename);
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function(candidate){
                             candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
@@ -142,7 +145,7 @@ module.exports = function (app, model) {
                         });
                     res.status(200);
                 } else {
-                    //console.log("Else");
+                    console.log("Else");
                     res.status(404);
                 }
             });

@@ -100,14 +100,18 @@
                 fd.append('resume', file);
             });
 
+            console.log(fd);
+            console.log(fd.entries());
+
+
             var promise = CandidateService.uploadResume($rootScope.currentUser._id, fd);
             promise
                 .success(function (candidate) {
                     if (candidate == null) {
-                        //console.log("Unable to upload resume");
+                        console.log("Unable to upload resume");
                         vm.error = "Unable to upload resume";
                     } else {
-                        //console.log("Resume successfully updated");
+                        console.log("Resume successfully updated");
                         vm.message = "Resume successfully updated";
                         $rootScope.currentUser = candidate;
                         vm.user = angular.copy($rootScope.currentUser);
@@ -115,7 +119,7 @@
                     }
                 })
                 .error(function () {
-                    //console.log("Unable to upload resume");
+                    console.log("Unable to upload resume");
                     vm.error = "Unable to upload resume";
                 });
         }
