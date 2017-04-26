@@ -10,8 +10,7 @@ module.exports = function (app, model) {
         clientID: process.env.FACEBOOK_CLIENT_ID,
         clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
         callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-        profileFields: ['id', 'email', 'name'],
-        enableProof: true
+        profileFields: ['id', 'email', 'name']
     };
 
     var multer = require('multer');
@@ -73,6 +72,9 @@ module.exports = function (app, model) {
         function(req, res) {
             var url = req.protocol + '://' + req.get('host');
             url = url+'/project/#/candidate/profile/';
+            console.log(url);
+            console.log(req.user);
+
             res.redirect(url);
         });
 
@@ -125,7 +127,7 @@ module.exports = function (app, model) {
         if(isAdmin(req.user) || req.user._id == candidateId) {
             console.log("authorized");
             resumeUpload(req, res, function (err) {
-                console.log("File upload called..1", req.file);
+                console.log("File upload called..1", req);
                 if(req.file) {
                     if (err) {
                         res.status(404);
@@ -135,6 +137,7 @@ module.exports = function (app, model) {
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function(candidate){
                             candidate.resumeURI = '/uploads/candidate/resumes/' + req.file.filename;
+                            candidate.resumeName = req.file.filename;
                             model.candidateModel.updateCandidate(candidateId, candidate)
                                 .then(function (candidate) {
                                         res.status(200).send(sendTransformObject(candidate));
@@ -170,6 +173,7 @@ module.exports = function (app, model) {
                     model.candidateModel.findCandidateById(candidateId)
                         .then(function (candidate) {
                             candidate.photoURI = '/uploads/candidate/pics/' + req.file.filename;
+                            candidate.photoName = req.file.filename;
                             model.candidateModel.updateCandidate(candidateId, candidate)
                                 .then(function (candidate) {
                                         res.status(200).send(sendTransformObject(candidate));
@@ -373,7 +377,8 @@ module.exports = function (app, model) {
     }
 
     function loggedin(req, res) {
-        //console.log("Checking loggedin sever");
+        console.log("Checking loggedin sever",req.user);
+        console.log("Checking loggedin sever",req.isAuthenticated());
         res.send(req.isAuthenticated() && req.user.role? sendTransformObject(req.user) : '0');
     }
 
@@ -382,11 +387,11 @@ module.exports = function (app, model) {
     }
 
     function facebookStrategy(token, refreshToken, profile, done) {
-        //console.log("Profile" + JSON.stringify(profile));
+        console.log("Profile" + JSON.stringify(profile));
         model.candidateModel
             .findCandidateByFacebookId(profile.id)
             .then(function (candidate) {
-                //console.log("Found candidate"+ candidate);
+                console.log("Found candidate"+ candidate);
 
 
                 if (candidate) {
@@ -415,6 +420,7 @@ module.exports = function (app, model) {
                     );
                 }
             }, function (err) {
+                console.log("err")
                 if (err) {
                     return done(err);
                 }

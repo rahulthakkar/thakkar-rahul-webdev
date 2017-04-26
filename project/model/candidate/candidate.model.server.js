@@ -40,7 +40,7 @@ module.exports = function(app) {
         candidateModel.findById(candidateId)
             .populate('applications','status job applicant')
             .exec(function(err, candidate){
-                if(candidate){
+                if(err){
                     deferred.resolve(candidate);
 
                 }else{
