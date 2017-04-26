@@ -278,6 +278,21 @@
                 vm.company = angular.copy(company);
                 vm.user = angular.copy($rootScope.currentUser);
                 setLoginDetails(vm);
+                if(vm.user && vm.user.role){
+                    vm.appliedJobs = vm.user.applications.map(function (obj) {
+                        return obj.job;
+                    });
+                    if(vm.appliedJobs && vm.appliedJobs.length>0){
+                        for(var j in company.jobs){
+                            //console.log("Here"+jobs[j]._id);
+                            if(vm.appliedJobs.indexOf(company.jobs[j]._id)> -1){
+                                //console.log("Here");
+                                company.jobs[j].applied = true;
+                            }
+                        }
+                    }
+                    //console.log(vm.jobs);
+                }
             });
         }
 

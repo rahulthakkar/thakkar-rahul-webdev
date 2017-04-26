@@ -39,7 +39,9 @@
                             </div>
                         </div>
                     </div>
-                    <a class="btn btn-primary pull-right wbdv-margin cols-xs-2" href="#/job/{{job._id}}/apply">Apply</a><br/><br/><br/><br/>
+                    <a ng-hide="job.applied" class="btn btn-primary pull-right wbdv-margin cols-xs-2" href="#/job/{{job._id}}/apply">Apply</a>
+                    <a ng-show="job.applied"  class="btn btn-primary pull-right wbdv-margin cols-xs-2" href="#/job/{{job._id}}/apply">Applied</a>
+                    <br/><br/><br/><br/>
                 </div>
             </div>
         </div>

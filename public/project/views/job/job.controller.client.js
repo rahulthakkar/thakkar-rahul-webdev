@@ -175,6 +175,7 @@
             vm.noResults = false;
             vm.showSpinner = true;
             //console.log("Started search");
+            vm.jobs = undefined;
             JobService
                 .searchJobs(vm.searchTerm)
                 .success(function (jobs) {

@@ -72,8 +72,8 @@ module.exports = function (app, model) {
         function(req, res) {
             var url = req.protocol + '://' + req.get('host');
             url = url+'/project/#/candidate/profile/';
-            console.log(url);
-            console.log(req.user);
+            //console.log(url);
+            //console.log(req.user);
 
             res.redirect(url);
         });
@@ -82,12 +82,12 @@ module.exports = function (app, model) {
 
 
     function authorize (req, res, next) {
-        console.log("authorized called");
+        //console.log("authorized called");
         if (!req.isAuthenticated()) {
-            console.log("authenticate err")
+            //console.log("authenticate err")
             res.send(401);
         } else {
-            console.log("next")
+            //console.log("next")
             next();
         }
     }
@@ -298,7 +298,7 @@ module.exports = function (app, model) {
     }
 
     function serializeUser(user, done) {
-        console.log("searilaizeUser called");
+        //console.log("searilaizeUser called");
         done(null, user);
     }
 
@@ -323,7 +323,7 @@ module.exports = function (app, model) {
     }
 
     function localStrategy(email, password, done) {
-        console.log("candidate localstartegy" + email +" " + password);
+        //console.log("candidate localstartegy" + email +" " + password);
         model.candidateModel
             .findCandidateByEmail(email)
             .then(
